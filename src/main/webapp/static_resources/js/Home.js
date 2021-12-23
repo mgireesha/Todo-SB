@@ -1,0 +1,237 @@
+/**
+ * 
+ */
+ var currElem = null;
+ $(document).mousedown(function(e) {
+    currElem = e.target;
+    if(currElem != null 
+    	&& currElem.id != ""
+    	&& ($("#task-item-add-field").css("display") != "none" || $("#list-item-add-field").css("display") != "none")
+    	&& currElem.parentNode.id != "task-item-add-field" 
+    	&& currElem.parentNode.parentNode.id != "task-item-add-field" 
+    	&& currElem.parentNode.parentNode.parentNode.id != "task-item-add-field"
+    	&& currElem.id != "task-item-add-field"
+    	//&& $("#list-item-add-field").css("display") != "none" 
+    	&& currElem.parentNode.id != "list-item-add-field" 
+    	&& currElem.parentNode.parentNode.id != "list-item-add-field" 
+    	&& currElem.parentNode.parentNode.parentNode.id != "list-item-add-field"
+    	&& currElem.id != "list-item-add-field"
+    	) {
+			if($("#task-item-add-field").css("display") != "none"){
+				toggleAddtaskField();
+			}else{
+				togglAddListField();
+			}
+        
+    }
+});
+
+ function showTasks(listId){
+	
+	$.ajax({
+		url:"task/getTasksByListId/"+listId,
+		method:"GET",
+	}).done(function(response){
+		var taskObj = response.taskList;
+		var listObj = response.todoList[0];
+		$("#listName").val(listObj.listName);
+		$("#listId").val(listObj.listId);
+		$(".task-list-name").empty().append('<h2 class="task-list-name-header" onclick="switchListNameLabel(this)" id="task-list-name-header-'+listObj.listId+'">'+listObj.listName+'</h2>')
+		$(".task-list-name").append('<input type="text" id="task-list-name-text-'+listObj.listId+'" class="task-list-name-text form-control" style="background-color: rgb(64, 58, 58); display: none;" onblur="updateListName(this)">');
+		$("#task-item-main").empty();
+		var taskDiv=$("#task-item-main");
+		for(var i = 0; i<taskObj.length;i++){
+			$(taskDiv).prepend(getTaskElem(taskObj[i]));
+		}
+		if($("#selectedTaskId").val()!=="" && $("#selectedTaskId").val()!=undefined){
+				hideTaskDetails();
+			}
+	}).fail(function(response)  {
+		if(response.status!=null){
+			alert(response.status+" : "+response.responseJSON.error);
+		}else{
+			alert("Sorry. Server unavailable. "+response);
+		}
+	});
+}
+
+function togglAddListField(){
+	if($("#list-item-add-div").css("display")=="none" && $("#list-add-txt").val()==""){
+		$("#list-item-add-div").show();
+		$("#list-item-add-field").hide();
+		cleanAddTaskField()
+	}else{
+		$("#list-item-add-div").hide();
+		$("#list-item-add-field").show();
+		$("#list-add-txt").focus();
+	}
+}
+
+function addList(){
+	var listName = $("#list-add-txt").val();
+	if(listName=="" || listName==undefined){
+		alert("Please provide list name");
+		$("#list-add-txt").focus();
+		return false;
+	}
+	var addListPayload = {
+		"listName" : listName
+	}
+	$.ajax({
+		url : "list/",
+		type: "POST",
+    	contentType: "application/json; charset=utf-8",
+    	dataType: "json",
+		data : JSON.stringify(addListPayload)
+	}).done(function(response){
+		if(response.status=="success"){
+			$("#list-item-main").append(getListElem(response.todoList));
+			cleanAddListField();
+			togglAddListField();
+			$("#list-item-"+response.todoList.listId).click();
+		}else{
+			alert("Failed to update the task Please try again after clearing your browser cache");
+		}
+	}).fail(function(response)  {
+    	alert("Sorry. Server unavailable. "+response);
+	});
+}
+
+function getListElem(listObj){
+	var listElem = '<div class="row" style="margin: 0">';
+		listElem += '<div class="col-sm-10 list-item" id="list-item-'+listObj.listId+'" onclick="showTasks('+listObj.listId+')">';
+		listElem += '<label>'+listObj.listName+'</label>';
+		listElem += '</div>';
+		listElem += '<div class="col-sm-1 list-item-delete" onclick="deleteList('+listObj.listId+')">';
+		listElem += '<label>x</label>';
+		listElem += '</div>';
+		listElem += '</div>';
+	return listElem;
+}
+
+function cleanAddListField(){
+	$("#list-add-txt").val("")
+}
+
+
+
+function hideTaskDetails(){
+	$("#task-item-"+$('#selectedTaskId').val()).removeClass("selected-task");
+	$("#task-delete-label-"+$('#selectedTaskId').val()).removeClass("selected-task-delete");
+	$("#selectedTaskId").val("");
+	$("#task-detail-div").hide();
+	hadndleWidth("remove");
+}
+
+function hadndleWidth(action){
+	var curListDivWidth = 0;
+	if(action=="add"){
+		$("#task-div").addClass("col-sm-6");
+		$("#task-div").removeClass("col-sm-8");
+		curListDivWidth = $(".list-div").css("width");
+		curListDivWidth = curListDivWidth.substring(0,curListDivWidth.length-2);
+		$("#reducedListDivWidth").val(curListDivWidth);
+		$(".list-div").css("width",curListDivWidth-((10/100)*curListDivWidth)+"px");
+		$("#task-detail-div,.task-detail-note-txt").css("max-height",$("#task-div").css("height"));
+		$(".task-delete-div").addClass("col-sm-3");
+		$(".task-delete-div").removeClass("col-sm-2");
+		$(".task-dummy-div").addClass("col-sm-3");
+		$(".task-dummy-div").removeClass("col-sm-4");
+		$(".task-item-add-div").css("margin-right","3em");
+	}else{
+		$("#task-div").removeClass("col-sm-6");
+		$("#task-div").addClass("col-sm-8");
+		$(".list-div").css("width",$("#reducedListDivWidth").val()+"px");
+		$(".task-delete-div").addClass("col-sm-2");
+		$(".task-delete-div").removeClass("col-sm-3");
+		$(".task-dummy-div").addClass("col-sm-4");
+		$(".task-dummy-div").removeClass("col-sm-3");
+		$(".task-item-add-div").css("margin-right","4em");
+	}
+	
+}
+
+function ajaxUtil(url, type, data){
+	$.ajax({
+		url:url,
+		type: type,
+    	contentType: "application/json; charset=utf-8",
+    	dataType: "json",
+		data : data
+	}).done(function(response){
+		// response;
+	}).fail(function(response)  {
+		// response;
+	});
+}
+
+function switchListNameLabel(elem){
+	var taskId =elem.id;
+	taskId = taskId.substring("task-list-name-header-".length,taskId.length);
+	$(elem).hide();
+	$("#task-list-name-text-"+taskId).val(elem.innerHTML.trim());
+	$("#task-list-name-text-"+taskId).show();
+	$("#task-list-name-text-"+taskId).focus();
+}
+
+function updateListName(elem){
+	var listId = elem.id;
+	listId = listId.substring("task-list-name-text-".length,listId.length);
+	var updatedListName = elem.value;
+	var updateLNamePayload = {
+		"listName" : updatedListName,
+		"listId" : parseInt(listId)
+	}
+	
+	$.ajax({
+		url:"list/"+listId+"/",
+		type: "PUT",
+    	contentType: "application/json; charset=utf-8",
+    	dataType: "json",
+		data : JSON.stringify(updateLNamePayload)
+	}).done(function(response){
+		if(response.status=="success"){
+			$("#task-list-name-text-"+listId).hide();
+			$("#task-list-name-header-"+listId).html(updatedListName);
+			$("#list-item-"+listId).html('<label>'+updatedListName+'</label>');
+			$("#task-list-name-header-"+listId).show();
+		}else{
+			alert("Failed to update the List, Error:"+response.error);
+		}
+	}).fail(function(response)  {
+		if(response.status!=null){
+			alert(response.status+" : "+response.responseJSON.error);
+		}else{
+			alert("Sorry. Server unavailable. "+response);
+		}
+	});
+}
+
+function deleteList(listId){
+	if(confirm("All associated tasks will also be removed!")){
+		$.ajax({
+		url:"list/"+listId+"/",
+		type: "DELETE",
+    	contentType: "application/json; charset=utf-8",
+    	dataType: "json"
+		}).done(function(response){
+			if(response.status=="success"){
+				$("#list-item-"+listId).parent().remove();
+				if($("#task-list-name-header-"+listId).length>0){
+					var lists = document.querySelectorAll(".list-item");
+					if(lists.length>0){
+						lists[0].click();
+					}
+				}
+			}else{
+				alert("Failed to update the task Please try again after clearing your browser cache");
+			}
+		}).fail(function(response)  {
+			if(response.status!=null){
+				alert(response.status+" : "+response.responseJSON.error);
+			}else{
+				alert("Sorry. Server unavailable. "+response);
+			}
+		});
+	}
+}
