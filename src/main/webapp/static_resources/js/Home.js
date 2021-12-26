@@ -237,3 +237,26 @@ function deleteList(elem){
 		});
 	}
 }
+
+function deleteUser(id){
+	if(confirm("Are you sure?")){
+		$.ajax({
+		url:"user/"+id+"/",
+		type: "DELETE",
+    	contentType: "application/json; charset=utf-8",
+    	dataType: "json"
+		}).done(function(response){
+			if(response.status=="success"){
+				$("#table-row-"+id).remove();
+			}else{
+				alert("Failed to delete the user, Please try again after clearing your browser cache");
+			}
+		}).fail(function(response)  {
+			if(response.status!=null && response.responseJSON.error!=undefined){
+				alert(response.status+" : "+response.responseJSON.error);
+			}else{
+				alert("Sorry. Server unavailable. "+response);
+			}
+		});
+	}
+}

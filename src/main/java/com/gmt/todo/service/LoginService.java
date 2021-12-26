@@ -1,6 +1,7 @@
 package com.gmt.todo.service;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
@@ -39,5 +40,9 @@ public class LoginService {
 		TodoTask todoTask = new TodoTask("Get up early!", "", false, "Go to work", todoList.getListId(), todoList.getListName());
 		taskService.addNewTask(todoTask);
 		return user;
+	}
+	
+	public List<User> getAllUsers() {
+		return (List<User>) userRepository.findAll();
 	}
 }

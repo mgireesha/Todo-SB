@@ -33,7 +33,7 @@ public class ListService {
 	public TodoList addNewList(TodoList todoList,TodoUserDetails userDetails) {
 		todoList.setDateCreated(LocalDate.now());
 		todoList.setUserId(userDetails.getUsername());
-		if(null != todoList.getGroupName() && !"".equals(todoList.getGroupName())) {
+		if(null == todoList.getGroupName() || "".equals(todoList.getGroupName())) {
 			todoList.setGroupId(generateGroupId());
 			todoList.setGroupName("common");
 		}
