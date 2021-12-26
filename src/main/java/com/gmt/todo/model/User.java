@@ -18,6 +18,16 @@ public class User {
 	private String passWord;
 	private boolean active;
 	private String roles;
+	
+	public User(User user) {
+		this.id=user.getId();
+		this.name=user.getName();
+		this.userName=user.getUserName();
+		this.passWord=user.getPassWord();
+		this.active=user.isActive();
+		this.roles=user.getRoles();
+	}
+	
 	public Long getId() {
 		return id;
 	}

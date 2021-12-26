@@ -1,6 +1,7 @@
 package com.gmt.todo.service;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.gmt.todo.model.TodoList;
 import com.gmt.todo.model.TodoTask;
 import com.gmt.todo.model.TodoUserDetails;
+import com.gmt.todo.model.User;
 import com.gmt.todo.repository.TodoTaskRepository;
 import com.gmt.todo.repository.TodolistRepository;
 
@@ -53,6 +55,16 @@ public class ListService {
 		List<TodoTask> taskList = todoTaskRepository.getByListId(listId);
 		todolistRepository.deleteById(listId);
 		todoTaskRepository.deleteAll(taskList);
+	}
+	
+	public void deleteListsOfUser(User user) {
+		List<TodoList> userList = todolistRepository.getByUserId(user.getUserName());
+		List<TodoTask> usertaks = new ArrayList<TodoTask>();
+		for (TodoList tList : userList) {
+			usertaks.addAll(todoTaskRepository.getByListId(tList.getListId()));
+		}
+		todolistRepository.deleteAll(userList);
+		todoTaskRepository.deleteAll(usertaks);
 	}
 	
 	public Long generateGroupId(){

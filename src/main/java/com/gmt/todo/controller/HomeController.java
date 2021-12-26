@@ -60,10 +60,8 @@ public class HomeController {
 	public ModelAndView goToHome() {
 		ModelAndView mv = new ModelAndView();
 		UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		List<TodoList> defList = (List<TodoList>) todolistRepository.getByUserIdAndGroupName(userDetails.getUsername(),
-				"default");
-		List<TodoList> list = (List<TodoList>) todolistRepository.getByUserIdAndGroupNameNot(userDetails.getUsername(),
-				"default");
+		List<TodoList> defList = (List<TodoList>) todolistRepository.getByUserIdAndGroupName(userDetails.getUsername(),"default");
+		List<TodoList> list = (List<TodoList>) todolistRepository.getByUserIdAndGroupNameNot(userDetails.getUsername(),"default");
 		defList.addAll(list);
 		mv.addObject("taskList", todoTaskRepository.getByListId(defList.get(0).getListId()));
 		mv.addObject("todoList", defList);
