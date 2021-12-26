@@ -21,9 +21,20 @@ public class ListService {
 	@Autowired
 	private TodoTaskRepository todoTaskRepository;
 	
+	public List<TodoList> getAllLists(){
+		System.out.println(todolistRepository.getByUserIdByOrderByGroupId("aditya"));
+		return (List<TodoList>) todolistRepository.findAll();
+	}
+	
+	public List<TodoList> getListById(Long listId){
+		return (List<TodoList>) todolistRepository.getByListId(listId);
+	}
+	
 	public TodoList addNewList(TodoList todoList,TodoUserDetails userDetails) {
 		todoList.setDateCreated(LocalDate.now());
 		todoList.setUserId(userDetails.getUsername());
+		todoList.setGroupId(getMaxId());
+		todoList.setGroupName("common");
 		todoList = todolistRepository.save(todoList);
 		return todoList;
 	}
@@ -40,5 +51,9 @@ public class ListService {
 		List<TodoTask> taskList = todoTaskRepository.getByListId(listId);
 		todolistRepository.deleteById(listId);
 		todoTaskRepository.deleteAll(taskList);
+	}
+	
+	public Long getMaxId(){
+		return todolistRepository.getMaxId()+1;
 	}
 }

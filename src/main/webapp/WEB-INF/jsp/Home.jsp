@@ -27,7 +27,7 @@
 		<h4 class="col-sm-10" style="margin-left: 0.4em;color: beige"><i>ToDo</i></h4>
 		<a class="col-sm-1" href="/logout">Logout</a>
 	</div>
-		<div class="row" style="/*margin-top: 30px;*/">
+		<div class="row">
 			<div class="col-sm-3 list-div">
 				<div class="list-item-main" id="list-item-main">
 					<c:forEach items="${todoList}" var="tl">
@@ -35,12 +35,10 @@
 						<div class="col-sm-10 list-item" id="list-item-${tl.getListId()}" onClick="showTasks(${tl.getListId()})">
 							<label>${tl.getListName()}</label>
 						</div>
-						<div class="col-sm-1 list-item-delete" onclick="deleteList(${tl.getListId()})">
-							<label style="">x</label>
+						<div class="col-sm-1 ${tl.getGroupName() ne 'default' ? 'list-item-delete' : 'list-item-delete-def'}" id="list-item-delete-${tl.getListId()}" onclick="${tl.getGroupName() ne 'default' ? 'deleteList(this)' : ''}">
+							<label style="display:${tl.getGroupName() ne 'default' ? 'block' : 'none'}">x</label>
 						</div>
 					</div>
-					
-					
 				</c:forEach>
 				</div>
 				
@@ -61,8 +59,8 @@
 			</div>
 			<div class="col-sm-8 task-div" id="task-div">
 				<div class="row task-list-name">
-					<h2 class="task-list-name-header" id="task-list-name-header-${taskList[0].getListId()}" onclick="switchListNameLabel(this)">
-						${taskList[0].getListName()}
+					<h2 class="task-list-name-header" id="task-list-name-header-${todoList[0].getListId()}" onclick="switchListNameLabel(this)">
+						${todoList[0].getListName()}
 					</h2>
 					<input type="text" id="task-list-name-text-${taskList[0].getListId()}" class="task-list-name-text form-control" style="background-color: rgb(64, 58, 58); display: none;" onblur="updateListName(this)">
 				</div>

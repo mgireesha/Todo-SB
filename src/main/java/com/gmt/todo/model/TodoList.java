@@ -3,6 +3,7 @@ package com.gmt.todo.model;
 import java.time.LocalDate;
 import java.util.List;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -18,6 +19,8 @@ public class TodoList {
 	private String listName;
 	private String userId;
 	private LocalDate dateCreated;
+	private long groupId;
+	private String groupName;
 	@Transient
 	private List<TodoTask> taskList;
 	public long getListId() {
@@ -51,8 +54,20 @@ public class TodoList {
 	public void setDateCreated(LocalDate dateCreated) {
 		this.dateCreated = dateCreated;
 	}
+	
+	public long getGroupId() {
+		return groupId;
+	}
+	public void setGroupId(long groupId) {
+		this.groupId = groupId;
+	}
+	public String getGroupName() {
+		return groupName;
+	}
+	public void setGroupName(String groupName) {
+		this.groupName = groupName;
+	}
 	public TodoList(long listId, String listName, String userId, List<TodoTask> taskList) {
-		super();
 		this.listId = listId;
 		this.listName = listName;
 		this.userId = userId;
@@ -60,23 +75,28 @@ public class TodoList {
 	}
 	
 	public TodoList(long listId, String listName, String userId) {
-		super();
 		this.listId = listId;
 		this.listName = listName;
 		this.userId = userId;
 	}
 	
 	public TodoList(String listName, String userId) {
-		super();
 		this.listName = listName;
 		this.userId = userId;
 	}
 	
 	public TodoList(String listName, String userId, LocalDate dateCreated) {
-		super();
 		this.listName = listName;
 		this.userId = userId;
 		this.dateCreated = dateCreated;
+	}
+	
+	public TodoList(String listName, String userId, LocalDate dateCreated, Long groupId, String groupName) {
+		this.listName = listName;
+		this.userId = userId;
+		this.dateCreated = dateCreated;
+		this.groupId = groupId;
+		this.groupName = groupName;
 	}
 	public TodoList() {
 		
@@ -84,7 +104,7 @@ public class TodoList {
 	@Override
 	public String toString() {
 		return "TodoList [listId=" + listId + ", listName=" + listName + ", userId=" + userId + ", dateCreated="
-				+ dateCreated + ", taskList=" + taskList + "]";
+				+ dateCreated + ", groupId=" + groupId + ", groupName=" + groupName + ", taskList=" + taskList + "]";
 	}
 	
 	

@@ -1,2 +1,3 @@
+admin,Aditya@12,true,ROLE_USER>>ROLE_ADMIN
 mgireesha,password,true,ROLE_USER>>ROLE_ADMIN
 aditya,password,true,ROLE_USER

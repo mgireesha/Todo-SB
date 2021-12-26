@@ -2,7 +2,9 @@ package com.gmt.todo.repository;
 
 import java.util.List;
 
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.query.Param;
 
 import com.gmt.todo.model.TodoList;
 
@@ -11,5 +13,15 @@ public interface TodolistRepository extends CrudRepository<TodoList, Long> {
 	public List<TodoList> getByListId(Long lstId);
 	
 	public List<TodoList> getByUserId(String userName);
+	
+	public List<TodoList> getByUserIdAndGroupName(String userName, String groupName);
+	
+	public List<TodoList> getByUserIdAndGroupNameNot(String userName, String groupName);
+	
+	@Query("SELECT tl FROM TodoList tl WHERE tl.userId=:userName ORDER BY tl.groupId")
+	public List<TodoList> getByUserIdByOrderByGroupId(@Param("userName") String userName);
+	
+	@Query("SELECT coalesce(max(tl.groupId), 0) FROM TodoList tl")
+	public Long getMaxId();
 	
 }

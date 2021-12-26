@@ -1,5 +1,7 @@
 package com.gmt.todo.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -22,6 +24,11 @@ public class ListController {
 	@Autowired
 	private ListService listService;
 	
+	@RequestMapping("/list/listAll")
+	public List<TodoList> getAllLists() {
+		return listService.getAllLists();
+	}
+	
 	@RequestMapping(method = RequestMethod.POST, value = "/list/")
 	public TResponse addNewList(@RequestBody TodoList todoList) {
 		TResponse resp = new TResponse();
@@ -35,6 +42,11 @@ public class ListController {
 			resp.setStatus(e.getMessage());
 		}
 		return resp;
+	}
+	
+	@RequestMapping("/list/{listId}")
+	public List<TodoList> getAllListById(@PathVariable String listId) {
+		return listService.getListById(Long.parseLong(listId));
 	}
 	
 	@RequestMapping(method = RequestMethod.PUT, value = "/list/{listId}")

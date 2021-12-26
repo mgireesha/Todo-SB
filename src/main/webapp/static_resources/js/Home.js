@@ -102,7 +102,7 @@ function getListElem(listObj){
 		listElem += '<div class="col-sm-10 list-item" id="list-item-'+listObj.listId+'" onclick="showTasks('+listObj.listId+')">';
 		listElem += '<label>'+listObj.listName+'</label>';
 		listElem += '</div>';
-		listElem += '<div class="col-sm-1 list-item-delete" onclick="deleteList('+listObj.listId+')">';
+		listElem += '<div class="col-sm-1 list-item-delete" id="list-item-delete-'+listObj.listId+'" onclick="deleteList(this)">';
 		listElem += '<label>x</label>';
 		listElem += '</div>';
 		listElem += '</div>';
@@ -207,7 +207,9 @@ function updateListName(elem){
 	});
 }
 
-function deleteList(listId){
+function deleteList(elem){
+	var listId = elem.id;
+	listId = listId.substring("list-item-delete-".length,listId.length);
 	if(confirm("All associated tasks will also be removed!")){
 		$.ajax({
 		url:"list/"+listId+"/",

@@ -51,12 +51,15 @@ public class PersistCSVSerice {
 			String line = null;
 			String[] todoListArr = null;
 			TodoList todoList = null;
+			long groupId = todolistRepository.getMaxId();
 			while((line = br.readLine())!=null) {
 				todoListArr = line.split(",");
+				groupId=groupId+1;
 				//todoList = new TodoList(Long.parseLong(todoListArr[0]), todoListArr[1], todoListArr[2]);
-				todoList = new TodoList(todoListArr[0], todoListArr[1], LocalDate.parse(todoListArr[2]));
+				todoList = new TodoList(todoListArr[0], todoListArr[1], LocalDate.parse(todoListArr[2]),groupId,todoListArr[3]);
 				if(null!=todoList)
-					todolistRepository.save(todoList);
+					todoList =todolistRepository.save(todoList);
+				System.out.println(todoList);
 			}
 			
 		}catch(IOException ioe) {

@@ -1,9 +1,7 @@
 package com.gmt.todo.controller;
 
-import java.util.Enumeration;
 import java.util.List;
 
-import javax.naming.AuthenticationException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -20,7 +18,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.gmt.todo.model.TResponse;
 import com.gmt.todo.model.TodoList;
-import com.gmt.todo.model.User;
 import com.gmt.todo.repository.TodoTaskRepository;
 import com.gmt.todo.repository.TodolistRepository;
 import com.gmt.todo.service.LoginService;
@@ -62,10 +59,11 @@ public class HomeController {
 	public ModelAndView goToHome() {
 		ModelAndView mv = new ModelAndView();
 		UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		List<TodoList> list =  (List<TodoList>) todolistRepository.getByUserId(userDetails.getUsername());
-		//List<TodoList> list =  (List<TodoList>) todolistRepository.findAll();
-		mv.addObject("taskList", todoTaskRepository.getByListId(list.get(0).getListId()));
-		mv.addObject("todoList", list);
+		List<TodoList> defList = (List<TodoList>) todolistRepository.getByUserIdAndGroupName(userDetails.getUsername(),"default");
+		List<TodoList> list =  (List<TodoList>) todolistRepository.getByUserIdAndGroupNameNot(userDetails.getUsername(), "default");
+		defList.addAll(list);
+		mv.addObject("taskList", todoTaskRepository.getByListId(defList.get(0).getListId()));
+		mv.addObject("todoList", defList);
 		mv.setViewName("Home");
 		return mv;
 	}

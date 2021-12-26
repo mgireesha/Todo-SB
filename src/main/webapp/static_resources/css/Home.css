@@ -59,6 +59,15 @@ body{
     color: grey;
 }
 
+.list-item-delete-def{
+	background-color: darkkhaki;
+    margin: 6px;
+    border-radius: 2px;
+    margin-left: 0;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+}
+
 .list-item-delete > label, .list-item-delete:hover{
 	cursor: pointer;
 }
