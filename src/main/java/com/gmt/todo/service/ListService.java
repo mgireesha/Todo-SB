@@ -33,8 +33,10 @@ public class ListService {
 	public TodoList addNewList(TodoList todoList,TodoUserDetails userDetails) {
 		todoList.setDateCreated(LocalDate.now());
 		todoList.setUserId(userDetails.getUsername());
-		todoList.setGroupId(getMaxId());
-		todoList.setGroupName("common");
+		if(null != todoList.getGroupName() && !"".equals(todoList.getGroupName())) {
+			todoList.setGroupId(generateGroupId());
+			todoList.setGroupName("common");
+		}
 		todoList = todolistRepository.save(todoList);
 		return todoList;
 	}
@@ -53,7 +55,7 @@ public class ListService {
 		todoTaskRepository.deleteAll(taskList);
 	}
 	
-	public Long getMaxId(){
+	public Long generateGroupId(){
 		return todolistRepository.getMaxId()+1;
 	}
 }

@@ -34,7 +34,7 @@ public class LoginService {
 		user.setRoles("ROLE_USER");
 		user.setActive(true);
 		user = userRepository.save(user);
-		TodoList todoList = new TodoList("Tasks",user.getUserName(),LocalDate.now());
+		TodoList todoList = new TodoList("Tasks",user.getUserName(),LocalDate.now(),listService.generateGroupId(),"default");
 		todoList = listService.addNewList(todoList, new TodoUserDetails(user));
 		TodoTask todoTask = new TodoTask("Get up early!", "", false, "Go to work", todoList.getListId(), todoList.getListName());
 		taskService.addNewTask(todoTask);
