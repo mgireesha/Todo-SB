@@ -39,7 +39,7 @@
 		taskChid+='</div>';
 	
 	var taskDelChild ='<div class="col-sm-1 task-item-delete" id="task-delete-label-'+taskObj.taskId+'" onclick="deleteTask(this)" title="Delete Task">';
-	taskDelChild+='<img alt="black dot" src="../static_resources/images/delete-grey.png" style="height: 1.8em;">';
+	taskDelChild+='<img alt="black dot" src="../static_resources/images/delete-grey-20x26.png" style="height: 1.8em;">';
 	taskDelChild+='</div>';
 	
 	//var taskElem = $('<div class="row" style="margin: 0">');
@@ -265,7 +265,7 @@ function buildTaskDetails(taskObj){
 			taskDetailCrtd+='<label class="task-detail-crtd-lbl">Created on '+covertDateT(taskObj.dateCreated)+'</label>';
 			taskDetailCrtd+='</div>';
 		var taskDetailDltImg ='<div class="col-sm-2" style="margin-top: 0.7em;">';
-			taskDetailDltImg+='<img alt="delete" class="task-detail-delete-label" id="task-delete-label-'+taskObj.taskId+'" src="../static_resources/images/delete-red.png" onclick="deleteTask(this)">';
+			taskDetailDltImg+='<img alt="delete" class="task-detail-delete-label" id="task-delete-label-'+taskObj.taskId+'" src="../static_resources/images/delete-red-20x27.png" onclick="deleteTask(this)">';
 			taskDetailDltImg+='</div>';
 		
 		taskDetailDelete.append(taskDetailCrtd);

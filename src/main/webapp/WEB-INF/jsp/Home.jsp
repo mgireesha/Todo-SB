@@ -115,7 +115,7 @@
 							
 						</div>
 						<div class="col-sm-1 task-item-delete" id="task-delete-label-${tk.getTaskId()}" onclick="deleteTask(this)" title="Delete Task">
-							<img alt="black dot" src="../static_resources/images/delete-grey.png" style="height: 1.8em;">
+							<img alt="black dot" src="../static_resources/images/delete-grey-20x26.png" style="height: 1.8em;">
 						</div>	
 								
 						</div>
