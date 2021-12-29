@@ -32,20 +32,25 @@
 		url:"task/getTasksByListId/"+listId,
 		method:"GET",
 	}).done(function(response){
-		var taskObj = response.taskList;
-		var listObj = response.todoList[0];
-		$("#listName").val(listObj.listName);
-		$("#listId").val(listObj.listId);
-		$(".task-list-name").empty().append('<h2 class="task-list-name-header" onclick="switchListNameLabel(this)" id="task-list-name-header-'+listObj.listId+'">'+listObj.listName+'</h2>')
-		$(".task-list-name").append('<input type="text" id="task-list-name-text-'+listObj.listId+'" class="task-list-name-text form-control" style="background-color: rgb(64, 58, 58); display: none;" onblur="updateListName(this)">');
-		$("#task-item-main").empty();
-		var taskDiv=$("#task-item-main");
-		for(var i = 0; i<taskObj.length;i++){
-			$(taskDiv).prepend(getTaskElem(taskObj[i]));
-		}
-		if($("#selectedTaskId").val()!=="" && $("#selectedTaskId").val()!=undefined){
-				hideTaskDetails();
+		if(response.taskList!=undefined && response.taskList!=null){
+			var taskObj = response.taskList;
+			var listObj = response.todoList[0];
+			$("#listName").val(listObj.listName);
+			$("#listId").val(listObj.listId);
+			$(".task-list-name").empty().append('<h2 class="task-list-name-header" onclick="switchListNameLabel(this)" id="task-list-name-header-'+listObj.listId+'">'+listObj.listName+'</h2>')
+			$(".task-list-name").append('<input type="text" id="task-list-name-text-'+listObj.listId+'" class="task-list-name-text form-control" style="background-color: rgb(64, 58, 58); display: none;" onblur="updateListName(this)">');
+			$("#task-item-main").empty();
+			var taskDiv=$("#task-item-main");
+			for(var i = 0; i<taskObj.length;i++){
+				$(taskDiv).prepend(getTaskElem(taskObj[i]));
 			}
+			if($("#selectedTaskId").val()!=="" && $("#selectedTaskId").val()!=undefined){
+					hideTaskDetails();
+			}
+		}else{
+			hadndleErrorResp(response);
+		}
+		
 	}).fail(function(response)  {
 		if(response.status!=null){
 			alert(response.status+" : "+response.responseJSON.error);
@@ -260,3 +265,18 @@ function deleteUser(id){
 		});
 	}
 }
+
+function hadndleErrorResp(response){
+	if(response!=undefined){
+		if(response.indexOf("signin-form")!=-1){
+			location.replace("");
+		}
+	}
+}
+
+function covertDateT(date){
+	var days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+	var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+	var d = new Date(date);
+	return cDate = days[d.getDay()]+", "+months[d.getMonth()]+" "+d.getDate()+" "+d.getFullYear();
+} 

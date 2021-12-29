@@ -6,10 +6,10 @@
 	var isDotRequired = false;
 	var taskChid = '<div class="row">';
 		taskChid+='<label class="col-sm-1" style="width: 1.5em"></label>';
-		taskChid+='<div class="col-sm-5">';
+		taskChid+='<div class="col-sm-8">';
 		if(taskObj.dueDate!=null){
 			taskChid+='<img alt="due date" src="../static_resources/images/calender-blue.png" style="height: 0.8em">';
-			taskChid+='<label style="font-size: 12px">&nbsp;'+taskObj.dueDate+'</label>';
+			taskChid+='<label style="font-size: 12px">&nbsp;'+covertDateT(taskObj.dueDate)+'</label>';
 			isDotRequired = true;
 		}
 		
@@ -19,7 +19,7 @@
 				isDotRequired = false;
 			}
 			taskChid+='<img alt="due date" src="../static_resources/images/bell-blue.png" style="height: 0.8em">';
-			taskChid+='<label style="font-size: 12px">&nbsp;'+taskObj.dueDate+'</label>';
+			taskChid+='<label style="font-size: 12px">&nbsp;'+covertDateT(taskObj.dueDate)+'</label>';
 			isDotRequired = true;
 		}
 		
@@ -31,10 +31,10 @@
 			taskChid+='<img alt="note" src="../static_resources/images/note-blue-s1.png" style="height: 0.8em">';
 		}
 		taskChid+='</div>';
-		taskChid+='<div class="col-sm-4 task-dummy-div"></div>';
+		/*taskChid+='<div class="col-sm-4 task-dummy-div"></div>';
 		taskChid+='<div class="col-sm-2 task-delete-div">';
-		/*taskChid+='<label class="task-delete-label" id="task-delete-label-'+taskObj.taskId+'" onclick="deleteTask(this)">Remove task </label>';*/
-		taskChid+='</div>';
+		taskChid+='<label class="task-delete-label" id="task-delete-label-'+taskObj.taskId+'" onclick="deleteTask(this)">Remove task </label>';
+		taskChid+='</div>';*/
 		
 		taskChid+='</div>';
 	
@@ -197,6 +197,7 @@ function getAndBuildTaskDetails(tkId){
 		contentType: "application/json; charset=utf-8"
     	
 	}).done(function(response){
+		
 		buildTaskDetails(response);
 	}).fail(function(response)  {
     	alert("Sorry. Server unavailable. "+response);
@@ -204,7 +205,9 @@ function getAndBuildTaskDetails(tkId){
 }
 
 function buildTaskDetails(taskObj){
+	
 	var taskDetailDiv = $("#task-detail-div").empty();
+	var taskDetailMain = $('<div class="task-detail-main">');
 	var taskDName = $('<div class="row task-item-detail-name" id="task-item-detail-name">');
 		taskDName.append('<input type="checkbox" id="task-detail-chkbx-'+taskObj.taskId+'" onClick="completeTask(this)" class="task-item-chkbx-detail task-item-chkbx " name="task-detail-chkbx-'+taskObj.taskId+'">')
 		taskDName.append('<label id="task-detail-label-'+taskObj.taskId+'" class="task-item-label" onclick="switchTaskNameLabel(this)">'+taskObj.taskName+'</label>');
@@ -215,7 +218,7 @@ function buildTaskDetails(taskObj){
 			$(taskDName).find("#task-detail-chkbx-"+taskObj.taskId).attr("checked","checked");
 			$(taskDName).find("#task-detail-label-"+taskObj.taskId).addClass("strike-line");
 		}
-		taskDetailDiv.append(taskDName);
+		taskDetailMain.append(taskDName);
 		
 	var taskDRemindMe = $('<div class="row task-item-detail-remindMe task-item-detail-elem" id="task-item-detail-remindMe">');
 	
@@ -244,7 +247,7 @@ function buildTaskDetails(taskObj){
 		
 		taskDRemindMe.append(taskDetailRemindDiv);
 		taskDRemindMe.append('</div>');
-		taskDetailDiv.append(taskDRemindMe);
+		taskDetailMain.append(taskDRemindMe);
 		
 		var taskDetailNoteDiv = '<div class="row task-item-detail-elem">';
 			taskDetailNoteDiv += '<label class="task-detail-font-size	task-detail-note-lbl">Note</label>';
@@ -254,12 +257,26 @@ function buildTaskDetails(taskObj){
 			}
 			taskDetailNoteDiv += '</textarea>';
 			taskDetailNoteDiv += '</div>';
-		taskDetailDiv.append(taskDetailNoteDiv);
+		taskDetailMain.append(taskDetailNoteDiv);
 		
-		var taskDDeleteDiv = '<div class="row task-item-detail-elem">';
+		var taskDetailDelete = $('<div class="row task-detail-delete">');
+		
+		var taskDetailCrtd ='<div class="col-sm-10" style="text-align: center;margin-top: 0.7em;">';
+			taskDetailCrtd+='<label class="task-detail-crtd-lbl">Created on '+covertDateT(taskObj.dateCreated)+'</label>';
+			taskDetailCrtd+='</div>';
+		var taskDetailDltImg ='<div class="col-sm-2" style="margin-top: 0.7em;">';
+			taskDetailDltImg+='<img alt="delete" class="task-detail-delete-label" id="task-delete-label-'+taskObj.taskId+'" src="../static_resources/images/delete-red.png" onclick="deleteTask(this)">';
+			taskDetailDltImg+='</div>';
+		
+		taskDetailDelete.append(taskDetailCrtd);
+		taskDetailDelete.append(taskDetailDltImg);
+		
+		/*var taskDDeleteDiv = '<div class="row task-item-detail-elem">';
 			taskDDeleteDiv += '<label class="task-delete-label task-detail-delete-label" id="task-delete-label-'+taskObj.taskId+'" onclick="deleteTask(this)">Remove task </label>';
 			taskDDeleteDiv += '</div>';
-		taskDetailDiv.append(taskDDeleteDiv);
+		taskDetailDiv.append(taskDDeleteDiv);*/
+		taskDetailDiv.append(taskDetailMain);
+		taskDetailDiv.append(taskDetailDelete);
 		
 }
 

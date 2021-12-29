@@ -23,7 +23,6 @@ import com.gmt.todo.model.TResponse;
 import com.gmt.todo.model.TodoList;
 import com.gmt.todo.repository.TodoTaskRepository;
 import com.gmt.todo.repository.TodolistRepository;
-import com.gmt.todo.service.LoginService;
 import com.gmt.todo.service.PersistCSVSerice;
 import com.gmt.todo.service.UserService;
 
@@ -37,9 +36,6 @@ public class HomeController {
 
 	@Autowired
 	private TodoTaskRepository todoTaskRepository;
-
-	@Autowired
-	private LoginService loginService;
 
 	@Autowired
 	private PersistCSVSerice persistCSVSerice;
@@ -80,7 +76,7 @@ public class HomeController {
 	public ModelAndView signup(HttpServletRequest request) {
 		ModelAndView mv = new ModelAndView();
 		try {
-			loginService.resgisterUser(request);
+			userService.resgisterUser(request);
 			mv.addObject("registered", "success");
 		} catch (Exception e) {
 			mv.addObject("registered", "failed to register");
@@ -139,7 +135,7 @@ public class HomeController {
 	@RequestMapping("/ManageUsers")
 	public ModelAndView manageUsers() {
 		ModelAndView mv = new ModelAndView();
-		mv.addObject("users", loginService.getAllUsers());
+		mv.addObject("users", userService.getAllUsers());
 		mv.setViewName("ManageUsers");
 		return mv;
 	}

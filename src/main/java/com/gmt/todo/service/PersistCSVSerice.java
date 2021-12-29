@@ -33,13 +33,13 @@ public class PersistCSVSerice {
 	private static final Logger log = LoggerFactory.getLogger(PersistCSVSerice.class);
 	
 	@Autowired
-	private TodolistRepository todolistRepository;
+	private ListService listService;
 	
 	@Autowired
-	private TodoTaskRepository todoTaskRepository;
+	private TaskService taskService;
 	
 	@Autowired
-	private UserRepository userRepository;
+	private UserService userService;
 	
 	//@PostConstruct
 	public void processCSVData() {
@@ -51,14 +51,13 @@ public class PersistCSVSerice {
 			String line = null;
 			String[] todoListArr = null;
 			TodoList todoList = null;
-			long groupId = todolistRepository.getMaxId();
+			long groupId = listService.generateGroupId();
 			while((line = br.readLine())!=null) {
 				todoListArr = line.split(",");
-				groupId=groupId+1;
 				//todoList = new TodoList(Long.parseLong(todoListArr[0]), todoListArr[1], todoListArr[2]);
 				todoList = new TodoList(todoListArr[0], todoListArr[1], LocalDate.parse(todoListArr[2]),groupId,todoListArr[3]);
 				if(null!=todoList)
-					todoList =todolistRepository.save(todoList);
+					todoList =listService.save(todoList);
 				System.out.println(todoList);
 			}
 			
@@ -87,7 +86,7 @@ public class PersistCSVSerice {
 						 Boolean.parseBoolean(taskListArr[4]),  LocalDate.parse(taskListArr[5]),  dateCompleted,  dueDate, Boolean.parseBoolean(taskListArr[8]), Long.parseLong(taskListArr[9]),  taskListArr[10]);
 				//System.out.println(todoTasK);
 				if(null!=todoTasK) {
-					todoTaskRepository.save(todoTasK);
+					taskService.save(todoTasK);
 					//System.out.println(todoTaskRepository.findAll());
 				}
 					
@@ -116,7 +115,7 @@ public class PersistCSVSerice {
 				System.out.println(roles);
 				user = new User(userArr[0], userArr[1], Boolean.parseBoolean(userArr[2]),roles);
 				if(null!=user)
-					userRepository.save(user);
+					userService.save(user);
 			}
 			
 		}catch(IOException ioe) {

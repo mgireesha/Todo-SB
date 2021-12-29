@@ -398,10 +398,15 @@ task-add-due-date, focus {
     margin-left: 5px;
     margin-right: 3px;
     border-radius: 4px;
-        overflow-y: auto;
-            font-family: cursive
+    /* overflow-y: auto; */
+    font-family: cursive
 }
 
+.task-detail-main{
+	min-height: 32em;
+    max-height: 32em;
+    overflow-y: auto;
+}
 .task-item-detail-elem{
 	background-color: #2e2729;
     color: beige;
@@ -433,6 +438,14 @@ task-add-due-date, focus {
     /* background-color: #00ab75;
     color: #fff; */
 }
+.task-detail-main{
+	min-height: 32em;
+	max-height: 32em;
+}
+.task-detail-delete{
+	    border-top: 1px solid #6c6868;
+}
+
 .selected-task-delete{
 	/* margin: 4px; */
     border: 4px solid #2ea37e;
@@ -445,6 +458,7 @@ task-add-due-date, focus {
 .task-detail-remind-img{
 	height: 1.5em;
 }
+
 .task-detail-remind-div{
 	padding: 0;
     padding-top: 6px;
@@ -502,6 +516,15 @@ task-add-due-date, focus {
     font-size: 1.1em;
     margin-top: 5px;
     color: grey;
+    height: 1.5em;
+    cursor: pointer;
+}
+.task-detail-delete-label:hover{
+	height: 1.8em;
+}
+.task-detail-crtd-lbl{
+	color: beige;
+    padding: 5px;
 }
 .task-list-name-text{
 	width: 80%;
@@ -509,4 +532,5 @@ task-add-due-date, focus {
     padding: 0;
     margin-left: 0.3em;
     color: beige !important;
+    height: 2.5em;
 }

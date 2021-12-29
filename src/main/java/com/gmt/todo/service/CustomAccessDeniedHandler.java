@@ -23,7 +23,9 @@ public class CustomAccessDeniedHandler implements AccessDeniedHandler{
 			AccessDeniedException accessDeniedException) throws IOException, ServletException {
 		TodoUserDetails user = (TodoUserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
       if (user != null) {
-          LOG.warn("User: " + user.getUsername() + " attempted to access the protected URL: "+ request.getRequestURI());
+          LOG.info("User: " + user.getUsername() + " attempted to access the protected URL: "+ request.getRequestURI());
+      }else {
+    	  LOG.info("user is null");
       }
       response.sendRedirect(request.getContextPath() + "/accessDenied");
 		

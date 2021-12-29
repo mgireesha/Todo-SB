@@ -18,10 +18,10 @@ import com.gmt.todo.repository.TodolistRepository;
 public class ListService {
 
 	@Autowired
-	private TodolistRepository todolistRepository;
+	private TaskService taskService;
 	
 	@Autowired
-	private TodoTaskRepository todoTaskRepository;
+	private TodolistRepository todolistRepository;
 	
 	public List<TodoList> getAllLists(){
 		System.out.println(todolistRepository.getByUserIdByOrderByGroupId("aditya"));
@@ -43,6 +43,10 @@ public class ListService {
 		return todoList;
 	}
 	
+	public TodoList save(TodoList todoList) {
+		return todolistRepository.save(todoList);
+	}
+	
 	public TodoList updateList(TodoList list, Long listId) {
 		List listJ =  todolistRepository.getByListId(listId);
 		TodoList listD = (TodoList) listJ.get(0);
@@ -52,19 +56,19 @@ public class ListService {
 	}
 	
 	public void deleteList(Long listId) {
-		List<TodoTask> taskList = todoTaskRepository.getByListId(listId);
+		List<TodoTask> taskList = taskService.getByListId(listId);
 		todolistRepository.deleteById(listId);
-		todoTaskRepository.deleteAll(taskList);
+		taskService.deleteAll(taskList);
 	}
 	
 	public void deleteListsOfUser(User user) {
 		List<TodoList> userList = todolistRepository.getByUserId(user.getUserName());
 		List<TodoTask> usertaks = new ArrayList<TodoTask>();
 		for (TodoList tList : userList) {
-			usertaks.addAll(todoTaskRepository.getByListId(tList.getListId()));
+			usertaks.addAll(taskService.getByListId(tList.getListId()));
 		}
 		todolistRepository.deleteAll(userList);
-		todoTaskRepository.deleteAll(usertaks);
+		taskService.deleteAll(usertaks);
 	}
 	
 	public Long generateGroupId(){

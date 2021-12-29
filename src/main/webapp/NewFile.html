@@ -1,0 +1,166 @@
+<html><head>
+<meta charset="ISO-8859-1">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Todo App</title>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.2/dist/css/bootstrap.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.2/dist/js/bootstrap.bundle.min.js"></script>
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+<script type="text/javascript" src="../static_resources/js/Home.js"></script>
+<script type="text/javascript" src="../static_resources/js/Task.js"></script>
+<link href="../static_resources/css/Home.css" rel="stylesheet">
+
+<!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script> -->
+</head>
+<body>
+
+	<div class="container-fluid">
+	<div class="row">
+		<h4 class="col-sm-10" style="margin-left: 0.4em;color: beige"><i>ToDo</i></h4>
+		<a class="col-sm-1" href="/logout">Logout</a>
+	</div>
+		<div class="row">
+			<div class="col-sm-3 list-div" style="width: 307.35px;">
+				<div class="list-item-main" id="list-item-main">
+					
+					<div class="row" style="margin: 0">
+						<div class="col-sm-10 list-item" id="list-item-1" onclick="showTasks(1)"><label>Tasks 1 2</label></div>
+						<div class="col-sm-1 list-item-delete-def" id="list-item-delete-1" onclick="">
+							<label style="display:none">x</label>
+						</div>
+					</div>
+				
+					<div class="row" style="margin: 0">
+						<div class="col-sm-10 list-item" id="list-item-3" onclick="showTasks(3)">
+							<label>Interview preparations</label>
+						</div>
+						<div class="col-sm-1 list-item-delete" id="list-item-delete-3" onclick="deleteList(this)">
+							<label style="display:block">x</label>
+						</div>
+					</div>
+				
+					<div class="row" style="margin: 0">
+						<div class="col-sm-10 list-item" id="list-item-4" onclick="showTasks(4)">
+							<label>YouTube Learning</label>
+						</div>
+						<div class="col-sm-1 list-item-delete" id="list-item-delete-4" onclick="deleteList(this)">
+							<label style="display:block">x</label>
+						</div>
+					</div>
+				
+					<div class="row" style="margin: 0">
+						<div class="col-sm-10 list-item" id="list-item-5" onclick="showTasks(5)">
+							<label>Hampe - Dec 2021</label>
+						</div>
+						<div class="col-sm-1 list-item-delete" id="list-item-delete-5" onclick="deleteList(this)">
+							<label style="display:block">x</label>
+						</div>
+					</div>
+				
+				</div>
+				
+				<div class="list-item-add">
+					<div class="list-item-add-div" id="list-item-add-div" onclick="togglAddListField()">
+						<label class="list-add-new-lbl">+ Add New List</label>
+					</div>
+					<div class="row list-item-add-field" id="list-item-add-field" style="display: none;">
+						<div class="col-sm-10 list-add-txt-div">
+							<input type="text" class="form-control list-add-txt" id="list-add-txt" name="" placeholder="List Name" style="background-color: darkkhaki;">
+						</div>
+						<div class="col-sm-2 list-add-button-div">
+							<button class="list-add-button" onclick="addList()">Add</button>
+						</div>
+					</div>
+				</div>
+
+			</div>
+			<div class="task-div col-sm-6" id="task-div">
+				<div class="row task-list-name"><h2 class="task-list-name-header" onclick="switchListNameLabel(this)" id="task-list-name-header-5">Hampe - Dec 2021</h2><input type="text" id="task-list-name-text-5" class="task-list-name-text form-control" style="background-color: rgb(64, 58, 58); display: none;" onblur="updateListName(this)"></div>
+				<div id="task-item-main"><div class="row" style="margin: 0"><div class="col-sm-10 task-item" id="task-item-92" onclick="showTaskDetails(this)"><input type="checkbox" id="task-chkbx-92" class="task-item-chkbx" "task-chkbx-92"="" onclick="completeTask(this)"> <label class="task-item-label" id="task-label-92">zxczxczxc</label><div class="row"><label class="col-sm-1" style="width: 1.5em"></label><div class="col-sm-5"></div><div class="task-dummy-div col-sm-3"></div><div class="task-delete-div col-sm-3"></div></div></div><div class="col-sm-1 task-item-delete" id="task-delete-label-92" onclick="deleteTask(this)" title="Delete Task"><img alt="black dot" src="../static_resources/images/delete-grey.png" style="height: 1.8em;"></div></div><div class="row" style="margin: 0"><div class="col-sm-10 task-item" id="task-item-91" onclick="showTaskDetails(this)"><input type="checkbox" id="task-chkbx-91" class="task-item-chkbx" "task-chkbx-91"="" onclick="completeTask(this)"> <label class="task-item-label" id="task-label-91">Cancel Trip</label><div class="row"><label class="col-sm-1" style="width: 1.5em"></label><div class="col-sm-5"></div><div class="task-dummy-div col-sm-3"></div><div class="task-delete-div col-sm-3"></div></div></div><div class="col-sm-1 task-item-delete" id="task-delete-label-91" onclick="deleteTask(this)" title="Delete Task"><img alt="black dot" src="../static_resources/images/delete-grey.png" style="height: 1.8em;"></div></div><div class="row" style="margin: 0"><div class="col-sm-10 task-item" id="task-item-22" onclick="showTaskDetails(this)"><input type="checkbox" id="task-chkbx-22" class="task-item-chkbx" "task-chkbx-22"="" onclick="completeTask(this)" checked="checked"> <label class="task-item-label strike-line" id="task-label-22">Book Travel</label><div class="row"><label class="col-sm-1" style="width: 1.5em"></label><div class="col-sm-5"><img alt="due date" src="../static_resources/images/calender-blue.png" style="height: 0.8em"><label style="font-size: 12px">&nbsp;2021-12-20</label><img alt="black dot" src="../static_resources/images/dot-blue.png" style="height: 0.2em;margin: 5px;"><img alt="due date" src="../static_resources/images/bell-blue.png" style="height: 0.8em"><label style="font-size: 12px">&nbsp;2021-12-20</label><img alt="black dot" src="../static_resources/images/dot-blue.png" style="height: 0.2em;margin: 5px;"><img alt="note" src="../static_resources/images/note-blue-s1.png" style="height: 0.8em"></div><div class="task-dummy-div col-sm-3"></div><div class="task-delete-div col-sm-3"></div></div></div><div class="col-sm-1 task-item-delete" id="task-delete-label-22" onclick="deleteTask(this)" title="Delete Task"><img alt="black dot" src="../static_resources/images/delete-grey.png" style="height: 1.8em;"></div></div><div class="row" style="margin: 0"><div class="col-sm-10 task-item" id="task-item-16" onclick="showTaskDetails(this)"><input type="checkbox" id="task-chkbx-16" class="task-item-chkbx" "task-chkbx-16"="" onclick="completeTask(this)"> <label class="task-item-label" id="task-label-16">Finalyze the dates</label><div class="row"><label class="col-sm-1" style="width: 1.5em"></label><div class="col-sm-5"><img alt="due date" src="../static_resources/images/calender-blue.png" style="height: 0.8em"><label style="font-size: 12px">&nbsp;2021-12-20</label><img alt="black dot" src="../static_resources/images/dot-blue.png" style="height: 0.2em;margin: 5px;"><img alt="due date" src="../static_resources/images/bell-blue.png" style="height: 0.8em"><label style="font-size: 12px">&nbsp;2021-12-20</label><img alt="black dot" src="../static_resources/images/dot-blue.png" style="height: 0.2em;margin: 5px;"><img alt="note" src="../static_resources/images/note-blue-s1.png" style="height: 0.8em"></div><div class="task-dummy-div col-sm-3"></div><div class="task-delete-div col-sm-3"></div></div></div><div class="col-sm-1 task-item-delete" id="task-delete-label-16" onclick="deleteTask(this)" title="Delete Task"><img alt="black dot" src="../static_resources/images/delete-grey.png" style="height: 1.8em;"></div></div><div class="row" style="margin: 0"><div class="col-sm-10 task-item" id="task-item-17" onclick="showTaskDetails(this)"><input type="checkbox" id="task-chkbx-17" class="task-item-chkbx" "task-chkbx-17"="" onclick="completeTask(this)" checked="checked"> <label class="task-item-label strike-line" id="task-label-17">Item checklist</label><div class="row"><label class="col-sm-1" style="width: 1.5em"></label><div class="col-sm-5"><img alt="due date" src="../static_resources/images/calender-blue.png" style="height: 0.8em"><label style="font-size: 12px">&nbsp;2021-12-20</label><img alt="black dot" src="../static_resources/images/dot-blue.png" style="height: 0.2em;margin: 5px;"><img alt="due date" src="../static_resources/images/bell-blue.png" style="height: 0.8em"><label style="font-size: 12px">&nbsp;2021-12-20</label><img alt="black dot" src="../static_resources/images/dot-blue.png" style="height: 0.2em;margin: 5px;"><img alt="note" src="../static_resources/images/note-blue-s1.png" style="height: 0.8em"></div><div class="task-dummy-div col-sm-3"></div><div class="task-delete-div col-sm-3"></div></div></div><div class="col-sm-1 task-item-delete" id="task-delete-label-17" onclick="deleteTask(this)" title="Delete Task"><img alt="black dot" src="../static_resources/images/delete-grey.png" style="height: 1.8em;"></div></div><div class="row" style="margin: 0"><div class="col-sm-10 task-item" id="task-item-23" onclick="showTaskDetails(this)"><input type="checkbox" id="task-chkbx-23" class="task-item-chkbx" "task-chkbx-23"="" onclick="completeTask(this)"> <label class="task-item-label" id="task-label-23">Test14</label><div class="row"><label class="col-sm-1" style="width: 1.5em"></label><div class="col-sm-5"><img alt="due date" src="../static_resources/images/calender-blue.png" style="height: 0.8em"><label style="font-size: 12px">&nbsp;2021-12-20</label><img alt="black dot" src="../static_resources/images/dot-blue.png" style="height: 0.2em;margin: 5px;"><img alt="due date" src="../static_resources/images/bell-blue.png" style="height: 0.8em"><label style="font-size: 12px">&nbsp;2021-12-20</label><img alt="black dot" src="../static_resources/images/dot-blue.png" style="height: 0.2em;margin: 5px;"><img alt="note" src="../static_resources/images/note-blue-s1.png" style="height: 0.8em"></div><div class="task-dummy-div col-sm-3"></div><div class="task-delete-div col-sm-3"></div></div></div><div class="col-sm-1 task-item-delete" id="task-delete-label-23" onclick="deleteTask(this)" title="Delete Task"><img alt="black dot" src="../static_resources/images/delete-grey.png" style="height: 1.8em;"></div></div><div class="row" style="margin: 0"><div class="col-sm-10 task-item" id="task-item-27" onclick="showTaskDetails(this)"><input type="checkbox" id="task-chkbx-27" class="task-item-chkbx" "task-chkbx-27"="" onclick="completeTask(this)" checked="checked"> <label class="task-item-label strike-line" id="task-label-27">Test18</label><div class="row"><label class="col-sm-1" style="width: 1.5em"></label><div class="col-sm-5"><img alt="due date" src="../static_resources/images/calender-blue.png" style="height: 0.8em"><label style="font-size: 12px">&nbsp;2021-12-20</label><img alt="black dot" src="../static_resources/images/dot-blue.png" style="height: 0.2em;margin: 5px;"><img alt="due date" src="../static_resources/images/bell-blue.png" style="height: 0.8em"><label style="font-size: 12px">&nbsp;2021-12-20</label><img alt="black dot" src="../static_resources/images/dot-blue.png" style="height: 0.2em;margin: 5px;"><img alt="note" src="../static_resources/images/note-blue-s1.png" style="height: 0.8em"></div><div class="task-dummy-div col-sm-3"></div><div class="task-delete-div col-sm-3"></div></div></div><div class="col-sm-1 task-item-delete" id="task-delete-label-27" onclick="deleteTask(this)" title="Delete Task"><img alt="black dot" src="../static_resources/images/delete-grey.png" style="height: 1.8em;"></div></div><div class="row" style="margin: 0"><div class="col-sm-10 task-item selected-task" id="task-item-26" onclick="showTaskDetails(this)"><input type="checkbox" id="task-chkbx-26" class="task-item-chkbx" "task-chkbx-26"="" onclick="completeTask(this)" checked="checked"> <label class="task-item-label strike-line" id="task-label-26">Test17</label><div class="row"><label class="col-sm-1" style="width: 1.5em"></label><div class="col-sm-5"><img alt="due date" src="../static_resources/images/calender-blue.png" style="height: 0.8em"><label style="font-size: 12px">&nbsp;2021-12-20</label><img alt="black dot" src="../static_resources/images/dot-blue.png" style="height: 0.2em;margin: 5px;"><img alt="due date" src="../static_resources/images/bell-blue.png" style="height: 0.8em"><label style="font-size: 12px">&nbsp;2021-12-20</label><img alt="black dot" src="../static_resources/images/dot-blue.png" style="height: 0.2em;margin: 5px;"><img alt="note" src="../static_resources/images/note-blue-s1.png" style="height: 0.8em"></div><div class="task-dummy-div col-sm-3"></div><div class="task-delete-div col-sm-3"></div></div></div><div class="col-sm-1 task-item-delete selected-task-delete" id="task-delete-label-26" onclick="deleteTask(this)" title="Delete Task"><img alt="black dot" src="../static_resources/images/delete-grey.png" style="height: 1.8em;"></div></div></div>
+				<div class="row  task-item-add-div" id="task-item-add-div" style="margin-right: 3em;" onclick="toggleAddtaskField()">
+					<label class="col-sm-11">Add New Task </label><label class="col-sm-1">+</label>
+				</div>
+				<div class="row task-item-add-div task-item-add-field" id="task-item-add-field" style="display: none; margin-right: 3em;">
+					<div class="col-sm-8">
+						<input type="text" placeholder="Enter task name" id="task-item-add-txt" class="form-control">
+					</div>
+					<div class="task-add-button-div col-sm-1">
+						<button class="task-add-button" id="task-add-button" onclick="addNewTask()">Add</button>
+					</div>
+					<div class="task-add-due-date-div col-sm-2">
+						<input type="date" class="task-add-due-date" id="dueDate" name="dueDate" title="Add due date">
+					</div>
+					<div class="task-remind-button-div col-sm-1">
+						<button class="task-remind-button" onclick="remindMe()">
+							<img alt="Remind Me" id="task-remind-img" name="task-remind-img" class="task-remind-img" src="../static_resources/images/Alarm.png" title="Remind Me">
+						</button>
+						<input type="hidden" name="remindMe" id="remindMe">
+					</div>
+					
+					
+					<input type="hidden" name="listName" id="listName" value="Hampe - Dec 2021">
+					<input type="hidden" name="listId" id="listId" value="5">
+				</div>
+
+			</div>
+			<div class="col-sm-3 task-detail-div" id="task-detail-div"
+				style="max-height: 838.109px;">
+				<div class="task-detail-main">
+					
+					<div class="row task-item-detail-name" id="task-item-detail-name">
+					<input type="checkbox" id="task-detail-chkbx-26"
+						onclick="completeTask(this)"
+						class="task-item-chkbx-detail task-item-chkbx "
+						name="task-detail-chkbx-26" checked="checked"> <label
+						id="task-detail-label-26" class="task-item-label strike-line"
+						onclick="switchTaskNameLabel(this)">Test17</label> <input
+						type="text" id="task-detail-label-text-26"
+						class="task-detail-label-text form-control"
+						style="background-color: #403a3a; display: none;"
+						onblur="updateTaskName(this)">
+				</div>
+				<div class="row task-item-detail-remindMe task-item-detail-elem"
+					id="task-item-detail-remindMe">
+					<div class="col-sm-1 task-detail-remind-div">
+						<img alt="remind"
+							class="task-detail-remind-img task-detail-remind-img-sld"
+							id="task-detail-remind-img"
+							src="../static_resources/images/Alarm-blue-bb.png"
+							onclick="remindMeTD()">
+					</div>
+					<div class="col-sm-10 task-detail-font-size">
+						<label class="task-detail-remind-lbl-sld"
+							id="task-detail-remind-lbl">Remind Me at 9 AM</label><br>
+						<label>2021-12-20</label>
+					</div>
+				</div>
+				<div class="row task-item-detail-elem">
+					<label class="task-detail-font-size	task-detail-note-lbl">Note</label>
+					<textarea rows="3" cols="2" placeholder="Add Note"
+						class="task-detail-note-txt" id="task-detail-note-txt-26"
+						onblur="addNote(this)">note test17</textarea>
+				</div>
+					
+				</div>
+				<div class="row task-detail-delete">
+					<div class="col-sm-10">
+						<label class="task-detail-crtd-lbl">Create on Mon, Dec 20 2021</label>
+					</div>
+					<div class="col-sm-2">
+						<!-- <label class="task-delete-label task-detail-delete-label"
+						id="task-delete-label-26" onclick="deleteTask(this)">Remove
+						task </label> -->
+						<img alt="delete" class="task-detail-delete-label" src="../static_resources/images/delete-red.png" onclick="deleteTask(this)">
+					</div>
+				
+				</div>
+			</div>
+			<input type="hidden" name="reducedListDivWidth" id="reducedListDivWidth" value="341.5">
+		<input type="hidden" name="selectedTaskId" id="selectedTaskId" value="26">
+		</div>
+	</div>
+
+</body></html>

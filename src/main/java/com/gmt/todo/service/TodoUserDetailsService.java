@@ -16,11 +16,11 @@ import com.gmt.todo.repository.UserRepository;
 public class TodoUserDetailsService implements UserDetailsService {
 
 	@Autowired
-	private UserRepository userRepository;
+	private UserService userService;
 	
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		Optional<User> user= userRepository.findByUserName(username);
+		Optional<User> user= userService.getUserByUserName(username);
 		user.orElseThrow(()-> new UsernameNotFoundException("Not Found : "+username));
 		return user.map(TodoUserDetails::new).get();
 		

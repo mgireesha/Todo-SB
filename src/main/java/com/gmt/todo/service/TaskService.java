@@ -25,6 +25,10 @@ public class TaskService {
 		return todoTaskRepository.getByTaskId(taskId);
 	}
 	
+	public List<TodoTask> getByListId(Long listId){
+		return todoTaskRepository.getByListId(listId);
+	}
+	
 	public Map<String, List> getTasksByListId(Long listId) {
 		List<TodoTask> taskList = (List<TodoTask>) todoTaskRepository.getByListId(listId);
 		List<TodoList> todoList = (List<TodoList>) todolistRepository.getByListId(listId);
@@ -40,6 +44,10 @@ public class TaskService {
 		return task;
 	}
 	
+	public TodoTask save(TodoTask task) {
+		return todoTaskRepository.save(task);
+	}
+	
 	public TodoTask updateTask(TodoTask task, Long taskId) {
 		LocalDate completedDate = null;
 		TodoTask taskD = todoTaskRepository.getByTaskId(taskId);
@@ -51,7 +59,7 @@ public class TaskService {
 			taskD.setCompleted(task.isCompleted());
 			taskD.setDateCompleted(completedDate);
 		}
-		if(task.getNote()!=null && !"".equals(task.getNote())) {
+		if(task.getNote()!=null) {
 			taskD.setNote(task.getNote());
 		}
 		if(task.getTaskName()!=null && !"".equals(task.getTaskName())) {
@@ -64,5 +72,9 @@ public class TaskService {
 	
 	public void deleteTask(Long taskId) {
 		todoTaskRepository.deleteById(taskId);
+	}
+	
+	public void deleteAll(List<TodoTask> tasks) {
+		todoTaskRepository.deleteAll(tasks);
 	}
 }
