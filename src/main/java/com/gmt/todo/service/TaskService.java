@@ -29,12 +29,14 @@ public class TaskService {
 		return todoTaskRepository.getByListId(listId);
 	}
 	
-	public Map<String, List> getTasksByListId(Long listId) {
-		List<TodoTask> taskList = (List<TodoTask>) todoTaskRepository.getByListId(listId);
+	public Map<String, Object> getTasksByListId(Long listId) {
+		List<TodoTask> taskListC = (List<TodoTask>) todoTaskRepository.getByListIdAndIsCompleted(listId,true);
+		List<TodoTask> taskListT = (List<TodoTask>) todoTaskRepository.getByListIdAndIsCompleted(listId,false);
 		List<TodoList> todoList = (List<TodoList>) todolistRepository.getByListId(listId);
-		Map <String, List> tasksMap = new HashMap<String, List>();
+		Map <String, Object> tasksMap = new HashMap<String, Object>();
 		tasksMap.put("todoList", todoList);
-		tasksMap.put("taskList", taskList);
+		tasksMap.put("taskListC", taskListC);
+		tasksMap.put("taskListT", taskListT);
 		return tasksMap;
 	}
 	

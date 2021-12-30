@@ -1,9 +1,60 @@
 /**
  * 
  */
+ function buildTasksDiv(response){
+	var taskObjC = response.taskListC;
+	var taskObjT = response.taskListT;
+	var listObj = response.todoList[0];
+		getTDListHeader(listObj)
+		$("#task-item-main").empty();
+		var taskDiv=$("#task-item-main");
+		var ncTasks= $('<div class="tasks-n-cmptd-div">');
+		for(var i = 0; i<taskObjT.length;i++){
+			ncTasks.append(getTaskElem(taskObjT[i],false));
+		}
+		taskDiv.append(ncTasks);
+	var compDiv = '<div class="row" style="margin:0;color: beige;margin-left: 10px;">';
+		compDiv+='<label style="width: auto;border-radius: 4px;background-color: rgb(46, 39, 41);padding-bottom: 2px;cursor:pointer;" onclick="hideShowCTasks()">';
+		compDiv+='<span style="display: none;" class="com-tsk-right-arr">&#x232A; </span>';
+		compDiv+='<span class="com-tsk-down-arr">&#x2228; </span >';
+		compDiv+='<span style="font-style: italic;">Completed&nbsp;</span>';
+		compDiv+='<span class="tasks-cmptd-nbr">'+taskObjC.length+'</span>';
+		compDiv+='</label>';
+		compDiv+='</div>';
+		$(taskDiv).append(compDiv);
+		var cTasks= $('<div class="tasks-cmptd-div">');
+		for(var i = 0; i<taskObjC.length;i++){
+			cTasks.append(getTaskElem(taskObjC[i],true));
+		}
+		taskDiv.append(cTasks);
+		if($("#selectedTaskId").val()!=="" && $("#selectedTaskId").val()!=undefined){
+			hideTaskDetails();
+		}
+ }
  
- function getTaskElem(taskObj){
+ function hideShowCTasks(){
+	if($(".com-tsk-down-arr").css("display")!="none"){
+		$(".completed,.com-tsk-down-arr").hide();
+		$(".com-tsk-right-arr").show();
+	}else{
+		$(".completed,.com-tsk-down-arr").show();
+		$(".com-tsk-right-arr").hide();
+	}
+ }
+ 
+ function getTDListHeader(listObj){
+	$("#listName").val(listObj.listName);
+	$("#listId").val(listObj.listId);
+	$(".task-list-name").empty().append('<h2 class="task-list-name-header" onclick="switchListNameLabel(this)" id="task-list-name-header-'+listObj.listId+'">'+listObj.listName+'</h2>')
+	$(".task-list-name").append('<input type="text" id="task-list-name-text-'+listObj.listId+'" class="task-list-name-text form-control" style="background-color: rgb(64, 58, 58); display: none;" onblur="updateListName(this)">');
+ }
+
+ function getTaskElem(taskObj,isCmptd){
 	var isDotRequired = false;
+	var taskClass = 'row';
+	if(isCmptd){
+		taskClass = 'row completed';
+	}
 	var taskChid = '<div class="row">';
 		taskChid+='<label class="col-sm-1" style="width: 1.5em"></label>';
 		taskChid+='<div class="col-sm-8">';
@@ -55,7 +106,7 @@
 	}
 	
 	
-	var taskRow = $('<div class="row" style="margin: 0">');
+	var taskRow = $('<div class="'+taskClass+'" style="margin: 0">');
 	taskRow.append(taskElem);
 	taskRow.append(taskDelChild);
 	taskRow.append('</div>');
@@ -68,19 +119,19 @@ function completeTask(elem){
 	var tkId = $(elem).attr('id');
 	if(elem.id.indexOf("task-detail-")==-1){
 		tkId = elem.id.substring("task-chkbx-".length, elem.id.length);
-		if(elem.checked==true){
+		/*if(elem.checked==true){
 			$("#task-detail-chkbx-"+tkId).prop("checked",true);
 		}else{
 			$("#task-detail-chkbx-"+tkId).prop('checked', false);
-		}
+		}*/
 		
 	}else{
 		tkId = elem.id.substring("task-detail-chkbx-".length, elem.id.length);
-		if(elem.checked==true){
+		/*if(elem.checked==true){
 			$("#task-chkbx-"+tkId).prop("checked",true);
 		}else{
 			$("#task-chkbx-"+tkId).prop('checked', false);
-		}
+		}*/
 	}
 	var completed = elem.checked;
 	var reqPayload = {
@@ -95,7 +146,17 @@ function completeTask(elem){
 		data : JSON.stringify(reqPayload)
 	}).done(function(response){
 		if(response.status=="success"){
-			callStrike(elem)
+		switchTaskPlace(tkId,completed);
+		if (elem.checked == true) {
+			$("#task-detail-chkbx-" + tkId).prop("checked", true);
+			$("#task-chkbx-" + tkId).prop("checked", true);
+		} else {
+			$("#task-detail-chkbx-" + tkId).prop('checked', false);
+			$("#task-chkbx-" + tkId).prop('checked', false);
+		}
+			
+			callStrike(elem);
+			
 		}else{
 			alert("Failed to update the task Please try again after clearing your browser cache");
 		}
@@ -139,7 +200,7 @@ function addNewTask(){
 		data : JSON.stringify(addTaskPayload)
 	}).done(function(response){
 		if(response.status=="success"){
-			$("#task-item-main").append(getTaskElem(response.todoTask));
+			$(".tasks-n-cmptd-div").append(getTaskElem(response.todoTask));
 			cleanAddTaskField();
 			if($("#selectedTaskId").val()!=="" && $("#selectedTaskId").val()!=undefined){
 				hideTaskDetails();
@@ -229,7 +290,7 @@ function buildTaskDetails(taskObj){
 		remindImgClass= "task-detail-remind-img task-detail-remind-img-sld";
 		remindMeLblClass = "task-detail-remind-lbl-sld";
 	}
-		taskDetailRemindImgDiv += '<img alt="remind" class="'+remindImgClass+'" id="task-detail-remind-img" src="../static_resources/images/Alarm-blue-bb.png" onclick="remindMeTD()">';
+		taskDetailRemindImgDiv += '<img alt="remind" class="'+remindImgClass+'" id="task-detail-remind-img" src="../static_resources/images/Alarm-blue-bb-20x21.png" onclick="remindMeTD()">';
 		taskDetailRemindImgDiv += '</div>'
 		
 		taskDRemindMe.append(taskDetailRemindImgDiv);
@@ -241,7 +302,7 @@ function buildTaskDetails(taskObj){
 		}
 		taskDetailRemindDiv	 += '</label><br>';
 		if(taskObj.dueDate!=null){
-			taskDetailRemindDiv	 += '<label>'+taskObj.dueDate+'</label>';
+			taskDetailRemindDiv	 += '<label>'+covertDateT(taskObj.dueDate)+'</label>';
 		}
 		taskDetailRemindDiv	 += '</div>';
 		
@@ -369,12 +430,19 @@ function deleteTask(elem){
     	dataType: "json"
 		}).done(function(response){
 			if(response.status=="success"){
+				
+				if($("#task-chkbx-"+taskId).prop("checked")){
+					$(".tasks-cmptd-nbr").html(parseInt($(".tasks-cmptd-nbr").html().trim())-1);
+				}
+				//var cmptTasks = parseInt($(".tasks-cmptd-nbr").html().trim())-1;
+				
 				$("#task-item-"+taskId).parent().remove();
 				if($("#task-detail-div").css("display")!="none"){
 					$("#task-detail-div").empty();
 					$("#selectedTaskId").val("");
 					hadndleWidth("remove");
 				}
+				
 			}else{
 				alert("Failed to delete the task. Error: "+response.error);
 			}
@@ -438,5 +506,26 @@ function callStrike(elem){
 		if($("#task-detail-div").css("display")!="none"){
 			$("#"+lblD).removeClass("strike-line");
 		}
+	}
+}
+
+function switchTaskPlace(taskId,checked){
+	if(checked){
+		var temp = $("#task-item-"+taskId).parent().html();
+		var divRow=$('<div class="row completed" style="margin: 0">');
+		divRow.append(temp);
+		$("#task-item-"+taskId).parent().remove();
+		$(".tasks-cmptd-div").append(divRow);
+		var cmptTasks = parseInt($(".tasks-cmptd-nbr").html().trim())+1;
+		$(".tasks-cmptd-nbr").html(cmptTasks);
+		
+	}else{
+		var temp = $("#task-item-"+taskId).parent().html();
+		var divRow=$('<div class="row" style="margin: 0">');
+		divRow.append(temp);
+		$("#task-item-"+taskId).parent().remove();
+		$(".tasks-n-cmptd-div").append(divRow);
+		var cmptTasks = parseInt($(".tasks-cmptd-nbr").html().trim())-1;
+		$(".tasks-cmptd-nbr").html(cmptTasks);
 	}
 }

@@ -1,6 +1,8 @@
 /**
  * 
  */
+ var days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+ var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
  var currElem = null;
  $(document).mousedown(function(e) {
     currElem = e.target;
@@ -32,21 +34,8 @@
 		url:"task/getTasksByListId/"+listId,
 		method:"GET",
 	}).done(function(response){
-		if(response.taskList!=undefined && response.taskList!=null){
-			var taskObj = response.taskList;
-			var listObj = response.todoList[0];
-			$("#listName").val(listObj.listName);
-			$("#listId").val(listObj.listId);
-			$(".task-list-name").empty().append('<h2 class="task-list-name-header" onclick="switchListNameLabel(this)" id="task-list-name-header-'+listObj.listId+'">'+listObj.listName+'</h2>')
-			$(".task-list-name").append('<input type="text" id="task-list-name-text-'+listObj.listId+'" class="task-list-name-text form-control" style="background-color: rgb(64, 58, 58); display: none;" onblur="updateListName(this)">');
-			$("#task-item-main").empty();
-			var taskDiv=$("#task-item-main");
-			for(var i = 0; i<taskObj.length;i++){
-				$(taskDiv).prepend(getTaskElem(taskObj[i]));
-			}
-			if($("#selectedTaskId").val()!=="" && $("#selectedTaskId").val()!=undefined){
-					hideTaskDetails();
-			}
+		if(response.todoList!=undefined && response.todoList!=null){
+			buildTasksDiv(response);
 		}else{
 			hadndleErrorResp(response);
 		}
@@ -275,8 +264,15 @@ function hadndleErrorResp(response){
 }
 
 function covertDateT(date){
-	var days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-	var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 	var d = new Date(date);
 	return cDate = days[d.getDay()]+", "+months[d.getMonth()]+" "+d.getDate()+" "+d.getFullYear();
-} 
+}
+
+function covertDateS(date){
+	var d = new Date(date);
+	return cDate = days[d.getDay()]+", "+months[d.getMonth()]+" "+d.getDate();
+}
+
+function triggerFirstList(){
+	$($(".list-item-row")[0]).find(".list-item").click()
+}

@@ -20,7 +20,7 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script> -->
 </head>
-<body>
+<body onload="triggerFirstList()">
 <%boolean isDotRequired = false; %>
 	<div class="container-fluid">
 	<div class="row">
@@ -31,7 +31,7 @@
 			<div class="col-sm-3 list-div">
 				<div class="list-item-main" id="list-item-main">
 					<c:forEach items="${todoList}" var="tl">
-					<div class="row" style="margin: 0">
+					<div class="row list-item-row" style="margin: 0">
 						<div class="col-sm-10 list-item" id="list-item-${tl.getListId()}" onClick="showTasks(${tl.getListId()})">
 							<label>${tl.getListName()}</label>
 						</div>

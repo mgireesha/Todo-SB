@@ -10,6 +10,8 @@ public interface TodoTaskRepository extends CrudRepository<TodoTask, Long> {
 	
 	List<TodoTask> getByListId(Long listId);
 	
+	List<TodoTask> getByListIdAndIsCompleted(Long listId, boolean isCompleted);
+	
 	TodoTask getByTaskId(Long taskId);
 
 }
