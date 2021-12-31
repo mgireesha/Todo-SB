@@ -560,5 +560,5 @@ function markTaskImp(elem){
     	alert("Sorry. Server unavailable. "+response);
 	});
 	
-	function updateCmptd
+	function updateC(){}
 }
