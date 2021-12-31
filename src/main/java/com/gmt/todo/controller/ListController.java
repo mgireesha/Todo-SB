@@ -15,6 +15,7 @@ import com.gmt.todo.model.TResponse;
 import com.gmt.todo.model.TodoList;
 import com.gmt.todo.model.TodoUserDetails;
 import com.gmt.todo.service.ListService;
+import com.gmt.todo.service.PersistCSVSerice;
 
 @RestController
 @CrossOrigin 
@@ -23,6 +24,9 @@ public class ListController {
 	
 	@Autowired
 	private ListService listService;
+	
+	@Autowired
+	private PersistCSVSerice persistCSVSerice;
 	
 	@RequestMapping("/list/listAll")
 	public List<TodoList> getAllLists() {
@@ -74,5 +78,10 @@ public class ListController {
 			resp.setError(e.getMessage());
 		}
 		return resp;
+	}
+	
+	@RequestMapping("/addNewDefaultList")
+	public List<TodoList> addNewDefaultList() {
+		return persistCSVSerice.addNewDefaultList();
 	}
 }

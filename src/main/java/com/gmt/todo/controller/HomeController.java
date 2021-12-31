@@ -21,6 +21,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.gmt.todo.model.TResponse;
 import com.gmt.todo.model.TodoList;
+import com.gmt.todo.model.TodoTask;
 import com.gmt.todo.repository.TodoTaskRepository;
 import com.gmt.todo.repository.TodolistRepository;
 import com.gmt.todo.service.PersistCSVSerice;
@@ -158,6 +159,11 @@ public class HomeController {
 			resp.setError(e.getMessage());
 		}
 		return resp;
+	}
+	
+	@RequestMapping("/updateUsernameToTask")
+	public List<TodoTask> updateUsernameToTask(){
+		return persistCSVSerice.updateUserIdToTasks();
 	}
 
 }

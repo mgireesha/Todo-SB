@@ -15,6 +15,7 @@ body{
     margin-left: 5px;
     margin-right: 3px;
     border-radius: 4px;
+    font-family: cursive;
 }
 
 .task-div{
@@ -533,4 +534,21 @@ task-add-due-date, focus {
     margin-left: 0.3em;
     color: beige !important;
     height: 2.5em;
+}
+.task-detail-star {
+    visibility:hidden;
+    font-size:1.7em;
+    cursor:pointer;
+    width: auto;
+    margin-top: -10px;
+}
+.task-detail-star:before {
+   content: "\2606";
+   position: absolute;
+   visibility:visible;
+}
+.task-detail-star:checked:before {
+   content: "\2605";
+   position: absolute;
+   color: yellow;
 }

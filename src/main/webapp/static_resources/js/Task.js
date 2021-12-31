@@ -139,7 +139,7 @@ function completeTask(elem){
 		"taskId" : parseInt(tkId)
 	}
 	$.ajax({
-		url:"task/"+tkId+"/",
+		url:"task/"+tkId+"/complete",
 		type: "PUT",
     	contentType: "application/json; charset=utf-8",
     	dataType: "json",
@@ -273,11 +273,15 @@ function buildTaskDetails(taskObj){
 		taskDName.append('<input type="checkbox" id="task-detail-chkbx-'+taskObj.taskId+'" onClick="completeTask(this)" class="task-item-chkbx-detail task-item-chkbx " name="task-detail-chkbx-'+taskObj.taskId+'">')
 		taskDName.append('<label id="task-detail-label-'+taskObj.taskId+'" class="task-item-label" onclick="switchTaskNameLabel(this)">'+taskObj.taskName+'</label>');
 		taskDName.append('<input type="text" id="task-detail-label-text-'+taskObj.taskId+'" class="task-detail-label-text form-control" style="background-color: #403a3a;display: none;" onblur="updateTaskName(this)" />');
+		taskDName.append('<input id="task-detail-star-'+taskObj.taskId+'" class="task-detail-star" type="checkbox" title="Important" onclick="markTaskImp(this)" />');
 		taskDName.append('</div>');
 		
 		if(taskObj.completed==true){
 			$(taskDName).find("#task-detail-chkbx-"+taskObj.taskId).attr("checked","checked");
 			$(taskDName).find("#task-detail-label-"+taskObj.taskId).addClass("strike-line");
+		}
+		if(taskObj.important){
+			$(taskDName).find("#task-detail-star-"+taskObj.taskId).attr("checked","checked");
 		}
 		taskDetailMain.append(taskDName);
 		
@@ -361,7 +365,7 @@ function addNote(elem){
 		"taskId" : parseInt(taskId)
 	}
 	$.ajax({
-		url:"task/"+taskId+"/",
+		url:"task/"+taskId+"/note",
 		type: "PUT",
     	contentType: "application/json; charset=utf-8",
     	dataType: "json",
@@ -397,7 +401,7 @@ function updateTaskName(elem){
 	}
 	
 	$.ajax({
-		url:"task/"+taskId+"/",
+		url:"task/"+taskId+"/taskName",
 		type: "PUT",
     	contentType: "application/json; charset=utf-8",
     	dataType: "json",
@@ -528,4 +532,33 @@ function switchTaskPlace(taskId,checked){
 		var cmptTasks = parseInt($(".tasks-cmptd-nbr").html().trim())-1;
 		$(".tasks-cmptd-nbr").html(cmptTasks);
 	}
+}
+
+function markTaskImp(elem){
+	var tkId = elem.id.substring("task-detail-star-".length, elem.id.length);
+	var marked = elem.checked;
+	var reqPayload = {
+		"important" : marked,
+		"taskId" : parseInt(tkId)
+	}
+	$.ajax({
+		url:"task/"+tkId+"/important",
+		type: "PUT",
+    	contentType: "application/json; charset=utf-8",
+    	dataType: "json",
+		data : JSON.stringify(reqPayload)
+	}).done(function(response){
+		if(response.status=="success"){
+			if(!elem.checked && $("#listName").val()=="Important"){
+				$("#task-item-"+tkId).parent().remove();
+				hideTaskDetails();
+			}
+		}else{
+			alert("Failed to update the task Please try again after clearing your browser cache");
+		}
+	}).fail(function(response)  {
+    	alert("Sorry. Server unavailable. "+response);
+	});
+	
+	function updateCmptd
 }

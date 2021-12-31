@@ -46,7 +46,9 @@ public class ListService {
 	public TodoList save(TodoList todoList) {
 		return todolistRepository.save(todoList);
 	}
-	
+	public List<TodoList> save(List<TodoList> todoList) {
+		return (List<TodoList>) todolistRepository.saveAll(todoList);
+	}
 	public TodoList updateList(TodoList list, Long listId) {
 		List listJ =  todolistRepository.getByListId(listId);
 		TodoList listD = (TodoList) listJ.get(0);
@@ -73,5 +75,9 @@ public class ListService {
 	
 	public Long generateGroupId(){
 		return todolistRepository.getMaxId()+1;
+	}
+
+	public List<TodoList> getListByUserId(String userName) {
+		return todolistRepository.getByUserId(userName);
 	}
 }

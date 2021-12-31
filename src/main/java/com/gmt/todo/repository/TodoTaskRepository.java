@@ -12,6 +12,8 @@ public interface TodoTaskRepository extends CrudRepository<TodoTask, Long> {
 	
 	List<TodoTask> getByListIdAndIsCompleted(Long listId, boolean isCompleted);
 	
+	List<TodoTask> getByUserIdAndIsCompletedAndIsImportant(String userName, boolean isCompleted, boolean isImportant);
+	
 	TodoTask getByTaskId(Long taskId);
 
 }

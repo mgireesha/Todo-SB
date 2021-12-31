@@ -41,11 +41,11 @@ public class TaskController {
 		return taskService.getTaskByTaskId(Long.parseLong(taskId));
 	}
 	
-	@RequestMapping(method = RequestMethod.PUT, value = "/task/{taskId}/")
-	public TResponse updateTask(@RequestBody TodoTask task,@PathVariable String taskId) {
+	@RequestMapping(method = RequestMethod.PUT, value = "/task/{taskId}/{action}")
+	public TResponse updateTask(@RequestBody TodoTask task,@PathVariable String taskId, @PathVariable String action) {
 		TResponse resp = new TResponse();
 		try {
-			task = taskService.updateTask(task, Long.parseLong(taskId));
+			task = taskService.updateTask(task, Long.parseLong(taskId), action);
 			resp.setStatus("success");
 			resp.setTodoTask(task);
 		} catch (Exception e) {
@@ -72,5 +72,6 @@ public class TaskController {
 	public Map getTodoTasksByListId(@PathVariable String listId) {
 		return taskService.getTasksByListId(Long.parseLong(listId));
 	}
+	
 	
 }

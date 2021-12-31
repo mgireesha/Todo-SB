@@ -4,13 +4,16 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
 
+import org.apache.jasper.tagplugins.jstl.core.ForEach;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -122,6 +125,41 @@ public class PersistCSVSerice {
 			log.error(ioe.getMessage());
 			log.error(Arrays.toString(ioe.getStackTrace()));
 		}
+	}
+	
+	public List<TodoList> addNewDefaultList() {
+		TodoList todoList = null;
+		List<TodoList> tList = new ArrayList<TodoList>();
+		List<User> userList = userService.getAllUsers();
+		for (User user : userList) {
+			todoList = new TodoList();
+			todoList.setDateCreated(LocalDate.now());
+			todoList.setGroupId(listService.generateGroupId());
+			todoList.setGroupName("default");
+			todoList.setListName("Important");
+			todoList.setUserId(user.getUserName());
+			tList.add(todoList);
+		}
+		return listService.save(tList);
+	}
+	
+	public List<TodoTask> updateUserIdToTasks() {
+		List<User> userList = userService.getAllUsers();
+		List<TodoList> tList = new ArrayList<TodoList>();
+		List<TodoTask> taskList = new ArrayList<TodoTask>();
+		List<TodoTask> taskListRet = new ArrayList<TodoTask>();
+		for (User user : userList) {
+			tList = listService.getListByUserId(user.getUserName());
+			for (TodoList todoList : tList) {
+				taskList = taskService.getByListId(todoList.getListId());
+				for (TodoTask todoTask : taskList) {
+					todoTask.setUserId(user.getUserName());
+					taskListRet.add(todoTask);
+				}
+			}
+		}
+		taskService.save(taskListRet);
+		return taskListRet;
 	}
 	
 }

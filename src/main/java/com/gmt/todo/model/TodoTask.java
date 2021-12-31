@@ -24,6 +24,9 @@ public class TodoTask {
 	private LocalDate dateCompleted;
 	private LocalDate dueDate;
 	private boolean isRepeat;
+	@Column(nullable=false, columnDefinition = "BOOLEAN DEFAULT FALSE")
+	private boolean isImportant;
+	private String userId;
 	private long listId;
 	private String listName;
 	
@@ -101,6 +104,18 @@ public class TodoTask {
 	}
 	public void setRepeat(boolean isRepeat) {
 		this.isRepeat = isRepeat;
+	}
+	public boolean isImportant() {
+		return isImportant;
+	}
+	public void setImportant(boolean isImportant) {
+		this.isImportant = isImportant;
+	}
+	public String getUserId() {
+		return userId;
+	}
+	public void setUserId(String userId) {
+		this.userId = userId;
 	}
 	public TodoTask(long taskId, String taskName, String taskDescription, boolean remindMe, String note, long listId, String listName) {
 		super();
