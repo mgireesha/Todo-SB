@@ -169,6 +169,7 @@ function switchListNameLabel(elem){
 }
 
 function updateListName(elem){
+	disableDiv();
 	var listId = elem.id;
 	listId = listId.substring("task-list-name-text-".length,listId.length);
 	var updatedListName = elem.value;
@@ -185,6 +186,7 @@ function updateListName(elem){
 		data : JSON.stringify(updateLNamePayload)
 	}).done(function(response){
 		if(response.status=="success"){
+			enableDiv();
 			$("#task-list-name-text-"+listId).hide();
 			$("#task-list-name-header-"+listId).html(updatedListName);
 			$("#list-item-"+listId).html('<label>'+updatedListName+'</label>');
@@ -193,6 +195,7 @@ function updateListName(elem){
 			alert("Failed to update the List, Error:"+response.error);
 		}
 	}).fail(function(response)  {
+		enableDiv();
 		if(response.status!=null){
 			alert(response.status+" : "+response.responseJSON.error);
 		}else{
@@ -275,4 +278,14 @@ function covertDateS(date){
 
 function triggerFirstList(){
 	$($(".list-item-row")[0]).find(".list-item").click()
+}
+
+function disableDiv(){
+	$("#disable-div").css("width",$(".list-div").parent().css("width"));
+	$("#disable-div").css("height",$(".list-div").parent().css("height"));
+	$("#disable-div").css("top",$("#todo-header").css("height"));
+	$("#disable-div").show();	
+ }
+ function enableDiv(){
+	$("#disable-div").hide();
 }

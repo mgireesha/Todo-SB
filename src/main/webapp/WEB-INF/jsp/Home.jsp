@@ -23,7 +23,7 @@
 <body onload="triggerFirstList()">
 <%boolean isDotRequired = false; %>
 	<div class="container-fluid">
-	<div class="row">
+	<div class="row" id="todo-header">
 		<h4 class="col-sm-10" style="margin-left: 0.4em;color: beige"><i>ToDo</i></h4>
 		<a class="col-sm-1" href="/logout">Logout</a>
 	</div>
@@ -155,5 +155,6 @@
 		<input type="hidden" name="selectedTaskId" id="selectedTaskId" />
 		</div>
 	</div>
+	<div id="disable-div" style="z-index: 999;width: 100%;height: 100%;display: none;position: absolute;top: 0;left: 0;background-color: #ccc;opacity: .1;cursor: wait;"> </div>
 </body>
 </html>

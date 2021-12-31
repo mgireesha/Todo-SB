@@ -116,6 +116,7 @@
 }
 
 function completeTask(elem){
+	disableDiv()
 	var tkId = $(elem).attr('id');
 	if(elem.id.indexOf("task-detail-")==-1){
 		tkId = elem.id.substring("task-chkbx-".length, elem.id.length);
@@ -146,6 +147,7 @@ function completeTask(elem){
 		data : JSON.stringify(reqPayload)
 	}).done(function(response){
 		if(response.status=="success"){
+			enableDiv();
 		switchTaskPlace(tkId,completed);
 		if (elem.checked == true) {
 			$("#task-detail-chkbx-" + tkId).prop("checked", true);
@@ -161,6 +163,7 @@ function completeTask(elem){
 			alert("Failed to update the task Please try again after clearing your browser cache");
 		}
 	}).fail(function(response)  {
+		enableDiv();
     	alert("Sorry. Server unavailable. "+response);
 	});
 }
@@ -356,6 +359,7 @@ function remindMeTD(){
 }
 
 function addNote(elem){
+	disableDiv();
 	$(elem).css("cursor","wait");
 	var taskId = elem.id;
 	taskId = taskId.substring("task-detail-note-txt-".length,taskId.length);
@@ -373,6 +377,7 @@ function addNote(elem){
 	}).done(function(response){
 		$(elem).css("cursor","");
 		if(response.status=="success"){
+			enableDiv();
 		}else{
 			alert("Failed to update the task Please try again after clearing your browser cache");
 		}
@@ -392,6 +397,7 @@ function switchTaskNameLabel(elem){
 }
 
 function updateTaskName(elem){
+	disableDiv();
 	var taskId = elem.id;
 	taskId = taskId.substring("task-detail-label-text-".length,taskId.length);
 	var updatedTaskName = elem.value;
@@ -408,6 +414,7 @@ function updateTaskName(elem){
 		data : JSON.stringify(updateTNamePayload)
 	}).done(function(response){
 		if(response.status=="success"){
+			enableDiv();
 			$("#task-detail-label-text-"+taskId).hide();
 			$("#task-detail-label-"+taskId+",#task-label-"+taskId).html(updatedTaskName);
 			$("#task-detail-label-"+taskId).show();
@@ -434,12 +441,9 @@ function deleteTask(elem){
     	dataType: "json"
 		}).done(function(response){
 			if(response.status=="success"){
-				
 				if($("#task-chkbx-"+taskId).prop("checked")){
-					$(".tasks-cmptd-nbr").html(parseInt($(".tasks-cmptd-nbr").html().trim())-1);
+					updateComptdTskCount("remove");
 				}
-				//var cmptTasks = parseInt($(".tasks-cmptd-nbr").html().trim())-1;
-				
 				$("#task-item-"+taskId).parent().remove();
 				if($("#task-detail-div").css("display")!="none"){
 					$("#task-detail-div").empty();
@@ -520,8 +524,7 @@ function switchTaskPlace(taskId,checked){
 		divRow.append(temp);
 		$("#task-item-"+taskId).parent().remove();
 		$(".tasks-cmptd-div").append(divRow);
-		var cmptTasks = parseInt($(".tasks-cmptd-nbr").html().trim())+1;
-		$(".tasks-cmptd-nbr").html(cmptTasks);
+		updateComptdTskCount("add");
 		
 	}else{
 		var temp = $("#task-item-"+taskId).parent().html();
@@ -529,12 +532,12 @@ function switchTaskPlace(taskId,checked){
 		divRow.append(temp);
 		$("#task-item-"+taskId).parent().remove();
 		$(".tasks-n-cmptd-div").append(divRow);
-		var cmptTasks = parseInt($(".tasks-cmptd-nbr").html().trim())-1;
-		$(".tasks-cmptd-nbr").html(cmptTasks);
+		updateComptdTskCount("remove");
 	}
 }
 
 function markTaskImp(elem){
+	disableDiv();
 	var tkId = elem.id.substring("task-detail-star-".length, elem.id.length);
 	var marked = elem.checked;
 	var reqPayload = {
@@ -549,16 +552,28 @@ function markTaskImp(elem){
 		data : JSON.stringify(reqPayload)
 	}).done(function(response){
 		if(response.status=="success"){
+			enableDiv();
 			if(!elem.checked && $("#listName").val()=="Important"){
 				$("#task-item-"+tkId).parent().remove();
 				hideTaskDetails();
+				if(response.todoTask.completed){
+					updateComptdTskCount("remove");
+				}
 			}
 		}else{
 			alert("Failed to update the task Please try again after clearing your browser cache");
 		}
 	}).fail(function(response)  {
+		enableDiv();
     	alert("Sorry. Server unavailable. "+response);
 	});
-	
-	function updateC(){}
 }
+function updateComptdTskCount(action){
+		var cmptTasks = parseInt($(".tasks-cmptd-nbr").html().trim());
+		if("remove"==action)
+			cmptTasks=cmptTasks-1;
+		else{
+			cmptTasks=cmptTasks+1;
+		}
+		$(".tasks-cmptd-nbr").html(cmptTasks);
+	}

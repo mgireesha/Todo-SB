@@ -546,6 +546,7 @@ task-add-due-date, focus {
    content: "\2606";
    position: absolute;
    visibility:visible;
+   color: #939090;
 }
 .task-detail-star:checked:before {
    content: "\2605";

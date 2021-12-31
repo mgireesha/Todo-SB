@@ -35,11 +35,12 @@ public class TaskService {
 		List<TodoList> todoList = null;
 		Map <String, Object> tasksMap = new HashMap<String, Object>();
 		todoList = (List<TodoList>) todolistRepository.getByListId(listId);
-		System.out.println(todoList.get(0).getUserId());
 		if(!todoList.isEmpty() && null!= todoList.get(0).getListName() 
 				&&  "Important".equals(todoList.get(0).getListName())) {
-			taskListC = (List<TodoTask>) todoTaskRepository.getByUserIdAndIsCompletedAndIsImportant(todoList.get(0).getUserId(),true, true);
-			taskListT = (List<TodoTask>) todoTaskRepository.getByUserIdAndIsCompletedAndIsImportant(todoList.get(0).getUserId(),false, true);
+			taskListC = (List<TodoTask>) todoTaskRepository
+					.getByUserIdAndIsCompletedAndIsImportant(todoList.get(0).getUserId(),true, true);
+			taskListT = (List<TodoTask>) todoTaskRepository
+					.getByUserIdAndIsCompletedAndIsImportant(todoList.get(0).getUserId(),false, true);
 		}else {
 			taskListC = (List<TodoTask>) todoTaskRepository.getByListIdAndIsCompleted(listId,true);
 			taskListT = (List<TodoTask>) todoTaskRepository.getByListIdAndIsCompleted(listId,false);
