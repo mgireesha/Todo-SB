@@ -255,14 +255,15 @@ function showTaskDetails(elem){
 }
 
 function getAndBuildTaskDetails(tkId){
+	disableDiv();
 	$.ajax({
 		url : "task/"+tkId+"/",
 		type : "GET",
 		contentType: "application/json; charset=utf-8"
     	
 	}).done(function(response){
-		
 		buildTaskDetails(response);
+		enableDiv();
 	}).fail(function(response)  {
     	alert("Sorry. Server unavailable. "+response);
 	});

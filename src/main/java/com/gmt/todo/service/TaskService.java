@@ -6,9 +6,12 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import com.gmt.todo.model.TodoList;
 import com.gmt.todo.model.TodoTask;
+import com.gmt.todo.model.TodoUserDetails;
 import com.gmt.todo.repository.TodoTaskRepository;
 import com.gmt.todo.repository.TodolistRepository;
 
@@ -18,11 +21,16 @@ public class TaskService {
 	@Autowired
 	private TodoTaskRepository todoTaskRepository;
 	
+	@Lazy
 	@Autowired
-	private TodolistRepository todolistRepository;
+	private ListService listService;
 	
 	public TodoTask getTaskByTaskId(Long taskId) {
 		return todoTaskRepository.getByTaskId(taskId);
+	}
+	
+	public TodoTask getTaskByTaskName(String taskName) {
+		return todoTaskRepository.getByTaskName(taskName);
 	}
 	
 	public List<TodoTask> getByListId(Long listId){
@@ -34,7 +42,7 @@ public class TaskService {
 		List<TodoTask> taskListT = null;
 		List<TodoList> todoList = null;
 		Map <String, Object> tasksMap = new HashMap<String, Object>();
-		todoList = (List<TodoList>) todolistRepository.getByListId(listId);
+		todoList = (List<TodoList>) listService.getListById(listId);
 		if(!todoList.isEmpty() && null!= todoList.get(0).getListName() 
 				&&  "Important".equals(todoList.get(0).getListName())) {
 			taskListC = (List<TodoTask>) todoTaskRepository
@@ -52,6 +60,14 @@ public class TaskService {
 	}
 	
 	public TodoTask addNewTask(TodoTask task) {
+		TodoUserDetails userDetails = (TodoUserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		if("Important".equals(task.getListName())) {
+			task.setImportant(true);
+			task.setListName("Tasks");
+			TodoList listTasks = listService.getListByListNameAndUser("Tasks",userDetails.getUsername());
+			task.setListId(listTasks.getListId());
+		}
+		task.setUserId(userDetails.getUsername());
 		task.setDateCreated(LocalDate.now());
 		task = todoTaskRepository.save(task);
 		return task;

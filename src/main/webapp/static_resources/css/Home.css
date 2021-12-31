@@ -60,6 +60,10 @@ body{
     color: grey;
 }
 
+.list-item:hover, .list-item:hover + .list-item-delete, .list-item:hover + .list-item-delete-def{
+	background-color: #cbc24a;
+}
+
 .list-item-delete-def{
 	background-color: darkkhaki;
     margin: 6px;

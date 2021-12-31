@@ -32,6 +32,10 @@ public class ListService {
 		return (List<TodoList>) todolistRepository.getByListId(listId);
 	}
 	
+	public TodoList getListByListNameAndUser(String listName, String userName){
+		return todolistRepository.getByListNameAndUserId(listName,userName);
+	}
+	
 	public TodoList addNewList(TodoList todoList,TodoUserDetails userDetails) {
 		todoList.setDateCreated(LocalDate.now());
 		todoList.setUserId(userDetails.getUsername());

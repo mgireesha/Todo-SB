@@ -29,13 +29,15 @@
 });
 
  function showTasks(listId){
-	
+	disableDiv();
+	$("#task-item-main").empty();
 	$.ajax({
 		url:"task/getTasksByListId/"+listId,
 		method:"GET",
 	}).done(function(response){
 		if(response.todoList!=undefined && response.todoList!=null){
 			buildTasksDiv(response);
+			enableDiv();
 		}else{
 			hadndleErrorResp(response);
 		}

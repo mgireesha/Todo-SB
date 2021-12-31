@@ -155,6 +155,6 @@
 		<input type="hidden" name="selectedTaskId" id="selectedTaskId" />
 		</div>
 	</div>
-	<div id="disable-div" style="z-index: 999;width: 100%;height: 100%;display: none;position: absolute;top: 0;left: 0;background-color: #ccc;opacity: .1;cursor: wait;"> </div>
+	<div id="disable-div" style="z-index: 999;width: 100%;height: 100%;display: none;position: absolute;top: 0;left: 0;background-color: rgb(107 106 106);opacity: .1;cursor: wait;"> </div>
 </body>
 </html>

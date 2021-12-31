@@ -8,27 +8,15 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import javax.annotation.PostConstruct;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.transaction.Transactional;
-
-import org.apache.jasper.tagplugins.jstl.core.ForEach;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestMapping;
-
 import com.gmt.todo.model.TodoList;
 import com.gmt.todo.model.TodoTask;
 import com.gmt.todo.model.User;
-import com.gmt.todo.repository.TodoTaskRepository;
-import com.gmt.todo.repository.TodolistRepository;
-import com.gmt.todo.repository.UserRepository;
 
 @Service
 public class PersistCSVSerice {

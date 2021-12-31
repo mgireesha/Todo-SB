@@ -7,6 +7,7 @@ import java.util.Optional;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import com.gmt.todo.model.TodoList;
@@ -21,9 +22,11 @@ public class UserService {
 	@Autowired
 	private UserRepository userRepository;
 	
+	@Lazy
 	@Autowired
 	private ListService listService;
 	
+	@Lazy
 	@Autowired
 	private TaskService taskService;
 	
