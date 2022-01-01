@@ -23,6 +23,8 @@ public class TodoList {
 	private String groupName;
 	@Transient
 	private List<TodoTask> taskList;
+	@Transient
+	private Long taskCount;
 	public long getListId() {
 		return listId;
 	}
@@ -66,6 +68,12 @@ public class TodoList {
 	}
 	public void setGroupName(String groupName) {
 		this.groupName = groupName;
+	}
+	public Long getTaskCount() {
+		return taskCount;
+	}
+	public void setTaskCount(Long taskCount) {
+		this.taskCount = taskCount;
 	}
 	public TodoList(long listId, String listName, String userId, List<TodoTask> taskList) {
 		this.listId = listId;

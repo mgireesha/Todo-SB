@@ -94,7 +94,7 @@ function addList(){
 }
 
 function getListElem(listObj){
-	var listElem = '<div class="row" style="margin: 0">';
+	var listElem = '<div class="row" style="margin-left: 0">';
 		listElem += '<div class="col-sm-10 list-item" id="list-item-'+listObj.listId+'" onclick="showTasks('+listObj.listId+')">';
 		listElem += '<label>'+listObj.listName+'</label>';
 		listElem += '</div>';

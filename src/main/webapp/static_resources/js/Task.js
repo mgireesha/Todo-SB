@@ -43,9 +43,13 @@
  }
  
  function getTDListHeader(listObj){
+	var onclickList = "";
+	if(listObj.groupName!="default"){
+		onclickList = "switchListNameLabel(this)";
+	}
 	$("#listName").val(listObj.listName);
 	$("#listId").val(listObj.listId);
-	$(".task-list-name").empty().append('<h2 class="task-list-name-header" onclick="switchListNameLabel(this)" id="task-list-name-header-'+listObj.listId+'">'+listObj.listName+'</h2>')
+	$(".task-list-name").empty().append('<h2 class="task-list-name-header" onclick="'+onclickList+'" id="task-list-name-header-'+listObj.listId+'">'+listObj.listName+'</h2>')
 	$(".task-list-name").append('<input type="text" id="task-list-name-text-'+listObj.listId+'" class="task-list-name-text form-control" style="background-color: rgb(64, 58, 58); display: none;" onblur="updateListName(this)">');
  }
 
@@ -57,8 +61,15 @@
 	}
 	var taskChid = '<div class="row">';
 		taskChid+='<label class="col-sm-1" style="width: 1.5em"></label>';
-		taskChid+='<div class="col-sm-8">';
+		taskChid+='<div class="col-sm-11">';
+		if($("#listName").val()=="Important"){
+			taskChid+='<label style="font-size: 12px">&nbsp;'+taskObj.listName+'</label>';
+			isDotRequired = true;
+		}
 		if(taskObj.dueDate!=null){
+			if(isDotRequired){
+				taskChid+='<img alt="." src="../static_resources/images/dot-blue.png" style="height: 0.2em;margin: 5px;">';
+			}
 			taskChid+='<img alt="due date" src="../static_resources/images/calender-blue.png" style="height: 0.8em">';
 			taskChid+='<label style="font-size: 12px">&nbsp;'+covertDateT(taskObj.dueDate)+'</label>';
 			isDotRequired = true;
@@ -66,7 +77,7 @@
 		
 		if(taskObj.remindMe==true){
 			if(isDotRequired){
-				taskChid+='<img alt="black dot" src="../static_resources/images/dot-blue.png" style="height: 0.2em;margin: 5px;">';
+				taskChid+='<img alt="." src="../static_resources/images/dot-blue.png" style="height: 0.2em;margin: 5px;">';
 				isDotRequired = false;
 			}
 			taskChid+='<img alt="due date" src="../static_resources/images/bell-blue.png" style="height: 0.8em">';
@@ -180,6 +191,7 @@ function addNewTask(){
 		$("#dueDate").focus();
 		return false;
 	}
+	disableDiv();
 	var listName = $("#listName").val();
 	var listId = $("#listId").val();
 	var addTaskPayload = {
@@ -208,10 +220,16 @@ function addNewTask(){
 			if($("#selectedTaskId").val()!=="" && $("#selectedTaskId").val()!=undefined){
 				hideTaskDetails();
 			}
+			updateTotalTasks(listId,"add");
+			if("Important"==listName){
+				updateTotalTasks(response.todoTask.listId,"add");
+			}
 		}else{
 			alert("Failed to update the task Please try again after clearing your browser cache");
 		}
+		enableDiv();
 	}).fail(function(response)  {
+		enableDiv();
 		if(response.status!=null){
 			alert(response.status+" : "+response.responseJSON.error);
 		}else{
@@ -435,6 +453,7 @@ function deleteTask(elem){
 	var taskId = elem.id;
 	taskId = taskId.substring("task-delete-label-".length,taskId.length);
 	if(confirm("Are you sure ?")){
+		disableDiv();
 		$.ajax({
 		url:"task/"+taskId+"/",
 		type: "DELETE",
@@ -451,11 +470,16 @@ function deleteTask(elem){
 					$("#selectedTaskId").val("");
 					hadndleWidth("remove");
 				}
-				
+				updateTotalTasks($("#listId").val(),"remove");
+				if("Important"==$("#listName").val()){
+					updateTotalTasks(response.todoTask.listId,"remove");
+				}
+				enableDiv();
 			}else{
 				alert("Failed to delete the task. Error: "+response.error);
 			}
 		}).fail(function(response)  {
+			enableDiv();
 			if(response.status!=null){
 				alert(response.status+" : "+response.responseJSON.error);
 			}else{
@@ -554,12 +578,17 @@ function markTaskImp(elem){
 	}).done(function(response){
 		if(response.status=="success"){
 			enableDiv();
-			if(!elem.checked && $("#listName").val()=="Important"){
-				$("#task-item-"+tkId).parent().remove();
-				hideTaskDetails();
-				if(response.todoTask.completed){
-					updateComptdTskCount("remove");
+			if(!elem.checked){
+				if($("#listName").val()=="Important"){
+					$("#task-item-"+tkId).parent().remove();
+					hideTaskDetails();
+					if(response.todoTask.completed){
+						updateComptdTskCount("remove");
+					}
 				}
+				updateTotalTasks($("#hdn-inp-Important").val(),"remove");
+			}else{
+				updateTotalTasks($("#hdn-inp-Important").val(),"add");
 			}
 		}else{
 			alert("Failed to update the task Please try again after clearing your browser cache");
@@ -577,4 +606,19 @@ function updateComptdTskCount(action){
 			cmptTasks=cmptTasks+1;
 		}
 		$(".tasks-cmptd-nbr").html(cmptTasks);
+	}
+	
+	function updateTotalTasks(listId,action){
+		var curTasks = parseInt($("#list-item-"+listId).parent().find(".list-task-count").html().trim());
+		if("add"==action){
+			curTasks = curTasks+1;
+		}else{
+			curTasks = curTasks-1;
+		}
+		$("#list-item-"+listId).parent().find(".list-task-count").html(curTasks);
+		if(curTasks==1){
+			$("#list-item-"+listId).parent().find(".list-task-count").show();
+		}else if(curTasks==0){
+			$("#list-item-"+listId).parent().find(".list-task-count").hide();
+		}
 	}

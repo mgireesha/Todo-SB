@@ -15,10 +15,6 @@
 <script type="text/javascript" src="../static_resources/js/Home.js"></script>
 <script type="text/javascript" src="../static_resources/js/Task.js"></script>
 <link href="../static_resources/css/Home.css" rel="stylesheet" />
-
-<!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script> -->
 </head>
 <body onload="triggerFirstList()">
 <%boolean isDotRequired = false; %>
@@ -31,14 +27,23 @@
 			<div class="col-sm-3 list-div">
 				<div class="list-item-main" id="list-item-main">
 					<c:forEach items="${todoList}" var="tl">
-					<div class="row list-item-row" style="margin: 0">
+					<div class="row list-item-row" style="margin-left: 0">
 						<div class="col-sm-10 list-item" id="list-item-${tl.getListId()}" onClick="showTasks(${tl.getListId()})">
 							<label>${tl.getListName()}</label>
+							<c:if test="${tl.getGroupName() ne 'default'}">
+								<label class="list-task-count" style="display:${tl.getTaskCount() ne '0' ? 'inline' : 'none'}">${tl.getTaskCount()}</label>
+							</c:if>
 						</div>
 						<div class="col-sm-1 ${tl.getGroupName() ne 'default' ? 'list-item-delete' : 'list-item-delete-def'}" id="list-item-delete-${tl.getListId()}" onclick="${tl.getGroupName() ne 'default' ? 'deleteList(this)' : ''}">
 							<label style="display:${tl.getGroupName() ne 'default' ? 'block' : 'none'}">x</label>
+							<c:if test="${tl.getGroupName() eq 'default'}">
+								<label class="list-task-count list-task-count-def" style="display:${tl.getTaskCount() ne '0' ? 'inline' : 'none'}">${tl.getTaskCount()}</label>
+							</c:if>
 						</div>
 					</div>
+					<c:if test="${tl.getGroupName() eq 'default'}">
+						<input type="hidden" id="hdn-inp-${tl.getListName()}" value="${tl.getListId()}" />
+					</c:if>
 				</c:forEach>
 				</div>
 				

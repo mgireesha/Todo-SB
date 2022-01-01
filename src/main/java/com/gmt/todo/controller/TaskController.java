@@ -62,7 +62,8 @@ public class TaskController {
 	public TResponse deleteTask(@PathVariable String taskId) {
 		TResponse resp = new TResponse();
 		try {
-			taskService.deleteTask(Long.parseLong(taskId));
+			TodoTask task = taskService.deleteTask(Long.parseLong(taskId));
+			resp.setTodoTask(task);
 			resp.setStatus("success");
 		} catch (Exception e) {
 			resp.setStatus("failed");

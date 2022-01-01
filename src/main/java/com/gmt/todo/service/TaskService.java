@@ -37,11 +37,11 @@ public class TaskService {
 		return todoTaskRepository.getByListId(listId);
 	}
 	
-	public Map<String, Object> getTasksByListId(Long listId) {
+	public Map<String, List> getTasksByListId(Long listId) {
 		List<TodoTask> taskListC = null;
 		List<TodoTask> taskListT = null;
 		List<TodoList> todoList = null;
-		Map <String, Object> tasksMap = new HashMap<String, Object>();
+		Map <String, List> tasksMap = new HashMap<String, List>();
 		todoList = (List<TodoList>) listService.getListById(listId);
 		if(!todoList.isEmpty() && null!= todoList.get(0).getListName() 
 				&&  "Important".equals(todoList.get(0).getListName())) {
@@ -115,8 +115,10 @@ public class TaskService {
 		return taskD;
 	}
 	
-	public void deleteTask(Long taskId) {
+	public TodoTask deleteTask(Long taskId) {
+		TodoTask task = todoTaskRepository.getByTaskId(taskId);
 		todoTaskRepository.deleteById(taskId);
+		return task;
 	}
 	
 	public void deleteAll(List<TodoTask> tasks) {

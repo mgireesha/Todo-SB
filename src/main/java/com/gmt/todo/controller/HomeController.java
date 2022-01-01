@@ -1,7 +1,9 @@
 package com.gmt.todo.controller;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -25,6 +27,7 @@ import com.gmt.todo.model.TodoTask;
 import com.gmt.todo.repository.TodoTaskRepository;
 import com.gmt.todo.repository.TodolistRepository;
 import com.gmt.todo.service.PersistCSVSerice;
+import com.gmt.todo.service.TaskService;
 import com.gmt.todo.service.UserService;
 
 @RestController
@@ -43,6 +46,9 @@ public class HomeController {
 	
 	@Autowired
 	private UserService userService;
+	
+	@Autowired
+	private TaskService taskService;
 
 	@RequestMapping(method = RequestMethod.GET, value = {"/",""})
 	public void getTodoList(HttpServletRequest request, HttpServletResponse response) {
@@ -55,11 +61,20 @@ public class HomeController {
 
 	@RequestMapping(method = RequestMethod.GET, value = "/Home")
 	public ModelAndView goToHome() {
+		Map<String, List> tasks = null;
 		ModelAndView mv = new ModelAndView();
 		UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		List<TodoList> defList = (List<TodoList>) todolistRepository.getByUserIdAndGroupNameOrderByDateCreated(userDetails.getUsername(),"default");
 		List<TodoList> list = (List<TodoList>) todolistRepository.getByUserIdAndGroupNameNotOrderByDateCreated(userDetails.getUsername(),"default");
 		defList.addAll(list);
+		for (TodoList todoList : defList) {
+			if(!"Important".equals(todoList.getListName())) {
+				todoList.setTaskCount(Long.valueOf(todoTaskRepository.getByListId(todoList.getListId()).size()));
+			}else {
+				tasks = taskService.getTasksByListId(todoList.getListId());
+				todoList.setTaskCount(Long.valueOf(tasks.get("taskListC").size()+tasks.get("taskListT").size()));
+			}
+		}
 		mv.addObject("taskList", todoTaskRepository.getByListId(defList.get(0).getListId()));
 		mv.addObject("todoList", defList);
 		mv.setViewName("Home");
