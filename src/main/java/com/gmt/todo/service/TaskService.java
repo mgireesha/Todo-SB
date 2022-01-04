@@ -115,6 +115,10 @@ public class TaskService {
 			taskD.setRemindMe(task.isRemindMe());
 			taskD.setRemindTime(task.getRemindTime());
 		}
+		
+		if(null!=action && "dueDate".equals(action)) {
+			taskD.setDueDate(task.getDueDate());
+		}
 		/*
 		 * if(task.isCompleted() || task.isImportant()) {
 		 * taskD.setImportant(task.isImportant());
