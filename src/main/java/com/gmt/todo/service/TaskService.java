@@ -60,15 +60,21 @@ public class TaskService {
 	}
 	
 	public TodoTask addNewTask(TodoTask task) {
-		TodoUserDetails userDetails = (TodoUserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		TodoUserDetails userDetails = null;
+		try {
+			userDetails = (TodoUserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		} catch (Exception e) {}
 		if("Important".equals(task.getListName())) {
 			task.setImportant(true);
 			task.setListName("Tasks");
 			TodoList listTasks = listService.getListByListNameAndUser("Tasks",userDetails.getUsername());
 			task.setListId(listTasks.getListId());
 		}
-		task.setUserId(userDetails.getUsername());
+		if(null!=userDetails) {
+			task.setUserId(userDetails.getUsername());
+		}
 		task.setDateCreated(LocalDate.now());
+		task.setRemindTime(null);
 		task = todoTaskRepository.save(task);
 		return task;
 	}
@@ -99,6 +105,16 @@ public class TaskService {
 		if(null!=action && "taskName".equals(action)) {
 			taskD.setTaskName(task.getTaskName());
 		}
+		
+		if(null!=action && "remindMe".equals(action)) {
+			taskD.setRemindMe(task.isRemindMe());
+			taskD.setRemindTime(null);
+		}
+		
+		if(null!=action && "remindMeDate".equals(action)) {
+			taskD.setRemindMe(task.isRemindMe());
+			taskD.setRemindTime(task.getRemindTime());
+		}
 		/*
 		 * if(task.isCompleted() || task.isImportant()) {
 		 * taskD.setImportant(task.isImportant());
@@ -123,5 +139,10 @@ public class TaskService {
 	
 	public void deleteAll(List<TodoTask> tasks) {
 		todoTaskRepository.deleteAll(tasks);
+	}
+
+	public List<TodoTask> getAllTasksForUser() {
+		TodoUserDetails userDetails = (TodoUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		return todoTaskRepository.getByUserId(userDetails.getUsername());
 	}
 }

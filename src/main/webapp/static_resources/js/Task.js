@@ -66,6 +66,7 @@
 			taskChid+='<label style="font-size: 12px">&nbsp;'+taskObj.listName+'</label>';
 			isDotRequired = true;
 		}
+		taskChid+='<div class="tc-row tc-dd-row" id="tc-dd-row-'+taskObj.taskId+'">';
 		if(taskObj.dueDate!=null){
 			if(isDotRequired){
 				taskChid+='<img alt="." src="../static_resources/images/dot-blue.png" style="height: 0.2em;margin: 5px;">';
@@ -74,17 +75,19 @@
 			taskChid+='<label style="font-size: 12px">&nbsp;'+covertDateT(taskObj.dueDate)+'</label>';
 			isDotRequired = true;
 		}
-		
+		taskChid+='</div>';
+		taskChid+='<div class="tc-row tc-rem-row" id="tc-rem-row-'+taskObj.taskId+'">';
 		if(taskObj.remindMe==true){
 			if(isDotRequired){
 				taskChid+='<img alt="." src="../static_resources/images/dot-blue.png" style="height: 0.2em;margin: 5px;">';
 				isDotRequired = false;
 			}
 			taskChid+='<img alt="due date" src="../static_resources/images/bell-blue.png" style="height: 0.8em">';
-			taskChid+='<label style="font-size: 12px">&nbsp;'+covertDateT(taskObj.dueDate)+'</label>';
+			taskChid+='<label style="font-size: 12px">&nbsp;'+covertDateT(taskObj.remindTime)+'</label>';
 			isDotRequired = true;
 		}
-		
+		taskChid+='</div>';
+		taskChid+='<div class="tc-row tc-note-row" id="tc-note-row-'+taskObj.taskId+'">';
 		if(taskObj.note!=null && taskObj.note!=""){
 			if(isDotRequired){
 				taskChid+='<img alt="black dot" src="../static_resources/images/dot-blue.png" style="height: 0.2em;margin: 5px;">';
@@ -92,6 +95,7 @@
 			}
 			taskChid+='<img alt="note" src="../static_resources/images/note-blue-s1.png" style="height: 0.8em">';
 		}
+		taskChid+='</div>';
 		taskChid+='</div>';
 		/*taskChid+='<div class="col-sm-4 task-dummy-div"></div>';
 		taskChid+='<div class="col-sm-2 task-delete-div">';
@@ -294,7 +298,7 @@ function buildTaskDetails(taskObj){
 	var taskDName = $('<div class="row task-item-detail-name" id="task-item-detail-name">');
 		taskDName.append('<input type="checkbox" id="task-detail-chkbx-'+taskObj.taskId+'" onClick="completeTask(this)" class="task-item-chkbx-detail task-item-chkbx " name="task-detail-chkbx-'+taskObj.taskId+'">')
 		taskDName.append('<label id="task-detail-label-'+taskObj.taskId+'" class="task-item-label" onclick="switchTaskNameLabel(this)">'+taskObj.taskName+'</label>');
-		taskDName.append('<input type="text" id="task-detail-label-text-'+taskObj.taskId+'" class="task-detail-label-text form-control" style="background-color: #403a3a;display: none;" onblur="updateTaskName(this)" />');
+		taskDName.append('<input type="text" id="task-detail-label-text-'+taskObj.taskId+'" class="task-detail-label-text form-control" style="background-color: #403a3a;display: none;" onchange="updateTaskName(this)" />');
 		taskDName.append('<input id="task-detail-star-'+taskObj.taskId+'" class="task-detail-star" type="checkbox" title="Important" onclick="markTaskImp(this)" />');
 		taskDName.append('</div>');
 		
@@ -307,7 +311,7 @@ function buildTaskDetails(taskObj){
 		}
 		taskDetailMain.append(taskDName);
 		
-	var taskDRemindMe = $('<div class="row task-item-detail-remindMe task-item-detail-elem" id="task-item-detail-remindMe">');
+	/*var taskDRemindMe = $('<div class="row task-item-detail-remindMe task-item-detail-elem" id="task-item-detail-remindMe" onclick="showRemDSel()">');
 	
 	var taskDetailRemindImgDiv = '<div class="col-sm-1 task-detail-remind-div">';
 	var remindImgClass= "task-detail-remind-img";
@@ -323,18 +327,27 @@ function buildTaskDetails(taskObj){
 	
 	var taskDetailRemindDiv	 = '<div class="col-sm-10 task-detail-font-size">';
 		taskDetailRemindDiv	 += '<label class="'+remindMeLblClass+'" id="task-detail-remind-lbl">Remind Me';
-		if(taskObj.dueDate!=null){
+		if(taskObj.remindMe==true){
 			taskDetailRemindDiv	 += ' at 9 AM';
 		}
 		taskDetailRemindDiv	 += '</label><br>';
-		if(taskObj.dueDate!=null){
-			taskDetailRemindDiv	 += '<label>'+covertDateT(taskObj.dueDate)+'</label>';
+		if(taskObj.remindMe==true){
+			taskDetailRemindDiv	 += '<label>'+covertDateT(taskObj.remindTime)+'</label>';
 		}
 		taskDetailRemindDiv	 += '</div>';
 		
 		taskDRemindMe.append(taskDetailRemindDiv);
-		taskDRemindMe.append('</div>');
-		taskDetailMain.append(taskDRemindMe);
+		if(taskObj.remindMe){
+			var taskRemindDel = '<div class="col-sm-1 task-detail-remind-div task-detail-remind-del">';
+			taskRemindDel+= '<label id="task-detail-remind-del-lbl-'+taskObj.taskId+'" onclick="removeRemindMe(this)">X</label>';
+			taskRemindDel+= '</div>';
+			
+		taskDRemindMe.append(taskRemindDel);
+		}
+		taskDRemindMe.append('</div>');*/
+		taskDetailMain.append(getTDRemindMe(taskObj,"new"));
+		
+		taskDetailMain.append(getRemindSelElem(taskObj));
 		
 		var taskDetailNoteDiv = '<div class="row task-item-detail-elem">';
 			taskDetailNoteDiv += '<label class="task-detail-font-size	task-detail-note-lbl">Note</label>';
@@ -365,6 +378,52 @@ function buildTaskDetails(taskObj){
 		taskDetailDiv.append(taskDetailMain);
 		taskDetailDiv.append(taskDetailDelete);
 		
+		return $(taskDetailDiv).html();
+}
+
+function getTDRemindMe(taskObj,action){
+	var taskDRemindMe ="";
+	if(action!="update"){
+		taskDRemindMe = '<div class="row task-item-detail-remindMe task-item-detail-elem" id="task-item-detail-remindMe" onclick="showRemDSel()">';
+	}
+	
+	var taskDetailRemindImgDiv = '<div class="col-sm-1 task-detail-remind-div">';
+	var remindImgClass= "task-detail-remind-img";
+	var remindMeLblClass = "";
+	if(taskObj.remindMe==true){
+		remindImgClass= "task-detail-remind-img task-detail-remind-img-sld";
+		remindMeLblClass = "task-detail-remind-lbl-sld";
+	}
+		taskDetailRemindImgDiv += '<img alt="remind" class="'+remindImgClass+'" id="task-detail-remind-img" src="../static_resources/images/Alarm-blue-bb-20x21.png" onclick="remindMeTD()">';
+		taskDetailRemindImgDiv += '</div>'
+		
+		taskDRemindMe+=taskDetailRemindImgDiv;
+		
+	
+	var taskDetailRemindDiv	 = '<div class="col-sm-10 task-detail-font-size">';
+		taskDetailRemindDiv	 += '<label class="'+remindMeLblClass+'" id="task-detail-remind-lbl">Remind Me';
+		if(taskObj.remindMe==true){
+			taskDetailRemindDiv	 += ' '+getTimeFromDate(taskObj.remindTime);
+		}
+		taskDetailRemindDiv	 += '</label><br>';
+		if(taskObj.remindMe==true){
+			taskDetailRemindDiv	 += '<label>'+covertDateT(taskObj.remindTime)+'</label>';
+		}
+		taskDetailRemindDiv	 += '</div>';
+		
+		taskDRemindMe+=taskDetailRemindDiv;
+		//taskDRemindMe+='</div>';
+		if(taskObj.remindMe){
+			var taskRemindDel = '<div class="col-sm-1 task-detail-remind-div task-detail-remind-del">';
+			taskRemindDel+= '<label id="task-detail-remind-del-lbl-'+taskObj.taskId+'" onclick="removeRemindMe(this)">X</label>';
+			taskRemindDel+= '</div>';
+			
+		taskDRemindMe+=taskRemindDel;
+		}
+		if(action!="update"){
+			taskDRemindMe+='</div>';
+		}
+		return taskDRemindMe;
 }
 
 function remindMeTD(){
@@ -379,7 +438,6 @@ function remindMeTD(){
 
 function addNote(elem){
 	disableDiv();
-	$(elem).css("cursor","wait");
 	var taskId = elem.id;
 	taskId = taskId.substring("task-detail-note-txt-".length,taskId.length);
 	var note = elem.value;
@@ -394,13 +452,19 @@ function addNote(elem){
     	dataType: "json",
 		data : JSON.stringify(addNotePayload)
 	}).done(function(response){
-		$(elem).css("cursor","");
+		enableDiv();
 		if(response.status=="success"){
-			enableDiv();
+			if(response.todoTask.note!=""){
+				$("#tc-note-row-"+taskId).empty().append(getNoteTskChild());
+			}else{
+				$("#tc-note-row-"+taskId).empty()
+			}
+			
 		}else{
 			alert("Failed to update the task Please try again after clearing your browser cache");
 		}
 	}).fail(function(response)  {
+		enableDiv();
     	alert("Sorry. Server unavailable. "+response);
 	});
 	
@@ -471,8 +535,8 @@ function deleteTask(elem){
 					hadndleWidth("remove");
 				}
 				updateTotalTasks($("#listId").val(),"remove");
-				if("Important"==$("#listName").val()){
-					updateTotalTasks(response.todoTask.listId,"remove");
+				if(response.todoTask.important==true){
+					updateTotalTasks($("#hdn-inp-Important").val(),"remove");
 				}
 				enableDiv();
 			}else{
@@ -549,6 +613,9 @@ function switchTaskPlace(taskId,checked){
 		divRow.append(temp);
 		$("#task-item-"+taskId).parent().remove();
 		$(".tasks-cmptd-div").append(divRow);
+		if($(".com-tsk-down-arr").css("display")=="none"){
+			$("#task-item-"+taskId).parent().hide();
+		}
 		updateComptdTskCount("add");
 		
 	}else{
@@ -622,3 +689,188 @@ function updateComptdTskCount(action){
 			$("#list-item-"+listId).parent().find(".list-task-count").hide();
 		}
 	}
+	
+	function removeRemindMe(elem){
+		disableDiv();
+		var tkId = elem.id.substring("task-detail-remind-del-lbl-".length, elem.id.length);
+		var reqPayload = {
+		"remindMe" : false,
+		"taskId" : parseInt(tkId)
+	}
+	$.ajax({
+		url:"task/"+tkId+"/remindMe",
+		type: "PUT",
+    	contentType: "application/json; charset=utf-8",
+    	dataType: "json",
+		data : JSON.stringify(reqPayload)
+	}).done(function(response){
+		if(response.status=="success"){
+			$(elem).parent().parent().find("#task-detail-remind-lbl").parent()
+			.empty().append('<label class="" id="task-detail-remind-lbl">Remind Me</label>');
+			$("#task-detail-remind-img").removeClass("task-detail-remind-img-sld");
+			$(elem).parent().remove();
+			$("#tc-rem-row-"+tkId).empty();
+			enableDiv();
+		}else{
+			alert("Failed to update the task Please try again after clearing your browser cache");
+		}
+	}).fail(function(response)  {
+		enableDiv();
+    	alert("Sorry. Server unavailable. "+response);
+	});
+ }
+ 
+ function showRemDSel(){
+	if(currElem!=undefined){
+		try{
+			if(currElem.id.indexOf("task-detail-remind-del-lbl-")!=-1 || $(currElem).hasClass("task-detail-remind-del")){
+				return false;
+			}
+		}catch(exception){
+			//Nothing to catch
+		}
+	}
+	if($("#selRem").css("display")!="none"){
+		$("#selRem").slideUp(500);
+	}else{
+		$("#selRem").css("width",$("#task-item-detail-remindMe").css("width"));
+		$("#selRem").slideDown(500);
+	}
+}
+
+ function getRemindSelElem(taskObj){
+	var merd="AM";
+	var lth = getLTH();
+	if(lth>12){
+		lth=lth-12;
+		merd="PM";
+	}
+	var nwd = new Date();
+	nwd.setDate(nwd.getDate()+7);
+	nwDay = days[nwd.getDay()];
+	
+	var taskRemSel = '<div class="row task-item-detail-elem task-detail-remind-sel" id="selRem">';
+		taskRemSel+='<div class="row sel-remind-row" onclick="updateRemindMeDate('+taskObj.taskId+',\'lth\')">';
+		taskRemSel+='<label >Later Today at '+lth+' '+merd+'</label>';
+		taskRemSel+='</div>';
+		taskRemSel+='<div class="row sel-remind-row" onclick="updateRemindMeDate('+taskObj.taskId+',\'tmr\')">';
+		taskRemSel+='<label >Tomorrow,&nbsp;&nbsp;9 AM</label>';
+		taskRemSel+='</div>';
+		taskRemSel+='<div class="row sel-remind-row" onclick="updateRemindMeDate('+taskObj.taskId+',\'nwd\')">';
+		taskRemSel+='<label >Next Week  '+nwDay+',&nbsp;&nbsp;9 AM</label>';
+		taskRemSel+='</div>';
+		taskRemSel+='<div class="row sel-remind-row">';
+		taskRemSel+='<label class="col-sm-5">Pick A Date</label>';
+		taskRemSel+='<input class="col-sm-7 pick-td-rem-date" type="datetime-local" id="pick-td-rem-date" onblur="updateRemindMeDate('+taskObj.taskId+',\'pick\')">';
+		taskRemSel+='</div>';
+		
+		return taskRemSel;
+ }
+ 
+ function getLTH(){
+	var today = new Date();
+	var lth = today.getHours()+4;
+	if(lth>24){
+		lth = lth-24;
+	}
+	return lth;
+}
+
+function updateRemindMeDate(tkId,when){
+	disableDiv();
+	var remindTime;
+	/*var today = new Date();
+	var day=today.getDate();
+	if(when=="lth"){
+		var lth = getLTH();
+		lth=lth.toString();
+		if(lth.indexOf("0")==-1){
+			lth="0"+lth;
+		}
+		day=day.toString();
+		if(day.indexOf("0")==-1){
+			day="0"+day;
+		}
+		remindTime = today.getFullYear()+"-"+monthsI[today.getMonth()]+"-"+day+"T"+lth+":00";
+	}
+	if(when=="tmr"){
+		var tmr = new Date();
+		tmr.setDate(tmr.getDate()+1);
+		day=tmr.getDate();
+		if(day<10){
+			day="0"+day;
+		}
+		remindTime = tmr.getFullYear()+"-"+monthsI[tmr.getMonth()]+"-"+day+"T09:00";
+	}
+	if(when=="nwd"){
+		var nwd = new Date();
+		nwd.setDate(nwd.getDate()+7);
+		day=nwd.getDate();
+		if(day<10){
+			day="0"+day;
+		}
+		remindTime = nwd.getFullYear()+"-"+monthsI[nwd.getMonth()]+"-"+day+"T09:00";
+	}*/
+	if(when=="pick"){
+		remindTime = $("#pick-td-rem-date").val();
+	}else{
+		remindTime = getDateTime(when);
+	}
+	var reqPayload = {
+		"remindTime" : remindTime,
+		"remindMe" : true,
+		"taskId" : parseInt(tkId)
+	}
+	$.ajax({
+		url:"task/"+tkId+"/remindMeDate",
+		type: "PUT",
+    	contentType: "application/json; charset=utf-8",
+    	dataType: "json",
+		data : JSON.stringify(reqPayload)
+	}).done(function(response){
+		enableDiv();
+		if(response.status=="success"){
+			$("#task-item-detail-remindMe").empty().append(getTDRemindMe(response.todoTask,"update"));
+			$("#selRem").slideUp();
+			$("#tc-rem-row-"+tkId).empty().append(getRemTskChild(response.todoTask));
+		}else{
+			alert("Failed to update the task Please try again after clearing your browser cache");
+		}
+	}).fail(function(response)  {
+		enableDiv();
+    	alert("Sorry. Server unavailable. "+response);
+	});
+}
+
+function getDateTime(when){
+	var tDate = new Date();
+	var lth = "09";
+	if(when=="lth"){
+		lth = getLTH();
+		if(lth<10){
+			lth="0"+lth;
+		}
+	}else if(when=="tmr"){
+		tDate.setDate(tDate.getDate()+1);
+	}else if(when=="nwd"){
+		tDate.setDate(tDate.getDate()+7);
+	}
+	day=tDate.getDate();
+	if(day<10){
+		day="0"+day;
+	}
+	return remindTime = tDate.getFullYear()+"-"+monthsI[tDate.getMonth()]+"-"+day+"T"+lth+":00";
+}
+
+function getRemTskChild(taskObj){
+	var remTskChild = '<img alt="." src="../static_resources/images/dot-blue.png" style="height: 0.2em;margin: 5px;">';
+		remTskChild+= '<img alt="due date" src="../static_resources/images/bell-blue.png" style="height: 0.8em">';
+		remTskChild+= '<label style="font-size: 12px">&nbsp;'+covertDateT(taskObj.remindTime)+'</label>';
+		return remTskChild;
+}
+
+function getNoteTskChild(){
+	var ntTskChild = '<img alt="black dot" src="../static_resources/images/dot-blue.png" style="height: 0.2em;margin: 5px;">';
+		ntTskChild+= '<img alt="note" src="../static_resources/images/note-blue-s1.png" style="height: 0.8em">';
+		return ntTskChild;
+}

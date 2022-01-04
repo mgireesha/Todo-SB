@@ -1,6 +1,7 @@
 package com.gmt.todo.controller;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -179,6 +180,12 @@ public class HomeController {
 	@RequestMapping("/updateUsernameToTask")
 	public List<TodoTask> updateUsernameToTask(){
 		return persistCSVSerice.updateUserIdToTasks();
+	}
+	
+	@RequestMapping("/testLT/{danteAndTime}")
+	public String testLT(@PathVariable String danteAndTime) {
+		LocalDateTime dateTime = LocalDateTime.of(null, null);
+		return dateTime.toString();
 	}
 
 }

@@ -17,5 +17,7 @@ public interface TodoTaskRepository extends CrudRepository<TodoTask, Long> {
 	TodoTask getByTaskId(Long taskId);
 	
 	TodoTask getByTaskName(String taskName);
+	
+	List<TodoTask> getByUserId(String userName);
 
 }

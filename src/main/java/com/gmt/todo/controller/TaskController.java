@@ -1,5 +1,6 @@
 package com.gmt.todo.controller;
 
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -75,6 +76,11 @@ public class TaskController {
 	@RequestMapping(method = RequestMethod.GET, value = "task/getTasksByListId/{listId}")
 	public Map getTodoTasksByListId(@PathVariable String listId) {
 		return taskService.getTasksByListId(Long.parseLong(listId));
+	}
+	
+	@RequestMapping("task/getUserTasks")
+	public List<TodoTask> getAllTasksForUser(){
+		return taskService.getAllTasksForUser();
 	}
 	
 	

@@ -393,16 +393,32 @@ task-add-due-date, focus {
     color: #7f6087;
     appearance: none;
     -webkit-appearance: none;
-        font-family: "Helvetica", arial, sans-serif;
+    font-family: "Helvetica", arial, sans-serif;
     font-size: 12px;
     border: 1px solid #96a2a5;
     background: beige;
     padding: 5px;
     display: inline-block !important;
     visibility: visible !important;
-        border-radius: 5px;
+    border-radius: 5px;
     margin-top: 2px;
     
+}
+
+.pick-td-rem-date{
+	height: 2.8em;
+    color: #7f6087;
+    appearance: none;
+    -webkit-appearance: none;
+    font-family: "Helvetica", arial, sans-serif;
+    font-size: 12px;
+    border: 1px solid #96a2a5;
+    background: beige;
+    padding: 5px;
+    display: inline-block !important;
+    visibility: visible !important;
+    border-radius: 5px;
+    margin-top: 2px;
 }
 
 .task-item-add-field{
@@ -444,6 +460,13 @@ task-add-due-date, focus {
 .task-item-chkbx-detail{
 	    background-color: #2e2729;
 }
+
+.task-item-detail-remindMe:hover{
+	background-color: #1e1e1e;
+}
+.task-item-detail-remindMe, .task-item-detail-remindMe *:hover{
+	cursor: pointer;
+}
 .selected-task{
 	/* margin: 4px; */
     border: 4px solid #2ea37e;
@@ -479,6 +502,17 @@ task-add-due-date, focus {
 .task-detail-remind-div{
 	padding: 0;
     padding-top: 6px;
+}
+.task-detail-remind-del{
+	text-align: center;
+	border-radius: 4px;
+	color: #b5b3b3;
+}
+.task-detail-remind-del>label, .task-detail-remind-del:hover{
+	cursor: pointer;
+}
+.task-detail-remind-del:hover{
+	background-color: #403a3a;
 }
 .task-detail-remind-img-sld{
 	height: 1.4em;
@@ -574,4 +608,30 @@ task-add-due-date, focus {
 	content: "\2606";
    position: absolute;
    visibility:visible;
+}
+
+.task-detail-remind-sel{
+	position: absolute;
+	margin: 0;
+	padding: 0;
+	margin-left: 10px;
+	margin-top: -8px;
+	border: 1px solid #656562;
+	display: none;
+}
+
+
+.sel-remind-row{
+	padding:10px;
+	border-bottom: 1px solid #666262;
+	margin-left: 0px;
+	
+}
+
+.sel-remind-row, .sel-remind-row *:hover{
+	cursor: pointer;
+}
+
+.tc-row{
+	display: inline;
 }

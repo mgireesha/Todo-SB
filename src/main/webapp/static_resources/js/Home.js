@@ -3,6 +3,7 @@
  */
  var days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
  var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+ var monthsI = ['01','02','03','04','05','06','07','08','09','10','11','12'];
  var currElem = null;
  $(document).mousedown(function(e) {
     currElem = e.target;
@@ -43,6 +44,7 @@
 		}
 		
 	}).fail(function(response)  {
+		enableDiv();
 		if(response.status!=null){
 			alert(response.status+" : "+response.responseJSON.error);
 		}else{
@@ -271,6 +273,17 @@ function hadndleErrorResp(response){
 function covertDateT(date){
 	var d = new Date(date);
 	return cDate = days[d.getDay()]+", "+months[d.getMonth()]+" "+d.getDate()+" "+d.getFullYear();
+}
+
+function getTimeFromDate(date){
+	var d = new Date(date);
+	var merd = "AM";
+	var hrs=d.getHours();
+	if(hrs>12){
+		hrs=hrs-12;
+		merd="PM";
+	}
+	return hrs+":"+d.getMinutes()+" "+merd;
 }
 
 function covertDateS(date){

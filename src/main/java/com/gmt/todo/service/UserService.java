@@ -62,6 +62,7 @@ public class UserService {
 		TodoList todoList = new TodoList("Tasks",user.getUserName(),LocalDate.now(),listService.generateGroupId(),"default");
 		todoList = listService.addNewList(todoList, new TodoUserDetails(user));
 		TodoTask todoTask = new TodoTask("Get up early!", "", false, "Go to work", todoList.getListId(), todoList.getListName());
+		todoTask.setUserId(user.getUserName());
 		taskService.addNewTask(todoTask);
 		return user;
 	}

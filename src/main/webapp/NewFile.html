@@ -17,10 +17,6 @@
 <script type="text/javascript" src="../static_resources/js/Home.js"></script>
 <script type="text/javascript" src="../static_resources/js/Task.js"></script>
 <link href="../static_resources/css/Home.css" rel="stylesheet">
-
-<!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script> -->
 </head>
 <body onload="triggerFirstList()">
 
@@ -34,100 +30,87 @@
 		<div class="row">
 			<div class="col-sm-3 list-div" style="width: 307.35px;">
 				<div class="list-item-main" id="list-item-main">
-					<div style="background-color: #2e2729; border-radius: 5px;margin-top: 10px;">
 
-						<div class="row list-item-row" style="margin: 0;">
-							<div class="col-sm-10 list-item" id="list-item-1"
-								onclick="showTasks(1)">
-								<label>Tasks</label>
-							</div>
-							<div class="col-sm-1 list-item-delete-def"
-								id="list-item-delete-1" onclick="">
-								<label style="display: none">x</label>
-							</div>
+					<div class="row list-item-row" style="margin-left: 0">
+						<div class="col-sm-10 list-item" id="list-item-8"
+							onclick="showTasks(8)">
+							<label>Tasks</label>
 
 						</div>
-						<div class="row list-item-row" style="margin: 0">
-							<div class="col-sm-10 list-item" id="list-item-147"
-								onclick="showTasks(147)">
-								<label>Important</label>
-							</div>
-							<div class="col-sm-1 list-item-delete-def"
-								id="list-item-delete-147" onclick="">
-								<label style="display: none">x</label>
-							</div>
+						<div class="col-sm-1 list-item-delete-def" id="list-item-delete-8"
+							onclick="">
+							<label style="display: none">x</label> <label
+								class="list-task-count list-task-count-def"
+								style="display: inline">3</label>
+
 						</div>
 					</div>
 
-<div style="background-color: #2e2729; border-radius: 5px;margin-top: 10px;">
+					<input type="hidden" id="hdn-inp-Tasks" value="8">
 
 
-					<div class="row list-item-row" style="margin: 0">
-						<div class="col-sm-10 list-item" id="list-item-4"
-							onclick="showTasks(4)">
-							<label>YouTube Learning</label>
+					<div class="row list-item-row" style="margin-left: 0">
+						<div class="col-sm-10 list-item" id="list-item-148"
+							onclick="showTasks(148)">
+							<label>Important</label>
+
 						</div>
-						<div class="col-sm-1 list-item-delete" id="list-item-delete-4"
+						<div class="col-sm-1 list-item-delete-def"
+							id="list-item-delete-148" onclick="">
+							<label style="display: none">x</label> <label
+								class="list-task-count list-task-count-def"
+								style="display: inline">5</label>
+
+						</div>
+					</div>
+
+					<input type="hidden" id="hdn-inp-Important" value="148">
+
+
+					<div class="row list-item-row" style="margin-left: 0">
+						<div class="col-sm-10 list-item" id="list-item-7"
+							onclick="showTasks(7)">
+							<label>Study Plans</label> <label class="list-task-count"
+								style="display: inline">1</label>
+
+						</div>
+						<div class="col-sm-1 list-item-delete" id="list-item-delete-7"
 							onclick="deleteList(this)">
 							<label style="display: block">x</label>
+
 						</div>
 					</div>
 
-					<div class="row list-item-row" style="margin: 0">
-						<div class="col-sm-10 list-item" id="list-item-5"
-							onclick="showTasks(5)">
-							<label>Hampe - Dec 2021</label>
+
+					<div class="row list-item-row" style="margin-left: 0">
+						<div class="col-sm-10 list-item" id="list-item-129"
+							onclick="showTasks(129)">
+							<label>sdfsdfsdf</label> <label class="list-task-count"
+								style="display: inline">4</label>
+
 						</div>
-						<div class="col-sm-1 list-item-delete" id="list-item-delete-5"
+						<div class="col-sm-1 list-item-delete" id="list-item-delete-129"
 							onclick="deleteList(this)">
 							<label style="display: block">x</label>
+
 						</div>
 					</div>
 
-					<div class="row list-item-row" style="margin: 0">
-						<div class="col-sm-10 list-item" id="list-item-3"
-							onclick="showTasks(3)">
-							<label>Interview preparations 1</label>
+
+					<div class="row list-item-row" style="margin-left: 0">
+						<div class="col-sm-10 list-item" id="list-item-130"
+							onclick="showTasks(130)">
+							<label>sdfsdfdf sdf sdfdf</label> <label class="list-task-count"
+								style="display: inline">2</label>
+
 						</div>
-						<div class="col-sm-1 list-item-delete" id="list-item-delete-3"
+						<div class="col-sm-1 list-item-delete" id="list-item-delete-130"
 							onclick="deleteList(this)">
 							<label style="display: block">x</label>
+
 						</div>
 					</div>
 
-					<div class="row list-item-row" style="margin: 0">
-						<div class="col-sm-10 list-item" id="list-item-116"
-							onclick="showTasks(116)">
-							<label>SW Learning</label>
-						</div>
-						<div class="col-sm-1 list-item-delete" id="list-item-delete-116"
-							onclick="deleteList(this)">
-							<label style="display: block">x</label>
-						</div>
-					</div>
-
-					<div class="row list-item-row" style="margin: 0">
-						<div class="col-sm-10 list-item" id="list-item-124"
-							onclick="showTasks(124)">
-							<label>sdasdasd</label>
-						</div>
-						<div class="col-sm-1 list-item-delete" id="list-item-delete-124"
-							onclick="deleteList(this)">
-							<label style="display: block">x</label>
-						</div>
-					</div>
-
-					<div class="row list-item-row" style="margin: 0">
-						<div class="col-sm-10 list-item" id="list-item-165"
-							onclick="showTasks(165)">
-							<label>Created on Thu, Dec 30 2021</label>
-						</div>
-						<div class="col-sm-1 list-item-delete" id="list-item-delete-165"
-							onclick="deleteList(this)">
-							<label style="display: block">x</label>
-						</div>
-					</div>
-					</div>
 
 				</div>
 
@@ -153,8 +136,8 @@
 			<div class="task-div col-sm-6" id="task-div">
 				<div class="row task-list-name">
 					<h2 class="task-list-name-header" onclick=""
-						id="task-list-name-header-1">Tasks</h2>
-					<input type="text" id="task-list-name-text-1"
+						id="task-list-name-header-8">Tasks</h2>
+					<input type="text" id="task-list-name-text-8"
 						class="task-list-name-text form-control"
 						style="background-color: rgb(64, 58, 58); display: none;"
 						onblur="updateListName(this)">
@@ -162,23 +145,44 @@
 				<div id="task-item-main">
 					<div class="tasks-n-cmptd-div">
 						<div class="row" style="margin: 0">
-							<div class="col-sm-10 task-item selected-task" id="task-item-9"
+							<div class="col-sm-10 task-item" id="task-item-210"
 								onclick="showTaskDetails(this)">
-								<input type="checkbox" id="task-chkbx-9" class="task-item-chkbx"
-									"task-chkbx-9"="" onclick="completeTask(this)"> <label
-									class="task-item-label" id="task-label-9">Get UP Early!</label>
+								<input type="checkbox" id="task-chkbx-210"
+									class="task-item-chkbx" "task-chkbx-210"=""
+									onclick="completeTask(this)"> <label
+									class="task-item-label" id="task-label-210">nbzxvcvx
+									zxnc</label>
+								<div class="row">
+									<label class="col-sm-1" style="width: 1.5em"></label>
+									<div class="col-sm-11"></div>
+								</div>
+							</div>
+							<div class="col-sm-1 task-item-delete" id="task-delete-label-210"
+								onclick="deleteTask(this)" title="Delete Task">
+								<img alt="black dot"
+									src="../static_resources/images/delete-grey-20x26.png"
+									style="height: 1.8em;">
+							</div>
+						</div>
+						<div class="row" style="margin: 0">
+							<div class="col-sm-10 task-item selected-task" id="task-item-213"
+								onclick="showTaskDetails(this)">
+								<input type="checkbox" id="task-chkbx-213"
+									class="task-item-chkbx" "task-chkbx-213"=""
+									onclick="completeTask(this)"> <label
+									class="task-item-label" id="task-label-213">zxzcxzc</label>
 								<div class="row">
 									<label class="col-sm-1" style="width: 1.5em"></label>
 									<div class="col-sm-11">
 										<img alt="due date"
 											src="../static_resources/images/calender-blue.png"
 											style="height: 0.8em"><label style="font-size: 12px">&nbsp;Mon,
-											Dec 20 2021</label>
+											Jan 24 2022</label>
 									</div>
 								</div>
 							</div>
 							<div class="col-sm-1 task-item-delete selected-task-delete"
-								id="task-delete-label-9" onclick="deleteTask(this)"
+								id="task-delete-label-213" onclick="deleteTask(this)"
 								title="Delete Task">
 								<img alt="black dot"
 									src="../static_resources/images/delete-grey-20x26.png"
@@ -193,43 +197,32 @@
 							onclick="hideShowCTasks()"><span style="display: none;"
 							class="com-tsk-right-arr">〉 </span><span class="com-tsk-down-arr">∨
 						</span><span style="font-style: italic;">Completed&nbsp;</span><span
-							class="tasks-cmptd-nbr">2</span></label>
+							class="tasks-cmptd-nbr">1</span></label>
 					</div>
 					<div class="tasks-cmptd-div">
 						<div class="row completed" style="margin: 0">
-							<div class="col-sm-10 task-item" id="task-item-163"
+							<div class="col-sm-10 task-item" id="task-item-31"
 								onclick="showTaskDetails(this)">
-								<input type="checkbox" id="task-chkbx-163"
-									class="task-item-chkbx" "task-chkbx-163"=""
+								<input type="checkbox" id="task-chkbx-31"
+									class="task-item-chkbx" "task-chkbx-31"=""
 									onclick="completeTask(this)" checked="checked"> <label
-									class="task-item-label strike-line" id="task-label-163">imp
-									test 2</label>
+									class="task-item-label strike-line" id="task-label-31">Get
+									UP Early2</label>
 								<div class="row">
 									<label class="col-sm-1" style="width: 1.5em"></label>
-									<div class="col-sm-11"></div>
+									<div class="col-sm-11">
+										<img alt="due date"
+											src="../static_resources/images/calender-blue.png"
+											style="height: 0.8em"><label style="font-size: 12px">&nbsp;Mon,
+											Dec 20 2021</label><img alt="black dot"
+											src="../static_resources/images/dot-blue.png"
+											style="height: 0.2em; margin: 5px;"><img alt="note"
+											src="../static_resources/images/note-blue-s1.png"
+											style="height: 0.8em">
+									</div>
 								</div>
 							</div>
-							<div class="col-sm-1 task-item-delete" id="task-delete-label-163"
-								onclick="deleteTask(this)" title="Delete Task">
-								<img alt="black dot"
-									src="../static_resources/images/delete-grey-20x26.png"
-									style="height: 1.8em;">
-							</div>
-						</div>
-						<div class="row completed" style="margin: 0">
-							<div class="col-sm-10 task-item" id="task-item-162"
-								onclick="showTaskDetails(this)">
-								<input type="checkbox" id="task-chkbx-162"
-									class="task-item-chkbx" "task-chkbx-162"=""
-									onclick="completeTask(this)" checked="checked"> <label
-									class="task-item-label strike-line" id="task-label-162">imp
-									test 1</label>
-								<div class="row">
-									<label class="col-sm-1" style="width: 1.5em"></label>
-									<div class="col-sm-11"></div>
-								</div>
-							</div>
-							<div class="col-sm-1 task-item-delete" id="task-delete-label-162"
+							<div class="col-sm-1 task-item-delete" id="task-delete-label-31"
 								onclick="deleteTask(this)" title="Delete Task">
 								<img alt="black dot"
 									src="../static_resources/images/delete-grey-20x26.png"
@@ -268,7 +261,7 @@
 
 
 					<input type="hidden" name="listName" id="listName" value="Tasks">
-					<input type="hidden" name="listId" id="listId" value="1">
+					<input type="hidden" name="listId" id="listId" value="8">
 				</div>
 
 			</div>
@@ -276,21 +269,21 @@
 				style="max-height: 566.391px;">
 				<div class="task-detail-main">
 					<div class="row task-item-detail-name" id="task-item-detail-name">
-						<input type="checkbox" id="task-detail-chkbx-9"
+						<input type="checkbox" id="task-detail-chkbx-213"
 							onclick="completeTask(this)"
 							class="task-item-chkbx-detail task-item-chkbx "
-							name="task-detail-chkbx-9"><label
-							id="task-detail-label-9" class="task-item-label"
-							onclick="switchTaskNameLabel(this)">Get UP Early!</label><input
-							type="text" id="task-detail-label-text-9"
+							name="task-detail-chkbx-213"><label
+							id="task-detail-label-213" class="task-item-label"
+							onclick="switchTaskNameLabel(this)">zxzcxzc</label><input
+							type="text" id="task-detail-label-text-213"
 							class="task-detail-label-text form-control"
 							style="background-color: #403a3a; display: none;"
-							onblur="updateTaskName(this)"><input
-							id="task-detail-star-9" class="task-detail-star" type="checkbox"
-							title="Important" onclick="markTaskImp(this)">
+							onchange="updateTaskName(this)"><input
+							id="task-detail-star-213" class="task-detail-star"
+							type="checkbox" title="Important" onclick="markTaskImp(this)">
 					</div>
 					<div class="row task-item-detail-remindMe task-item-detail-elem"
-						id="task-item-detail-remindMe">
+						id="task-item-detail-remindMe" onclick="showRemDSel()">
 						<div class="col-sm-1 task-detail-remind-div">
 							<img alt="remind" class="task-detail-remind-img"
 								id="task-detail-remind-img"
@@ -298,27 +291,39 @@
 								onclick="remindMeTD()">
 						</div>
 						<div class="col-sm-10 task-detail-font-size">
-							<label class="" id="task-detail-remind-lbl">Remind Me at
-								9 AM</label><br>
-							<label>Mon, Dec 20 2021</label>
+							<label class="" id="task-detail-remind-lbl">Remind Me</label><br>
 						</div>
 					</div>
-					<div class="row task-item-detail-elem">
+					<div class="row task-item-detail-elem task-detail-remind-sel" id="selRem">
+						<div class="row">
+							<label >Later Today at 11:30 PM</label>
+						</div>
+						<div class="row">
+							<label >Tomorrow</label>
+						</div>
+						<div class="row">
+							<label >Next Week</label>
+						</div>
+						<div class="row">
+							<label >Pick A Date and Time</label>
+						</div>
+					</div>
+					<div class="row task-item-detail-elem" style="">
 						<label class="task-detail-font-size	task-detail-note-lbl">Note</label>
 						<textarea rows="3" cols="2" placeholder="Add Note"
-							class="task-detail-note-txt" id="task-detail-note-txt-9"
+							class="task-detail-note-txt" id="task-detail-note-txt-213"
 							onblur="addNote(this)"></textarea>
 					</div>
 				</div>
 				<div class="row task-detail-delete">
 					<div class="col-sm-10"
 						style="text-align: center; margin-top: 0.7em;">
-						<label class="task-detail-crtd-lbl">Created on Mon, Dec 6
-							2021</label>
+						<label class="task-detail-crtd-lbl">Created on Sun, Jan 2
+							2022</label>
 					</div>
 					<div class="col-sm-2" style="margin-top: 0.7em;">
 						<img alt="delete" class="task-detail-delete-label"
-							id="task-delete-label-9"
+							id="task-delete-label-213"
 							src="../static_resources/images/delete-red-20x27.png"
 							onclick="deleteTask(this)">
 					</div>
@@ -326,7 +331,7 @@
 			</div>
 			<input type="hidden" name="reducedListDivWidth"
 				id="reducedListDivWidth" value="341.5"> <input type="hidden"
-				name="selectedTaskId" id="selectedTaskId" value="9">
+				name="selectedTaskId" id="selectedTaskId" value="213">
 		</div>
 	</div>
 	<div id="disable-div"

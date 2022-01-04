@@ -1,6 +1,7 @@
 package com.gmt.todo.model;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -18,6 +19,7 @@ public class TodoTask {
 	private String taskName;
 	private String taskDescription;
 	private boolean remindMe;
+	private LocalDateTime remindTime;
 	private String note;
 	private boolean isCompleted;
 	private LocalDate dateCreated;
@@ -117,6 +119,13 @@ public class TodoTask {
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
+	
+	public LocalDateTime getRemindTime() {
+		return remindTime;
+	}
+	public void setRemindTime(LocalDateTime remindTime) {
+		this.remindTime = remindTime;
+	}
 	public TodoTask(long taskId, String taskName, String taskDescription, boolean remindMe, String note, long listId, String listName) {
 		super();
 		this.taskId = taskId;
@@ -176,9 +185,10 @@ public class TodoTask {
 	@Override
 	public String toString() {
 		return "TodoTask [taskId=" + taskId + ", taskName=" + taskName + ", taskDescription=" + taskDescription
-				+ ", remindMe=" + remindMe + ", note=" + note + ", isCompleted=" + isCompleted + ", dateCreated="
-				+ dateCreated + ", dateCompleted=" + dateCompleted + ", listId=" + listId + ", listName=" + listName
-				+ "]";
+				+ ", remindMe=" + remindMe + ", remindTime=" + remindTime + ", note=" + note + ", isCompleted="
+				+ isCompleted + ", dateCreated=" + dateCreated + ", dateCompleted=" + dateCompleted + ", dueDate="
+				+ dueDate + ", isRepeat=" + isRepeat + ", isImportant=" + isImportant + ", userId=" + userId
+				+ ", listId=" + listId + ", listName=" + listName + "]";
 	}
 	
 	
