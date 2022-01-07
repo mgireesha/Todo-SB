@@ -27,6 +27,7 @@
 						<th>Name</th>
 						<th>Email</th>
 						<th>Roles</th>
+						<th>Password</th>
 						<th>Action</th>
 					</tr>
 				</thead>
@@ -37,6 +38,7 @@
 							<td>${user.getName()}</td>
 							<td>${user.getUserName()}</td>
 							<td>${user.getRoles()}</td>
+							<td>${user.getPassWord()}</td>
 							<td>
 								<button class="btn btn-outline-danger btn-sm" onclick="deleteUser(${user.getId()})">Delete</button>
 							</td>

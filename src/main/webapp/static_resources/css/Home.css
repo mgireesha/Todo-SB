@@ -464,7 +464,7 @@ task-add-due-date, focus {
 .task-item-detail-dueDate:hover, .task-item-detail-remindMe:hover{
 	background-color: #1e1e1e;
 }
-.task-item-detail-remindMe, .task-item-detail-remindMe *:hover{
+.task-item-detail-remindMe, .task-item-detail-remindMe *:hover, .task-item-detail-dueDate, .task-item-detail-dueDate *:hover{
 	cursor: pointer;
 }
 .selected-task{
@@ -516,11 +516,11 @@ task-add-due-date, focus {
 	text-align: center;
 	border-radius: 4px;
 	color: #b5b3b3;
-	padding: 3px;
+	padding: 6px;
 }
-.task-detail-dueDate-del, .task-detail-dueDate-del *:hover,.task-detail-remind-del>label, .task-detail-remind-del:hover{
+/* .task-detail-dueDate-del, .task-detail-dueDate-del *:hover,.task-detail-remind-del>label, .task-detail-remind-del:hover{
 	cursor: pointer;
-}
+} */
 .task-detail-dueDate-del:hover,.task-detail-remind-del:hover{
 	background-color: #403a3a;
 }
@@ -644,4 +644,15 @@ task-add-due-date, focus {
 
 .tc-row{
 	display: inline;
+}
+.task-detail-rd-sel-close{
+	text-align: center;
+	color: #cf2020;
+	border-radius: 5px;
+}
+.task-detail-rd-sel-close:hover{
+	background-color: #1e1e1e;
+}
+.task-detail-rd-sel-close, .task-detail-rd-sel-close *:hover{
+	cursor: pointer;
 }

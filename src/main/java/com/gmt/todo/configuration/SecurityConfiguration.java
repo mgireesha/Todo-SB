@@ -32,7 +32,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	protected void configure(HttpSecurity http) throws Exception {
 		http
         	.authorizeRequests()
-            .antMatchers("/static_resources/**","/todo/signup","/todo/runcsv").permitAll()
+            .antMatchers("/static_resources/**","/todo/signup","/todo/init-reset-pwd","/todo/reset-pwd","/todo/reset-pwd-checkOTP").permitAll()
             .antMatchers("/todo/ManageUsers").hasRole("ADMIN")
    		 	.antMatchers("/todo/**").hasAnyRole("USER","ADMIN")
             .anyRequest().authenticated()

@@ -60,6 +60,8 @@ public class UserService {
 		user.setActive(true);
 		user = userRepository.save(user);
 		TodoList todoList = new TodoList("Tasks",user.getUserName(),LocalDate.now(),listService.generateGroupId(),"default");
+		TodoList imp = new TodoList("Important",user.getUserName(),LocalDate.now(),listService.generateGroupId(),"default");
+		imp = listService.addNewList(imp, new TodoUserDetails(user));
 		todoList = listService.addNewList(todoList, new TodoUserDetails(user));
 		TodoTask todoTask = new TodoTask("Get up early!", "", false, "Go to work", todoList.getListId(), todoList.getListName());
 		todoTask.setUserId(user.getUserName());

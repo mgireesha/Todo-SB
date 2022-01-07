@@ -72,7 +72,7 @@
 				taskChid+='<img alt="." src="../static_resources/images/dot-blue.png" style="height: 0.2em;margin: 5px;">';
 			}
 			taskChid+='<img alt="due date" src="../static_resources/images/calender-blue.png" style="height: 0.8em">';
-			taskChid+='<label style="font-size: 12px">&nbsp;'+covertDateT(taskObj.dueDate)+'</label>';
+			taskChid+='<label style="font-size: 12px">&nbsp;'+convertDateT(taskObj.dueDate)+'</label>';
 			isDotRequired = true;
 		}
 		taskChid+='</div>';
@@ -83,7 +83,7 @@
 				isDotRequired = false;
 			}
 			taskChid+='<img alt="due date" src="../static_resources/images/bell-blue.png" style="height: 0.8em">';
-			taskChid+='<label style="font-size: 12px">&nbsp;'+covertDateT(taskObj.remindTime)+'</label>';
+			taskChid+='<label style="font-size: 12px">&nbsp;'+convertDateT(taskObj.remindTime)+'</label>';
 			isDotRequired = true;
 		}
 		taskChid+='</div>';
@@ -167,6 +167,7 @@ function completeTask(elem){
 		if (elem.checked == true) {
 			$("#task-detail-chkbx-" + tkId).prop("checked", true);
 			$("#task-chkbx-" + tkId).prop("checked", true);
+			$("#sound-completed")[0].play();
 		} else {
 			$("#task-detail-chkbx-" + tkId).prop('checked', false);
 			$("#task-chkbx-" + tkId).prop('checked', false);
@@ -312,6 +313,9 @@ function buildTaskDetails(taskObj){
 		taskDetailMain.append(taskDName);
 		
 		taskDetailMain.append(getTDDueDate(taskObj));
+		if(taskObj.dueDate=="" || taskObj.dueDate==null){
+			$(taskDetailMain).find("#task-detail-dueDate-del").hide();
+		}
 		taskDetailMain.append(getRemindSelElem(taskObj,"dueDate"));
 		
 	/*var taskDRemindMe = $('<div class="row task-item-detail-remindMe task-item-detail-elem" id="task-item-detail-remindMe" onclick="showRemDSel()">');
@@ -335,7 +339,7 @@ function buildTaskDetails(taskObj){
 		}
 		taskDetailRemindDiv	 += '</label><br>';
 		if(taskObj.remindMe==true){
-			taskDetailRemindDiv	 += '<label>'+covertDateT(taskObj.remindTime)+'</label>';
+			taskDetailRemindDiv	 += '<label>'+convertDateT(taskObj.remindTime)+'</label>';
 		}
 		taskDetailRemindDiv	 += '</div>';
 		
@@ -365,7 +369,7 @@ function buildTaskDetails(taskObj){
 		var taskDetailDelete = $('<div class="row task-detail-delete">');
 		
 		var taskDetailCrtd ='<div class="col-sm-10" style="text-align: center;margin-top: 0.7em;">';
-			taskDetailCrtd+='<label class="task-detail-crtd-lbl">Created on '+covertDateT(taskObj.dateCreated)+'</label>';
+			taskDetailCrtd+='<label class="task-detail-crtd-lbl">Created on '+convertDateT(taskObj.dateCreated)+'</label>';
 			taskDetailCrtd+='</div>';
 		var taskDetailDltImg ='<div class="col-sm-2" style="margin-top: 0.7em;">';
 			taskDetailDltImg+='<img alt="delete" class="task-detail-delete-label" id="task-delete-label-'+taskObj.taskId+'" src="../static_resources/images/delete-red-20x27.png" onclick="deleteTask(this)">';
@@ -410,7 +414,7 @@ function getTDRemindMe(taskObj,action){
 		}
 		taskDetailRemindDiv	 += '</label><br>';
 		if(taskObj.remindMe==true){
-			taskDetailRemindDiv	 += '<label>'+covertDateT(taskObj.remindTime)+'</label>';
+			taskDetailRemindDiv	 += '<label>'+convertDateT(taskObj.remindTime)+'</label>';
 		}
 		taskDetailRemindDiv	 += '</div>';
 		
@@ -418,7 +422,7 @@ function getTDRemindMe(taskObj,action){
 		//taskDRemindMe+='</div>';
 		if(taskObj.remindMe){
 			var taskRemindDel = '<div class="col-sm-1 task-detail-remind-div task-detail-remind-del">';
-			taskRemindDel+= '<label id="task-detail-remind-del-lbl-'+taskObj.taskId+'" onclick="removeRemindMe(this)">X</label>';
+			taskRemindDel+= '<label id="task-detail-remind-del-lbl-'+taskObj.taskId+'" onclick="removeRemindMe(this,\'remindMe\')">X</label>';
 			taskRemindDel+= '</div>';
 			
 		taskDRemindMe+=taskRemindDel;
@@ -556,10 +560,6 @@ function deleteTask(elem){
 	}
 }
 
-
-
-
-
 function remindMe(){
 	var isRemindMe = $("#remindMe").val();
 	if(isRemindMe=="true"){
@@ -693,27 +693,42 @@ function updateComptdTskCount(action){
 		}
 	}
 	
-	function removeRemindMe(elem){
+	function removeRemindMe(elem,action){
 		disableDiv();
-		var tkId = elem.id.substring("task-detail-remind-del-lbl-".length, elem.id.length);
+		var tkId = elem.id;
+		if(action=="remindMe"){
+			tkId = tkId.substring("task-detail-remind-del-lbl-".length, elem.id.length);
+		}else{
+			tkId = tkId.substring("task-detail-dueDate-del-lbl-".length, elem.id.length);
+		}
 		var reqPayload = {
-		"remindMe" : false,
 		"taskId" : parseInt(tkId)
 	}
+	if(action=="remindMe"){
+		reqPayload.remindMe = false;
+	}else{
+		reqPayload.dueDate = null;
+	}
 	$.ajax({
-		url:"task/"+tkId+"/remindMe",
+		url:"task/"+tkId+"/"+action+"",
 		type: "PUT",
     	contentType: "application/json; charset=utf-8",
     	dataType: "json",
 		data : JSON.stringify(reqPayload)
 	}).done(function(response){
+		enableDiv();
 		if(response.status=="success"){
-			$(elem).parent().parent().find("#task-detail-remind-lbl").parent()
-			.empty().append('<label class="" id="task-detail-remind-lbl">Remind Me</label>');
-			$("#task-detail-remind-img").removeClass("task-detail-remind-img-sld");
-			$(elem).parent().remove();
-			$("#tc-rem-row-"+tkId).empty();
-			enableDiv();
+			if(action=="remindMe"){
+				$(elem).parent().parent().find("#task-detail-remind-lbl").parent()
+				.empty().append('<label class="" id="task-detail-remind-lbl">Remind Me</label>');
+				$("#task-detail-remind-img").removeClass("task-detail-remind-img-sld");
+				$(elem).parent().remove();
+				$("#tc-rem-row-"+tkId).empty();
+			}else{
+				$("#task-detail-dueDate-span").html("Select a due date");
+				$("#task-detail-dueDate-del").hide();
+				$("#tc-dd-row-"+tkId).empty();
+			}
 		}else{
 			alert("Failed to update the task Please try again after clearing your browser cache");
 		}
@@ -733,6 +748,11 @@ function updateComptdTskCount(action){
 		}catch(exception){
 			//Nothing to catch
 		}
+	}
+	if(obj=="close"){
+		$("#selRem").slideUp(500);
+		$("#selDue").slideUp(500);
+		return fase;
 	}
 	if(obj=="remindMe"){
 		if($("#selRem").css("display")!="none"){
@@ -762,16 +782,21 @@ function updateComptdTskCount(action){
 		lth=lth-12;
 		merd="PM";
 	}
+	if(lth==0){
+		lth=12;
+	}
 	var nwd = new Date();
 	nwd.setDate(nwd.getDate()+7);
 	nwDay = days[nwd.getDay()];
 	var divId="selRem";
+	var dateTId="pick-td-rem-date";
 	if(tdElem=="dueDate"){
 		divId="selDue";
+		dateTId="pick-td-dd-date";
 	}
 	var taskRemSel = '<div class="row task-item-detail-elem task-detail-remind-sel" id="'+divId+'" style="z-index: 100;">';
 		taskRemSel+='<div class="row sel-remind-row" onclick="updateRemindMeDate('+taskObj.taskId+',\'lth\',\''+tdElem+'\')">';
-		taskRemSel+='<label >Later Today at '+lth+' '+merd+'</label>';
+		taskRemSel+='<label>Later Today at '+lth+' '+merd+'</label>';
 		taskRemSel+='</div>';
 		taskRemSel+='<div class="row sel-remind-row" onclick="updateRemindMeDate('+taskObj.taskId+',\'tmr\',\''+tdElem+'\')">';
 		taskRemSel+='<label >Tomorrow,&nbsp;&nbsp;9 AM</label>';
@@ -781,8 +806,12 @@ function updateComptdTskCount(action){
 		taskRemSel+='</div>';
 		taskRemSel+='<div class="row sel-remind-row">';
 		taskRemSel+='<label class="col-sm-5">Pick A Date</label>';
-		taskRemSel+='<input class="col-sm-7 pick-td-rem-date" type="datetime-local" id="pick-td-rem-date" onblur="updateRemindMeDate('+taskObj.taskId+',\'pick\',\''+tdElem+'\')">';
+		taskRemSel+='<input class="col-sm-7 pick-td-rem-date" type="datetime-local" id="'+dateTId+'" onblur="updateRemindMeDate('+taskObj.taskId+',\'pick\',\''+tdElem+'\')">';
 		taskRemSel+='</div>';
+		taskRemSel+='<div class="task-detail-rd-sel-close" onclick="showRemDSel(\'close\')">';
+		taskRemSel+='<label>Close</label>';
+		taskRemSel+='</div>';
+		
 		
 		return taskRemSel;
  }
@@ -790,7 +819,7 @@ function updateComptdTskCount(action){
  function getLTH(){
 	var today = new Date();
 	var lth = today.getHours()+4;
-	if(lth>24){
+	if(lth>=24){
 		lth = lth-24;
 	}
 	return lth;
@@ -799,41 +828,13 @@ function updateComptdTskCount(action){
 function updateRemindMeDate(tkId,when,tdElem){
 	disableDiv();
 	var remindTime;
-	/*var today = new Date();
-	var day=today.getDate();
-	if(when=="lth"){
-		var lth = getLTH();
-		lth=lth.toString();
-		if(lth.indexOf("0")==-1){
-			lth="0"+lth;
-		}
-		day=day.toString();
-		if(day.indexOf("0")==-1){
-			day="0"+day;
-		}
-		remindTime = today.getFullYear()+"-"+monthsI[today.getMonth()]+"-"+day+"T"+lth+":00";
-	}
-	if(when=="tmr"){
-		var tmr = new Date();
-		tmr.setDate(tmr.getDate()+1);
-		day=tmr.getDate();
-		if(day<10){
-			day="0"+day;
-		}
-		remindTime = tmr.getFullYear()+"-"+monthsI[tmr.getMonth()]+"-"+day+"T09:00";
-	}
-	if(when=="nwd"){
-		var nwd = new Date();
-		nwd.setDate(nwd.getDate()+7);
-		day=nwd.getDate();
-		if(day<10){
-			day="0"+day;
-		}
-		remindTime = nwd.getFullYear()+"-"+monthsI[nwd.getMonth()]+"-"+day+"T09:00";
-	}*/
 	var action ="dueDate";
 	if(when=="pick"){
-		remindTime = $("#pick-td-rem-date").val();
+		if(tdElem=="remind"){
+			remindTime = $("#pick-td-rem-date").val();
+		}else{
+			remindTime = $("#pick-td-dd-date").val();
+		}
 	}else{
 		remindTime = getDateTime(when);
 	}
@@ -862,7 +863,8 @@ function updateRemindMeDate(tkId,when,tdElem){
 				$("#selRem").slideUp();
 				$("#tc-rem-row-"+tkId).empty().append(getRemTskChild(response.todoTask));
 			}else{
-				$("#task-detail-dueDate-span").html(response.todoTask.dueDate);
+				$("#task-detail-dueDate-span").html("Due "+convertDateT(response.todoTask.dueDate));
+				$("#task-detail-dueDate-del").show();
 				$("#selDue").slideUp();
 				$("#tc-dd-row-"+tkId).empty().append(getDDTskChild(response.todoTask));
 			}
@@ -881,6 +883,9 @@ function getDateTime(when){
 	var lth = "09";
 	if(when=="lth"){
 		lth = getLTH();
+		if(lth<5){
+			tDate.setDate(tDate.getDate()+1);
+		}
 		if(lth<10){
 			lth="0"+lth;
 		}
@@ -899,12 +904,12 @@ function getDateTime(when){
 function getRemTskChild(taskObj){
 	var remTskChild = '<img alt="." src="../static_resources/images/dot-blue.png" style="height: 0.2em;margin: 5px;">';
 		remTskChild+= '<img alt="due date" src="../static_resources/images/bell-blue.png" style="height: 0.8em">';
-		remTskChild+= '<label style="font-size: 12px">&nbsp;'+covertDateT(taskObj.remindTime)+'</label>';
+		remTskChild+= '<label style="font-size: 12px">&nbsp;'+convertDateT(taskObj.remindTime)+'</label>';
 		return remTskChild;
 }
 function getDDTskChild(taskObj){
 	var ddTskChild = '<img alt="due date" src="../static_resources/images/calender-blue.png" style="height: 0.8em">';
-		ddTskChild+= '<label style="font-size: 12px">&nbsp;'+covertDateT(taskObj.dueDate)+'</label>';
+		ddTskChild+= '<label style="font-size: 12px">&nbsp;'+convertDateT(taskObj.dueDate)+'</label>';
 		return ddTskChild;
 }
 
@@ -915,15 +920,19 @@ function getNoteTskChild(){
 }
 
 function getTDDueDate(taskObj){
+	var dueDate = '<span id="task-detail-dueDate-span">Select a due date</span>';
+	if(taskObj.dueDate!=undefined && taskObj.dueDate!=null){
+		dueDate = '<span id="task-detail-dueDate-span">Due '+convertDateT(taskObj.dueDate)+'</span>';
+	}
 	var taskDDDChild = '<div class="row task-item-detail-dueDate task-item-detail-elem" id="task-item-detail-dueDate" onclick="showRemDSel(\'dueDate\')">';
 		taskDDDChild+='<div class="col-sm-1 task-detail-dueDate-div">';
 		taskDDDChild+='<img alt="due date" class="task-detail-dueDate-img" id="task-detail-remind-img" src="../static_resources/images/calender-blue.png">';
 		taskDDDChild+='</div>';
 		taskDDDChild+='<div class="col-sm-10 task-detail-font-size" style="padding: 10px;">';
-		taskDDDChild+='<label>Due <span id="task-detail-dueDate-span">'+taskObj.dueDate+'</span></label>';
+		taskDDDChild+='<label>'+dueDate+'</label>';
 		taskDDDChild+='</div>';
-		taskDDDChild+='<div class="col-sm-1 task-detail-remind-div task-detail-dueDate-del">';
-		taskDDDChild+='<label id="task-detail-dueDate-del-lbl-'+taskObj.taskId+'" onclick="removeRemindMeDueDate(this)">X</label>';
+		taskDDDChild+='<div class="col-sm-1 task-detail-remind-div task-detail-dueDate-del" id="task-detail-dueDate-del">';
+		taskDDDChild+='<label id="task-detail-dueDate-del-lbl-'+taskObj.taskId+'" onclick="removeRemindMe(this,\'dueDate\')">X</label>';
 		taskDDDChild+='</div>';
 		taskDDDChild+='</div>';
 		return taskDDDChild;

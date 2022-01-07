@@ -18,6 +18,7 @@ public class User {
 	private String passWord;
 	private boolean active;
 	private String roles;
+	private String otp;
 	
 	public User(User user) {
 		this.id=user.getId();
@@ -26,6 +27,7 @@ public class User {
 		this.passWord=user.getPassWord();
 		this.active=user.isActive();
 		this.roles=user.getRoles();
+		this.otp=user.getOtp();
 	}
 	
 	public Long getId() {
@@ -65,6 +67,15 @@ public class User {
 	public void setName(String name) {
 		this.name = name;
 	}
+	
+	public String getOtp() {
+		return otp;
+	}
+
+	public void setOtp(String otp) {
+		this.otp = otp;
+	}
+
 	public User(String userName, String passWord, boolean active, String roles) {
 		this.userName = userName;
 		this.passWord = passWord;
@@ -84,8 +95,8 @@ public class User {
 	}
 	@Override
 	public String toString() {
-		return "User [id=" + id + ", userName=" + userName + ", passWord=" + passWord + ", active=" + active
-				+ ", roles=" + roles + "]";
+		return "User [id=" + id + ", name=" + name + ", userName=" + userName + ", passWord=" + passWord + ", active="
+				+ active + ", roles=" + roles + ", otp=" + otp + "]";
 	}
 	
 }

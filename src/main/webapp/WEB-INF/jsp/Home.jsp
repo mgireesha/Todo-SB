@@ -161,5 +161,6 @@
 		</div>
 	</div>
 	<div id="disable-div" style="z-index: 999;width: 100%;height: 100%;display: none;position: absolute;top: 0;left: 0;background-color: rgb(107 106 106);opacity: .1;cursor: wait;"> </div>
+	<audio id="sound-completed" src="../static_resources/sound/task-completed.mp3" style="display: none;"></audio>
 </body>
 </html>

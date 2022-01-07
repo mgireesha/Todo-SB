@@ -270,7 +270,7 @@ function hadndleErrorResp(response){
 	}
 }
 
-function covertDateT(date){
+function convertDateT(date){
 	var d = new Date(date);
 	return cDate = days[d.getDay()]+", "+months[d.getMonth()]+" "+d.getDate()+" "+d.getFullYear();
 }
@@ -282,6 +282,9 @@ function getTimeFromDate(date){
 	if(hrs>12){
 		hrs=hrs-12;
 		merd="PM";
+	}
+	if(hrs==0){
+		hrs=12;
 	}
 	return hrs+":"+d.getMinutes()+" "+merd;
 }

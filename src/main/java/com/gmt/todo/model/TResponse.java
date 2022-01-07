@@ -5,6 +5,7 @@ public class TResponse {
 	private String error;
 	private TodoTask todoTask;
 	private TodoList todoList;
+	private User user;
 
 	public TodoList getTodoList() {
 		return todoList;
@@ -41,6 +42,14 @@ public class TResponse {
 
 	public void setError(String error) {
 		this.error = error;
+	}
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
 	}
 
 	public TResponse(String status, String error) {
