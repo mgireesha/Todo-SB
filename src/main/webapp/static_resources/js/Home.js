@@ -272,7 +272,12 @@ function hadndleErrorResp(response){
 
 function convertDateT(date){
 	var d = new Date(date);
+	
+	var today = new Date();
+	var tomorrow = new Date(d.getFullYear(),d.getMonth(),);
+	
 	return cDate = days[d.getDay()]+", "+months[d.getMonth()]+" "+d.getDate()+" "+d.getFullYear();
+	//return ;
 }
 
 function getTimeFromDate(date){
