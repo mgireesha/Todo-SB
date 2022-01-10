@@ -250,6 +250,7 @@ public class HomeController {
 			Transport.send(msg);
 			System.out.println("Message sent.");
 			resp.setStatus("success");
+			user.setOtp(null);
 			resp.setUser(user);
 		} catch (MessagingException e) {
 			resp.setStatus("failed");
