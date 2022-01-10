@@ -66,6 +66,7 @@ function togglAddListField(){
 }
 
 function addList(){
+	disableDiv();
 	var listName = $("#list-add-txt").val();
 	if(listName=="" || listName==undefined){
 		alert("Please provide list name");
@@ -82,6 +83,7 @@ function addList(){
     	dataType: "json",
 		data : JSON.stringify(addListPayload)
 	}).done(function(response){
+		enableDiv();
 		if(response.status=="success"){
 			$("#list-item-main").append(getListElem(response.todoList));
 			cleanAddListField();
@@ -91,6 +93,7 @@ function addList(){
 			alert("Failed to update the task Please try again after clearing your browser cache");
 		}
 	}).fail(function(response)  {
+		enableDiv();
     	alert("Sorry. Server unavailable. "+response);
 	});
 }
@@ -99,6 +102,7 @@ function getListElem(listObj){
 	var listElem = '<div class="row" style="margin-left: 0">';
 		listElem += '<div class="col-sm-10 list-item" id="list-item-'+listObj.listId+'" onclick="showTasks('+listObj.listId+')">';
 		listElem += '<label>'+listObj.listName+'</label>';
+		listElem += '<label class="list-task-count" style="display:none">0</label>';
 		listElem += '</div>';
 		listElem += '<div class="col-sm-1 list-item-delete" id="list-item-delete-'+listObj.listId+'" onclick="initDelete(this)">';
 		listElem += '<label>x</label>';
@@ -209,6 +213,7 @@ function updateListName(elem){
 }
 
 function deleteList(elem){
+	disableDiv();
 	var listId = elem.id;
 	listId = listId.substring("list-item-delete-".length,listId.length);
 	//if(confirm("All associated tasks will also be removed!")){
@@ -218,6 +223,7 @@ function deleteList(elem){
     	contentType: "application/json; charset=utf-8",
     	dataType: "json"
 		}).done(function(response){
+			enableDiv();
 			if(response.status=="success"){
 				$("#list-item-"+listId).parent().remove();
 				if($("#task-list-name-header-"+listId).length>0){
@@ -230,6 +236,7 @@ function deleteList(elem){
 				alert("Failed to update the task Please try again after clearing your browser cache");
 			}
 		}).fail(function(response)  {
+			enableDiv();
 			if(response.status!=null){
 				alert(response.status+" : "+response.responseJSON.error);
 			}else{

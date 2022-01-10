@@ -97,7 +97,9 @@ body{
 }
 .list-item-add-div{
 	background-color: darkkhaki;
-	margin: 10px;
+	margin: 0px;
+	margin-right: 10px;
+	margin-left: 5px;
 	padding: 5px;
 	height: 2.6em;
 	border-radius: 4px; 
@@ -110,7 +112,9 @@ body{
 
 .list-item-add-field{
 	background-color: darkkhaki;
-	margin: 10px;
+	margin: 0px;
+	margin-right: 10px;
+	margin-left: 5px;
 	padding: 5px;
 	height: 3em;
 	border-radius: 4px; 
@@ -202,6 +206,9 @@ body{
     font-family: cursive;
     border-radius: 5px;
     margin-right : 4em;
+}
+.task-item-add-div, .task-item-add-div *:hover{
+	cursor: pointer;
 }
 .task-item-delete > img, .task-item-delete:hover{
 	cursor: pointer;
@@ -461,7 +468,7 @@ task-add-due-date, focus {
 	    background-color: #2e2729;
 }
 
-.task-item-detail-dueDate:hover, .task-item-detail-remindMe:hover{
+.task-item-detail-dueDate:hover, .task-item-detail-remindMe:hover, .task-item-detail-move:hover{
 	background-color: #1e1e1e;
 }
 .task-item-detail-remindMe, .task-item-detail-remindMe *:hover, .task-item-detail-dueDate, .task-item-detail-dueDate *:hover{
@@ -681,4 +688,41 @@ task-add-due-date, focus {
 
 #importDiv,.ui-dialog-title,.ui-dialog-buttonset{
 	font-family: cursive !important;
+}
+
+.task-detail-move-img{
+	height: 1.2em;
+	margin-top: 5px;
+}
+
+.task-item-detail-move, .task-item-detail-move > label, .task-item-detail-move *:hover, .sel-move-row, .sel-move-row *:hover{
+	cursor: pointer !important;
+}
+.sel-move-row{
+	padding: 4px;
+    border-bottom: 1px solid #666262;
+    margin-left: 0px;
+}
+.sel-move-row:hover{
+	    text-shadow: 0 0 1px blue;
+	    text-decoration: underline;
+}
+.task-item-detail-move-sel{
+	position: absolute;
+    margin: 0;
+    padding: 0;
+    margin-left: 10px;
+    margin-top: -8px;
+    border: 1px solid #656562;
+    max-height: 10em;
+    overflow-y: auto;
+}
+.task-detail-mve-close{
+	padding: 10px;
+    text-align: center;
+    border-radius: 5px;
+    display: none;
+}
+.task-detail-mve-close:hover{
+    background-color: #403a3a;
 }

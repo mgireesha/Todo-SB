@@ -6,6 +6,7 @@ import java.time.LocalTime;
 
 public class Test {
 	public static void main(String[] args) {
+
 		LocalDateTime localDateTime = LocalDateTime.now();
 		System.out.println(LocalDate.now());
 		System.out.println(localDateTime);
@@ -19,6 +20,6 @@ public class Test {
 		System.out.println(LocalDate.of(2022, 1, 4));
 		System.out.println(LocalTime.of(9, 30));
 		System.out.println(LocalDateTime.of(LocalDate.of(2022, 1, 4), LocalTime.of(9, 30)));
-		
+
 	}
 }

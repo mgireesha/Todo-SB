@@ -28,8 +28,8 @@ public class ListService {
 		return (List<TodoList>) todolistRepository.findAll();
 	}
 	
-	public List<TodoList> getListById(Long listId){
-		return (List<TodoList>) todolistRepository.getByListId(listId);
+	public TodoList getListById(Long listId){
+		return  todolistRepository.getByListId(listId);
 	}
 	
 	public TodoList getListByListNameAndUser(String listName, String userName){
@@ -54,8 +54,9 @@ public class ListService {
 		return (List<TodoList>) todolistRepository.saveAll(todoList);
 	}
 	public TodoList updateList(TodoList list, Long listId) {
-		List listJ =  todolistRepository.getByListId(listId);
-		TodoList listD = (TodoList) listJ.get(0);
+		//List listJ =  todolistRepository.getByListId(listId);
+		//TodoList listD = (TodoList) listJ.get(0);
+		TodoList listD = todolistRepository.getByListId(listId);
 		listD.setListName(list.getListName());
 		listD = todolistRepository.save(listD);
 		return listD;
@@ -68,7 +69,7 @@ public class ListService {
 	}
 	
 	public void deleteListsOfUser(User user) {
-		List<TodoList> userList = todolistRepository.getByUserId(user.getUserName());
+		List<TodoList> userList = todolistRepository.getByUserIdOrderByListId(user.getUserName());
 		List<TodoTask> usertaks = new ArrayList<TodoTask>();
 		for (TodoList tList : userList) {
 			usertaks.addAll(taskService.getByListId(tList.getListId()));
@@ -82,6 +83,6 @@ public class ListService {
 	}
 
 	public List<TodoList> getListByUserId(String userName) {
-		return todolistRepository.getByUserId(userName);
+		return todolistRepository.getByUserIdOrderByListId(userName);
 	}
 }

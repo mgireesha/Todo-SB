@@ -1,6 +1,7 @@
 package com.gmt.todo.service;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -40,9 +41,10 @@ public class TaskService {
 	public Map<String, List> getTasksByListId(Long listId) {
 		List<TodoTask> taskListC = null;
 		List<TodoTask> taskListT = null;
-		List<TodoList> todoList = null;
+		List<TodoList> todoList = new ArrayList<TodoList>();
 		Map <String, List> tasksMap = new HashMap<String, List>();
-		todoList = (List<TodoList>) listService.getListById(listId);
+		TodoList todoList2 =  listService.getListById(listId);
+		todoList.add(todoList2);
 		if(!todoList.isEmpty() && null!= todoList.get(0).getListName() 
 				&&  "Important".equals(todoList.get(0).getListName())) {
 			taskListC = (List<TodoTask>) todoTaskRepository

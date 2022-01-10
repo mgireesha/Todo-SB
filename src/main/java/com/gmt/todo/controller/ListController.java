@@ -49,7 +49,7 @@ public class ListController {
 	}
 	
 	@RequestMapping("/list/{listId}")
-	public List<TodoList> getAllListById(@PathVariable String listId) {
+	public TodoList getAllListById(@PathVariable String listId) {
 		return listService.getListById(Long.parseLong(listId));
 	}
 	

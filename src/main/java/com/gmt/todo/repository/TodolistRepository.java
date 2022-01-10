@@ -10,11 +10,11 @@ import com.gmt.todo.model.TodoList;
 
 public interface TodolistRepository extends CrudRepository<TodoList, Long> {
 	
-	public List<TodoList> getByListId(Long listId);
+	public TodoList getByListId(Long listId);
 	
 	public TodoList getByListNameAndUserId(String listName, String userName);
 	
-	public List<TodoList> getByUserId(String userName);
+	public List<TodoList> getByUserIdOrderByListId(String userName);
 	
 	public List<TodoList> getByUserIdAndGroupNameOrderByDateCreated(String userName, String groupName);
 	

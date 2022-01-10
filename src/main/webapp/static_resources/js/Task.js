@@ -368,6 +368,11 @@ function buildTaskDetails(taskObj){
 			taskDetailNoteDiv += '</div>';
 		taskDetailMain.append(taskDetailNoteDiv);
 		
+		if($("#listName").val()!="Important"){
+			taskDetailMain.append(getMoveTaskDetails(taskObj));
+			taskDetailMain.append(getMoveListSelElem());
+		}
+		
 		var taskDetailDelete = $('<div class="row task-detail-delete">');
 		
 		var taskDetailCrtd ='<div class="col-sm-10" style="text-align: center;margin-top: 0.7em;">';
@@ -795,7 +800,7 @@ function updateComptdTskCount(action){
 	if(obj=="close"){
 		$("#selRem").slideUp(500);
 		$("#selDue").slideUp(500);
-		return fase;
+		return false;
 	}
 	if(obj=="remindMe"){
 		if($("#selRem").css("display")!="none"){
@@ -994,5 +999,102 @@ function getTDDueDate(taskObj){
 }
 
 function isDotReq(elemCls){
+	
+}
+
+function getListMove(elem){
+	if($("#task-item-detail-move-sel").css("display")!="none"){
+		$(".task-detail-mve-close").hide();
+		$("#task-item-detail-move-sel").slideUp(500);
+		return false;
+	}
+	disableDiv();
+	var tkId = elem.id.substring("task-item-detail-move-".length, elem.id.length);
+	$.ajax({
+		url : "task/getListsOfUsers/"+tkId,
+		type : "GET",
+		contentType: "application/json; charset=utf-8"
+	}).done(function(response){
+		$(".task-detail-mve-close").show();
+		buildMoveListSel(response);
+		enableDiv();
+	}).fail(function(response)  {
+		enableDiv();
+    	alert("Sorry. Server unavailable. "+response);
+	});
+}
+
+function buildMoveListSel(listObj){
+	var selMoveRow = '';
+	$("#task-item-detail-move-sel").css("width",$(".task-item-detail-elem").css("width"));
+	var tidMoveSel = $("#task-item-detail-move-sel").empty();
+	for(var i=0;i<listObj.length;i++){
+		if(listObj[i].listName=="Important" || listObj[i].listName==$("#listName").val()){
+			continue;
+		}
+		selMoveRow ='<div class="row sel-move-row" id="sel-move-row-'+listObj[i].listId+'" onclick="moveTask(this)">';
+		selMoveRow+='<label>'+listObj[i].listName+'</label>';
+		selMoveRow+='</div>';
+		tidMoveSel.append(selMoveRow);
+	}
+	 $("#task-item-detail-move-sel").slideDown(500);
+	
+}
+
+function moveTask(elem){
+	var listId = elem.id.substring("sel-move-row-".length, elem.id.length);
+	var tkId = $("#selectedTaskId").val();
+	disableDiv();
+	$.ajax({
+		url: "task/moveTask/" + tkId + "/" + listId,
+		type: "PUT",
+		contentType: "application/json; charset=utf-8",
+		dataType: "json"
+	}).done(function(response) {
+			enableDiv();
+			if (response.status == "success") {
+				//$("#list-item-"+response.todoList.listId).click();
+				if($("#task-chkbx-"+tkId).prop("checked")){
+					updateComptdTskCount("remove");
+				}
+				$("#task-item-"+tkId).parent().remove();
+				if($("#task-detail-div").css("display")!="none"){
+					$("#task-detail-div").empty();
+					$("#selectedTaskId").val("");
+					hadndleWidth("remove");
+				}
+				updateTotalTasks($("#listId").val(),"remove");
+				updateTotalTasks(listId,"add");
+				
+			} else {
+				alert("Failed to move the task Please try again after clearing your browser cache");
+			}
+	}).fail(function(response) {
+		enableDiv();
+		alert("Sorry. Server unavailable. " + response);
+	});
+	
+}
+
+function getMoveTaskDetails(taskObj){
+	var taskDM='<div class="row task-item-detail-move task-item-detail-elem" id="task-item-detail-move-'+taskObj.taskId+'" onclick="getListMove(this)" style="">';
+		taskDM+='<div class="col-sm-1 task-detail-dueDate-div">';
+		taskDM+='<img alt="due date" class="task-detail-move-img" id="task-detail-remind-img" src="../static_resources/images/move-blue_20x18.png">';
+		taskDM+='</div>';
+		taskDM+='<div class="col-sm-8 task-detail-font-size" style="padding: 10px;">';
+		taskDM+='<label><span id="task-detail-dueDate-span">Move Task</span></label>';
+		taskDM+='</div>';
+		taskDM+='<div class="col-sm-3 task-detail-font-size task-detail-mve-close">';
+		taskDM+='<label>close</label>';
+		taskDM+='</div>';
+		taskDM+='</div>';
+		return taskDM;
+}
+function getMoveListSelElem(){
+	listSelElem = '<div class="row task-item-detail-elem task-item-detail-move-sel" id="task-item-detail-move-sel" style="display:none;">'
+	listSelElem+='</div>';
+	return listSelElem;
+}
+function showSelMoveList(){
 	
 }

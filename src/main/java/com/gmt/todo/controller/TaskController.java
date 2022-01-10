@@ -14,8 +14,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.gmt.todo.model.TResponse;
+import com.gmt.todo.model.TodoList;
 import com.gmt.todo.model.TodoTask;
 import com.gmt.todo.model.TodoUserDetails;
+import com.gmt.todo.service.ListService;
 import com.gmt.todo.service.TaskService;
 
 @RestController
@@ -25,6 +27,9 @@ public class TaskController {
 	
 	@Autowired
 	private TaskService taskService;
+	
+	@Autowired
+	private ListService listService;
 	
 	@RequestMapping(method = RequestMethod.POST, value = "/task/")
 	public TResponse addNewTask(@RequestBody TodoTask task) {
@@ -81,6 +86,31 @@ public class TaskController {
 	@RequestMapping("task/getUserTasks")
 	public List<TodoTask> getAllTasksForUser(){
 		return taskService.getAllTasksForUser();
+	}
+	
+	@RequestMapping("/task/getListsOfUsers/{taskId}")
+	public List<TodoList> getListsOfUser(@PathVariable String taskId){
+		TodoTask task = taskService.getTaskByTaskId(Long.parseLong(taskId));
+		return listService.getListByUserId(task.getUserId());
+	}
+	
+	@RequestMapping(method = RequestMethod.PUT, value = "/task/moveTask/{taskId}/{listId}")
+	public TResponse moveTask(@PathVariable String taskId, @PathVariable String listId) {
+		TResponse resp = new TResponse();
+		try {
+			TodoTask task =  taskService.getTaskByTaskId(Long.parseLong(taskId));
+			TodoList todoList = listService.getListById(Long.parseLong(listId));
+			task.setListId(todoList.getListId());
+			task.setListName(todoList.getListName());
+			taskService.save(task);
+			resp.setStatus("success");
+			resp.setTodoTask(task);
+			resp.setTodoList(todoList);
+		} catch (Exception e) {
+			resp.setStatus("failed");
+			resp.setError(e.getMessage());
+		}
+		return resp;
 	}
 	
 	
