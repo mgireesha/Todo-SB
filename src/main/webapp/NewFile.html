@@ -1,131 +1,151 @@
-<html lang="en"><head>
+<html><head>
+<meta charset="ISO-8859-1">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Todo App</title>
+
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.2/dist/css/bootstrap.min.css" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.2/dist/js/bootstrap.bundle.min.js"></script>
-<link href="../static_resources/css/SignIn.css" rel="stylesheet">
-<script type="text/javascript" src="../static_resources/js/Login.js"></script>
-    <title>ToDo App : Login</title>
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+<script type="text/javascript" src="../static_resources/js/Home.js"></script>
+<script type="text/javascript" src="../static_resources/js/Task.js"></script>
+<link href="../static_resources/css/Home.css" rel="stylesheet">
+<link rel="stylesheet" href="//code.jquery.com/ui/1.13.0/themes/base/jquery-ui.css">
+  <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.js"></script>
 </head>
-<body style="background-color: #2e2729;" class="body-signin">
+<body onload="triggerFirstList()">
 
-	<div class="container">
-		<div class="row row-main">
-			<div class="col-sm-3"></div>
-			<div class="col-sm-5 middle-span">
-				<form action="/todo/login" method="post" class="signup-form" id="signin-form" style="display: none;">
-					<h1 class="signup-header">Sign In</h1>
-					<div class="row row-label">
-						<label for="username" class="signup-label">User Name</label>
-						<input class="form-control signup-input" type="text" name="username" id="username" placeholder="Your email" required="">
-					</div>
-					<div class="row row-label">
-						<label for="password" class="signup-label">Password</label>
-						<input class="form-control signup-input" type="password" name="password" id="password" placeholder="Create password" required="">
-						
-						<label for="password" class="signup-label"><a style="color: #0d6efd;cursor: pointer;font-size: 12px" onclick="slideInRPD()">Forgot password ?</a></label>
-					</div>
-					<div class="row row-btn">
-						<button type="submit" class="btn-signup">Sign In</button>
-					</div>
-					<div class="row row-label">
-						<label for="confirmPwd" class="signup-label">New user ? <a onclick="slideSignUp()" style="color: #0d6efd;text-decoration: underline;cursor: pointer;">sign up</a> here</label>
-					</div>
-					</form>
-					<form action="/todo/signup" method="post" class="signup-form" id="signup-form" style="display: none;">
-					<h1 class="signup-header">Sign Up</h1>
-					<div class="row row-label">
-						<label for="name" class="signup-label">Name</label>
-						<input class="form-control signup-input" name="name" id="name" placeholder="Your name" required="">
-					</div>
-					<div class="row row-label">
-						<label for="email" class="signup-label">Email</label>
-						<input class="form-control signup-input" name="email" id="email" placeholder="Your email" required="">
-					</div>
-					<div class="row row-label">
-						<label for="createPwd" class="signup-label">Create new password</label>
-						<input class="form-control signup-input" type="password" name="createPwd" id="createPwd" placeholder="Create password" required="">
-					</div>
-					<div class="row row-label">
-						<label for="confirmPwd" class="signup-label">Confirm password</label>
-						<input class="form-control signup-input" type="password" name="confirmPwd" id="confirmPwd" placeholder="Confirm password" required="">
-					</div>
-					<div class="row row-btn">
-						<button type="submit" class="btn-signup">Sign Up</button>
-					</div>
-					<div class="row row-label">
-						<label for="confirmPwd" class="signup-label">Already a user ? <a onclick="slideSignIn()" style="color: #0d6efd;text-decoration: underline;cursor: pointer;">sign in</a></label>
-					</div>
-				</form>
-
-
-				<form method="post" class="signup-form" id="reset-pwd-form"
-					style="display: block;">
-					<h1 class="signup-header">Reset Password</h1>
-					<div class="reset-pwd-div" id="reset-pwd-div">
-						
-						<div class="row row-label">
-							<label for="username" class="signup-label">User Name</label> <input
-								class="form-control signup-input" type="text" name="username"
-								id="username-resetP" placeholder="Your email" required />
+	<div class="container-fluid">
+	<div class="row" id="todo-header">
+		<h4 class="col-sm-10" style="margin-left: 0.4em;color: beige"><i>ToDo</i></h4>
+		<a class="col-sm-1" href="/logout">Logout</a>
+	</div>
+		<div class="row">
+			<div class="col-sm-3 list-div">
+				<div class="list-item-main" id="list-item-main">
+					
+					<div class="row list-item-row" style="margin-left: 0">
+						<div class="col-sm-10 list-item" id="list-item-268" onclick="showTasks(268)">
+							<label>Important</label>
+							
 						</div>
-						<div class="row row-btn">
-							<button type="button" class="btn-signup" onclick="initRPD()">Send
-								OTP</button>
-						</div>
-
-					</div>
-
-					<div id="reset-pwd-cp-div" style="display: none;">
-						<div class="row row-label">
-							<label for="createPwd" class="signup-label">Create new
-								password</label> <input class="form-control signup-input"
-								type="password" name="createPwd-reset" id="createPwd-reset"
-								placeholder="Create password" required>
-						</div>
-						<div class="row row-label">
-							<label for="confirmPwd" class="signup-label">Confirm
-								password</label> <input class="form-control signup-input"
-								type="password" name="confirmPwd-reset" id="confirmPwd-reset"
-								placeholder="Confirm password" required>
-						</div>
-						<div class="row row-btn">
-							<button type="button" class="btn-signup" onclick="resetPassword()">Reset</button>
-							<input type="hidden" name="userName" id="userName-reset" />
+						<div class="col-sm-1 list-item-delete-def" id="list-item-delete-268" onclick="">
+							<label style="display:none">x</label>
+							
+								<label class="list-task-count list-task-count-def" style="display:inline">3</label>
+							
 						</div>
 					</div>
-					<div class="row row-label">
-						<label for="confirmPwd" class="signup-label">Go back to <a
-							onclick="slideSignIn()"
-							style="color: #0d6efd; text-decoration: underline; cursor: pointer;">Login</a>
-						</label>
+					
+						<input type="hidden" id="hdn-inp-Important" value="268">
+					
+				
+					<div class="row list-item-row" style="margin-left: 0">
+						<div class="col-sm-10 list-item" id="list-item-269" onclick="showTasks(269)">
+							<label>Tasks</label>
+							
+						</div>
+						<div class="col-sm-1 list-item-delete-def" id="list-item-delete-269" onclick="">
+							<label style="display:none">x</label>
+							
+								<label class="list-task-count list-task-count-def" style="display:inline">3</label>
+							
+						</div>
 					</div>
-				</form>
-
-
-
-
-
-
-
-
-
-
-				<div id="success-signup" style="display:none">
-					<h1 class="signup-header" style="color: green">Success!</h1>
-					<div class="row row-label">
-						<h4 id="message">You have registered successfully. Please sign in to continue.</h4>
+					
+						<input type="hidden" id="hdn-inp-Tasks" value="269">
+					
+				
+					<div class="row list-item-row" style="margin-left: 0">
+						<div class="col-sm-10 list-item" id="list-item-271" onclick="showTasks(271)">
+							<label>To do</label>
+							
+								<label class="list-task-count" style="display:inline">1</label>
+							
+						</div>
+						<div class="col-sm-1 list-item-delete" id="list-item-delete-271" onclick="deleteList(this)">
+							<label style="display:block">x</label>
+							
+						</div>
 					</div>
-					<div class="row row-btn">
-						<button type="button" class="btn-signup" onclick="slideSignIn()">Sign In</button>
+					
+				
+					<div class="row list-item-row" style="margin-left: 0">
+						<div class="col-sm-10 list-item" id="list-item-274" onclick="showTasks(274)">
+							<label>asdas</label>
+							
+								<label class="list-task-count" style="display:inline">1</label>
+							
+						</div>
+						<div class="col-sm-1 list-item-delete" id="list-item-delete-274" onclick="deleteList(this)">
+							<label style="display:block">x</label>
+							
+						</div>
+					</div>
+					
+				
+				</div>
+				
+				<div class="list-item-add">
+					<div class="list-item-add-div" id="list-item-add-div" onclick="togglAddListField()">
+						<label class="list-add-new-lbl">+ Add New List</label>
+					</div>
+					<div class="row list-item-add-field" id="list-item-add-field" style="display: none;">
+						<div class="col-sm-10 list-add-txt-div">
+							<input type="text" class="form-control list-add-txt" id="list-add-txt" name="" placeholder="List Name" style="background-color: darkkhaki;">
+						</div>
+						<div class="col-sm-2 list-add-button-div">
+							<button class="list-add-button" onclick="addList()">Add</button>
+						</div>
 					</div>
 				</div>
+
 			</div>
-			<div class="col-sm-3"></div>
+			<div class="col-sm-8 task-div" id="task-div">
+				<div class="row task-list-name"><h2 class="task-list-name-header" onclick="" id="task-list-name-header-268">Important</h2><input type="text" id="task-list-name-text-268" class="task-list-name-text form-control" style="background-color: rgb(64, 58, 58); display: none;" onblur="updateListName(this)"></div>
+				<div id="task-item-main"><div class="tasks-n-cmptd-div"><div class="row" style="margin: 0"><div class="col-sm-10 task-item" id="task-item-282" onclick="showTaskDetails(this)"><input type="checkbox" id="task-chkbx-282" class="task-item-chkbx" "task-chkbx-282"="" onclick="completeTask(this)"> <label class="task-item-label" id="task-label-282">ssfsdfsd sdf qwe</label><div class="row"><label class="col-sm-1" style="width: 1.5em"></label><div class="col-sm-11"><div class="tc-row tc-tn-row"><label style="font-size: 12px">&nbsp;To do</label></div><div class="tc-row tc-dd-row" id="tc-dd-row-282"><img alt="." src="../static_resources/images/dot-blue.png" style="height: 0.2em;margin: 5px;"><img alt="due date" src="../static_resources/images/calender-blue.png" style="height: 0.8em"><label style="font-size: 12px">&nbsp;Sun, Jan 16 2022</label></div><div class="tc-row tc-rem-row" id="tc-rem-row-282"><img alt="." src="../static_resources/images/dot-blue.png" style="height: 0.2em;margin: 5px;"><img alt="due date" src="../static_resources/images/bell-blue.png" style="height: 0.8em"><label style="font-size: 12px">&nbsp;Sun, Jan 9 2022</label></div><div class="tc-row tc-note-row" id="tc-note-row-282"><img alt="black dot" src="../static_resources/images/dot-blue.png" style="height: 0.2em;margin: 5px;"><img alt="note" src="../static_resources/images/note-blue-s1.png" style="height: 0.8em"></div></div></div></div><div class="col-sm-1 task-item-delete" id="task-delete-label-282" onclick="initDeleteTask(this)" title="Delete Task"><img alt="black dot" src="../static_resources/images/delete-grey-20x26.png" style="height: 1.8em;"></div></div><div class="row" style="margin: 0"><div class="col-sm-10 task-item" id="task-item-283" onclick="showTaskDetails(this)"><input type="checkbox" id="task-chkbx-283" class="task-item-chkbx" "task-chkbx-283"="" onclick="completeTask(this)"> <label class="task-item-label" id="task-label-283">asd asd asd asd asd asd</label><div class="row"><label class="col-sm-1" style="width: 1.5em"></label><div class="col-sm-11"><div class="tc-row tc-tn-row"><label style="font-size: 12px">&nbsp;Tasks</label></div><div class="tc-row tc-dd-row" id="tc-dd-row-283"></div><div class="tc-row tc-rem-row" id="tc-rem-row-283"></div><div class="tc-row tc-note-row" id="tc-note-row-283"></div></div></div></div><div class="col-sm-1 task-item-delete" id="task-delete-label-283" onclick="initDeleteTask(this)" title="Delete Task"><img alt="black dot" src="../static_resources/images/delete-grey-20x26.png" style="height: 1.8em;"></div></div></div><div class="row" style="margin:0;color: beige;margin-left: 10px;"><label style="width: auto;border-radius: 4px;background-color: rgb(46, 39, 41);padding-bottom: 2px;cursor:pointer;" onclick="hideShowCTasks()"><span style="display: none;" class="com-tsk-right-arr">〉 </span><span class="com-tsk-down-arr">∨ </span><span style="font-style: italic;">Completed&nbsp;</span><span class="tasks-cmptd-nbr">1</span></label></div><div class="tasks-cmptd-div"><div class="row completed" style="margin: 0"><div class="col-sm-10 task-item" id="task-item-276" onclick="showTaskDetails(this)"><input type="checkbox" id="task-chkbx-276" class="task-item-chkbx" "task-chkbx-276"="" onclick="completeTask(this)" checked="checked"> <label class="task-item-label strike-line" id="task-label-276">sdfsdf</label><div class="row"><label class="col-sm-1" style="width: 1.5em"></label><div class="col-sm-11"><div class="tc-row tc-tn-row"><label style="font-size: 12px">&nbsp;asdas</label></div><div class="tc-row tc-dd-row" id="tc-dd-row-276"><img alt="." src="../static_resources/images/dot-blue.png" style="height: 0.2em;margin: 5px;"><img alt="due date" src="../static_resources/images/calender-blue.png" style="height: 0.8em"><label style="font-size: 12px">&nbsp;Sat, Jan 8 2022</label></div><div class="tc-row tc-rem-row" id="tc-rem-row-276"><img alt="." src="../static_resources/images/dot-blue.png" style="height: 0.2em;margin: 5px;"><img alt="due date" src="../static_resources/images/bell-blue.png" style="height: 0.8em"><label style="font-size: 12px">&nbsp;Fri, Jan 7 2022</label></div><div class="tc-row tc-note-row" id="tc-note-row-276"><img alt="black dot" src="../static_resources/images/dot-blue.png" style="height: 0.2em;margin: 5px;"><img alt="note" src="../static_resources/images/note-blue-s1.png" style="height: 0.8em"></div></div></div></div><div class="col-sm-1 task-item-delete" id="task-delete-label-276" onclick="initDeleteTask(this)" title="Delete Task"><img alt="black dot" src="../static_resources/images/delete-grey-20x26.png" style="height: 1.8em;"></div></div></div></div>
+				<div class="row  task-item-add-div" id="task-item-add-div" style="" onclick="toggleAddtaskField()">
+					<label class="col-sm-11">Add New Task </label><label class="col-sm-1">+</label>
+				</div>
+				<div class="row task-item-add-div task-item-add-field" id="task-item-add-field" style="display: none;">
+					<div class="col-sm-8">
+						<input type="text" placeholder="Enter task name" id="task-item-add-txt" class="form-control">
+					</div>
+					<div class="task-add-button-div col-sm-1">
+						<button class="task-add-button" id="task-add-button" onclick="addNewTask()">Add</button>
+					</div>
+					<div class="task-add-due-date-div col-sm-2">
+						<input type="date" class="task-add-due-date" id="dueDate" name="dueDate" title="Add due date">
+					</div>
+					<div class="task-remind-button-div col-sm-1">
+						<button class="task-remind-button" onclick="remindMe()">
+							<img alt="Remind Me" id="task-remind-img" name="task-remind-img" class="task-remind-img" src="../static_resources/images/Alarm.png" title="Remind Me">
+						</button>
+						<input type="hidden" name="remindMe" id="remindMe">
+					</div>
+					
+					
+					<input type="hidden" name="listName" id="listName" value="Important">
+					<input type="hidden" name="listId" id="listId" value="268">
+				</div>
+
+			</div>
+			<div class="col-sm-3 task-detail-div" id="task-detail-div" style="display: none;">
+				
+			</div>
+		<input type="hidden" name="reducedListDivWidth" id="reducedListDivWidth">
+		<input type="hidden" name="selectedTaskId" id="selectedTaskId">
 		</div>
 	</div>
+	<div id="disable-div" style="z-index: 999; width: 1366px; height: 566.391px; position: absolute; top: 36.7969px; left: 0px; background-color: rgb(107, 106, 106); opacity: 0.1; cursor: wait; display: none;"> </div>
+	<audio id="sound-completed" src="../static_resources/sound/task-completed.mp3" style="display: none;"></audio>
+
+
+
+
 <script type="text/javascript">
-	
+
+
 </script>
 
 

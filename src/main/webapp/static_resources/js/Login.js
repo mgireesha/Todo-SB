@@ -19,6 +19,7 @@
 	}
 	
 	function initRPD(){
+		$("#init-rpd-error").hide();
 		var userName=$("#username-resetP").val();
 		var url = "/todo/init-reset-pwd";
 		var reqPayload ={
@@ -36,6 +37,9 @@
 				$("#userName-reset").val(response.user.userName);
 				$("#reset-pwd-div").hide();
 				//$("#reset-pwd-cp-div").slideDown(1000);
+			}else if(response.status=="failed"){
+				$("#init-rpd-error").html(response.error);
+				$("#init-rpd-error").show();
 			}
 		}).fail(function (response){
 			

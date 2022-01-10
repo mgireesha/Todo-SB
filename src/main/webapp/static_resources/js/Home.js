@@ -100,7 +100,7 @@ function getListElem(listObj){
 		listElem += '<div class="col-sm-10 list-item" id="list-item-'+listObj.listId+'" onclick="showTasks('+listObj.listId+')">';
 		listElem += '<label>'+listObj.listName+'</label>';
 		listElem += '</div>';
-		listElem += '<div class="col-sm-1 list-item-delete" id="list-item-delete-'+listObj.listId+'" onclick="deleteList(this)">';
+		listElem += '<div class="col-sm-1 list-item-delete" id="list-item-delete-'+listObj.listId+'" onclick="initDelete(this)">';
 		listElem += '<label>x</label>';
 		listElem += '</div>';
 		listElem += '</div>';
@@ -211,7 +211,7 @@ function updateListName(elem){
 function deleteList(elem){
 	var listId = elem.id;
 	listId = listId.substring("list-item-delete-".length,listId.length);
-	if(confirm("All associated tasks will also be removed!")){
+	//if(confirm("All associated tasks will also be removed!")){
 		$.ajax({
 		url:"list/"+listId+"/",
 		type: "DELETE",
@@ -236,7 +236,7 @@ function deleteList(elem){
 				alert("Sorry. Server unavailable. "+response);
 			}
 		});
-	}
+	//}
 }
 
 function deleteUser(id){
@@ -274,7 +274,7 @@ function convertDateT(date){
 	var d = new Date(date);
 	
 	var today = new Date();
-	var tomorrow = new Date(d.getFullYear(),d.getMonth(),);
+	var tomorrow = new Date(today.getDate()+1);
 	
 	return cDate = days[d.getDay()]+", "+months[d.getMonth()]+" "+d.getDate()+" "+d.getFullYear();
 	//return ;

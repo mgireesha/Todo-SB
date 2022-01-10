@@ -74,7 +74,7 @@ public class TaskService {
 			task.setUserId(userDetails.getUsername());
 		}
 		task.setDateCreated(LocalDate.now());
-		task.setRemindTime(null);
+		task.setDueDate(null);
 		task = todoTaskRepository.save(task);
 		return task;
 	}

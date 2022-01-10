@@ -78,6 +78,7 @@
 						<div class="row row-btn">
 							<button type="button" class="btn-signup" onclick="initRPD()">Send
 								OTP</button>
+								<label style="color: #c9300d;display: none;" class="signup-label" id="init-rpd-error"></label>
 						</div>
 
 					</div>

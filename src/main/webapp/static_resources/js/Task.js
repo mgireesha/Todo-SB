@@ -63,7 +63,9 @@
 		taskChid+='<label class="col-sm-1" style="width: 1.5em"></label>';
 		taskChid+='<div class="col-sm-11">';
 		if($("#listName").val()=="Important"){
+			taskChid+='<div class="tc-row tc-tn-row">';
 			taskChid+='<label style="font-size: 12px">&nbsp;'+taskObj.listName+'</label>';
+			taskChid+='</div>';
 			isDotRequired = true;
 		}
 		taskChid+='<div class="tc-row tc-dd-row" id="tc-dd-row-'+taskObj.taskId+'">';
@@ -104,7 +106,7 @@
 		
 		taskChid+='</div>';
 	
-	var taskDelChild ='<div class="col-sm-1 task-item-delete" id="task-delete-label-'+taskObj.taskId+'" onclick="deleteTask(this)" title="Delete Task">';
+	var taskDelChild ='<div class="col-sm-1 task-item-delete" id="task-delete-label-'+taskObj.taskId+'" onclick="initDelete(this)" title="Delete Task">';
 	taskDelChild+='<img alt="black dot" src="../static_resources/images/delete-grey-20x26.png" style="height: 1.8em;">';
 	taskDelChild+='</div>';
 	
@@ -191,9 +193,9 @@ function addNewTask(){
 		$("#task-item-add-txt").focus();
 		return false;
 	}
-	if($("#remindMe").val()=="true" && $("#dueDate").val() == ""){
-		alert("Please select a due to remind");
-		$("#dueDate").focus();
+	if($("#remindMe").val()=="true" && $("#remindTime").val() == ""){
+		alert("Please select a date to remind");
+		$("#remindTime").focus();
 		return false;
 	}
 	disableDiv();
@@ -204,10 +206,10 @@ function addNewTask(){
 		"listId" : listId,
 		"listName" : listName
 	}
-	var dueDate = $("#dueDate").val();
+	var remindMeDate = $("#remindMeDate").val();
 	var remindMe = $("#remindMe").val();
-	if(dueDate!="" && dueDate!=undefined){
-		addTaskPayload.dueDate = dueDate;
+	if(remindMeDate!="" && remindMeDate!=undefined){
+		addTaskPayload.remindTime = remindMeDate;
 	}
 	if(remindMe!="" && remindMe!=undefined){
 		addTaskPayload.remindMe = remindMe;
@@ -245,7 +247,7 @@ function addNewTask(){
 
 function cleanAddTaskField(){
 	$("#task-item-add-txt").val("");
-	$("#dueDate").val("");
+	$("#remindTime").val("");
 	$("#remindMe").val(false);
 	$("#task-remind-img").attr("src","../static_resources/images/Alarm.png");
 }
@@ -372,7 +374,7 @@ function buildTaskDetails(taskObj){
 			taskDetailCrtd+='<label class="task-detail-crtd-lbl">Created on '+convertDateT(taskObj.dateCreated)+'</label>';
 			taskDetailCrtd+='</div>';
 		var taskDetailDltImg ='<div class="col-sm-2" style="margin-top: 0.7em;">';
-			taskDetailDltImg+='<img alt="delete" class="task-detail-delete-label" id="task-delete-label-'+taskObj.taskId+'" src="../static_resources/images/delete-red-20x27.png" onclick="deleteTask(this)">';
+			taskDetailDltImg+='<img alt="delete" class="task-detail-delete-label" id="task-delete-label-'+taskObj.taskId+'" src="../static_resources/images/delete-red-20x27.png" onclick="initDelete(this)">';
 			taskDetailDltImg+='</div>';
 		
 		taskDetailDelete.append(taskDetailCrtd);
@@ -462,7 +464,7 @@ function addNote(elem){
 		enableDiv();
 		if(response.status=="success"){
 			if(response.todoTask.note!=""){
-				$("#tc-note-row-"+taskId).empty().append(getNoteTskChild());
+				$("#tc-note-row-"+taskId).empty().append(getNoteTskChild(response.todoTask));
 			}else{
 				$("#tc-note-row-"+taskId).empty()
 			}
@@ -519,11 +521,52 @@ function updateTaskName(elem){
 		}
 	});
 }
-
+function initDelete(elem){
+	var title="";
+	if(elem.id.indexOf("list-item-delete-")!=-1){
+		title="Delete List";
+		$(".todo-dg-content").html("<label>Are you sure to delete this list ? </label></br><label>All the associated tasks will be deleted. </label>");
+	}else if(elem.id.indexOf("task-delete-label-")!=-1){
+		title="Delete Task";
+		$(".todo-dg-content").html("<label>Are you sure to delete this task ?</label>");
+	}
+	$( function() {
+    $( "#importDiv" ).dialog({
+      resizable: false,
+      height: "auto",
+      width: 400,
+      modal: true,
+      title : title,
+      content:"Are you sure to delete this task ?",
+      buttons: [
+            {
+               text: "delete",
+               priority: 'secondary',
+               "class": 'dialog-red-btn',
+               click: function() {                     
+                  $(this).dialog("close");
+                  	if(elem.id.indexOf("list-item-delete-")!=-1){
+						deleteList(elem);
+					}else if(elem.id.indexOf("task-delete-label-")!=-1){
+						deleteTask(elem);
+					}
+               }
+            },
+            {
+               text: "Cancel",
+               "class":'dialog-cancel-btn',
+               click: function() { 
+                  $(this).dialog("close"); 
+               }
+            }
+          ]
+    });
+  } );
+}
 function deleteTask(elem){
 	var taskId = elem.id;
 	taskId = taskId.substring("task-delete-label-".length,taskId.length);
-	if(confirm("Are you sure ?")){
+	//if(confirm("Are you sure ?")){
 		disableDiv();
 		$.ajax({
 		url:"task/"+taskId+"/",
@@ -557,7 +600,7 @@ function deleteTask(elem){
 				alert("Sorry. Server unavailable. "+response);
 			}
 		});
-	}
+	//}
 }
 
 function remindMe(){
@@ -902,19 +945,31 @@ function getDateTime(when){
 }
 
 function getRemTskChild(taskObj){
-	var remTskChild = '<img alt="." src="../static_resources/images/dot-blue.png" style="height: 0.2em;margin: 5px;">';
-		remTskChild+= '<img alt="due date" src="../static_resources/images/bell-blue.png" style="height: 0.8em">';
+	var remTskChild = '';
+	if(($("#task-item-"+taskObj.taskId).find(".tc-tn-row").html()!="" && $("#task-item-"+taskObj.taskId).find(".tc-tn-row").html()!=undefined )
+		|| $("#task-item-"+taskObj.taskId).find(".tc-dd-row").html()!=""){
+		remTskChild+='<img alt="." src="../static_resources/images/dot-blue.png" style="height: 0.2em;margin: 5px;">';
+	}
+		remTskChild+= '<img alt="remind date" src="../static_resources/images/bell-blue.png" style="height: 0.8em">';
 		remTskChild+= '<label style="font-size: 12px">&nbsp;'+convertDateT(taskObj.remindTime)+'</label>';
 		return remTskChild;
 }
 function getDDTskChild(taskObj){
-	var ddTskChild = '<img alt="due date" src="../static_resources/images/calender-blue.png" style="height: 0.8em">';
+	var ddTskChild = '';
+	if(($("#task-item-"+taskObj.taskId).find(".tc-tn-row").html()!="" && $("#task-item-"+taskObj.taskId).find(".tc-tn-row").html()!=undefined )){
+		ddTskChild+='<img alt="." src="../static_resources/images/dot-blue.png" style="height: 0.2em;margin: 5px;">';
+	}
+	    ddTskChild+= '<img alt="due date" src="../static_resources/images/calender-blue.png" style="height: 0.8em">';
 		ddTskChild+= '<label style="font-size: 12px">&nbsp;'+convertDateT(taskObj.dueDate)+'</label>';
 		return ddTskChild;
 }
 
-function getNoteTskChild(){
-	var ntTskChild = '<img alt="black dot" src="../static_resources/images/dot-blue.png" style="height: 0.2em;margin: 5px;">';
+function getNoteTskChild(taskObj){
+	var ntTskChild = '';
+	if(($("#task-item-"+taskObj.taskId).find(".tc-tn-row").html()!="" && $("#task-item-"+taskObj.taskId).find(".tc-tn-row").html()!=undefined )
+		|| $("#task-item-"+taskObj.taskId).find(".tc-dd-row").html()!="" || $("#task-item-"+taskObj.taskId).find(".tc-rem-row").html()!=""){
+		ntTskChild+='<img alt="." src="../static_resources/images/dot-blue.png" style="height: 0.2em;margin: 5px;">';
+	}
 		ntTskChild+= '<img alt="note" src="../static_resources/images/note-blue-s1.png" style="height: 0.8em">';
 		return ntTskChild;
 }
@@ -936,4 +991,8 @@ function getTDDueDate(taskObj){
 		taskDDDChild+='</div>';
 		taskDDDChild+='</div>';
 		return taskDDDChild;
+}
+
+function isDotReq(elemCls){
+	
 }

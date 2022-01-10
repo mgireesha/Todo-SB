@@ -656,3 +656,29 @@ task-add-due-date, focus {
 .task-detail-rd-sel-close, .task-detail-rd-sel-close *:hover{
 	cursor: pointer;
 }
+.dialog-red-btn{
+	border-radius: 5px;
+    border: 1px solid #f90000 !important;
+    width: 5em;
+    background-color: #df3535;
+    color: beige;
+    font-size: 13px !important;
+    height: 2.1em;
+}
+.dialog-cancel-btn{
+	border-radius: 5px;
+    border: 1px solid darkgrey;
+    width: 5em;
+    background-color: beige;
+    color: black;
+    font-size: 13px !important;
+    height: 2.1em;
+}
+
+.ui-dialog-titlebar-close{
+	display: none;
+}
+
+#importDiv,.ui-dialog-title,.ui-dialog-buttonset{
+	font-family: cursive !important;
+}

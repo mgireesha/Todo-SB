@@ -12,7 +12,9 @@
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.2/dist/css/bootstrap.min.css" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.2/dist/js/bootstrap.bundle.min.js"></script>
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
-<script type="text/javascript" src="../static_resources/js/Home.js"></script>
+<link rel="stylesheet" href="//code.jquery.com/ui/1.13.0/themes/base/jquery-ui.css">
+  <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.js"></script>
+  <script type="text/javascript" src="../static_resources/js/Home.js"></script>
 <script type="text/javascript" src="../static_resources/js/Task.js"></script>
 <link href="../static_resources/css/Home.css" rel="stylesheet" />
 </head>
@@ -34,7 +36,7 @@
 								<label class="list-task-count" style="display:${tl.getTaskCount() ne '0' ? 'inline' : 'none'}">${tl.getTaskCount()}</label>
 							</c:if>
 						</div>
-						<div class="col-sm-1 ${tl.getGroupName() ne 'default' ? 'list-item-delete' : 'list-item-delete-def'}" id="list-item-delete-${tl.getListId()}" onclick="${tl.getGroupName() ne 'default' ? 'deleteList(this)' : ''}">
+						<div class="col-sm-1 ${tl.getGroupName() ne 'default' ? 'list-item-delete' : 'list-item-delete-def'}" id="list-item-delete-${tl.getListId()}" onclick="${tl.getGroupName() ne 'default' ? 'initDelete(this)' : ''}">
 							<label style="display:${tl.getGroupName() ne 'default' ? 'block' : 'none'}">x</label>
 							<c:if test="${tl.getGroupName() eq 'default'}">
 								<label class="list-task-count list-task-count-def" style="display:${tl.getTaskCount() ne '0' ? 'inline' : 'none'}">${tl.getTaskCount()}</label>
@@ -138,7 +140,7 @@
 						<button class="task-add-button" id="task-add-button" onclick="addNewTask()">Add</button>
 					</div>
 					<div class="task-add-due-date-div col-sm-2">
-						<input type="date" class="task-add-due-date" id="dueDate" name="dueDate" title="Add due date" />
+						<input type="datetime-local" class="task-add-due-date" id="remindMeDate" name="remindMeDate" title="Add remind date" />
 					</div>
 					<div class="task-remind-button-div col-sm-1">
 						<button class="task-remind-button" onclick="remindMe()">
@@ -162,5 +164,18 @@
 	</div>
 	<div id="disable-div" style="z-index: 999;width: 100%;height: 100%;display: none;position: absolute;top: 0;left: 0;background-color: rgb(107 106 106);opacity: .1;cursor: wait;"> </div>
 	<audio id="sound-completed" src="../static_resources/sound/task-completed.mp3" style="display: none;"></audio>
+
+
+
+<div id="importDiv" title="Import Contacts" style="display: none;">
+	<div class="todo-dg-content" style="margin-top: 0.0em">
+
+	</div>
+</div>
+<script type="text/javascript">
+
+
+</script>
+
 </body>
 </html>
