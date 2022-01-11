@@ -1006,6 +1006,7 @@ function getListMove(elem){
 	if($("#task-item-detail-move-sel").css("display")!="none"){
 		$(".task-detail-mve-close").hide();
 		$("#task-item-detail-move-sel").slideUp(500);
+		$(".task-detail-main").css("overflow-y","auto");
 		return false;
 	}
 	disableDiv();
@@ -1026,6 +1027,7 @@ function getListMove(elem){
 
 function buildMoveListSel(listObj){
 	var selMoveRow = '';
+	var taskId = $("#selectedTaskId").val();
 	$("#task-item-detail-move-sel").css("width",$(".task-item-detail-elem").css("width"));
 	var tidMoveSel = $("#task-item-detail-move-sel").empty();
 	for(var i=0;i<listObj.length;i++){
@@ -1037,8 +1039,14 @@ function buildMoveListSel(listObj){
 		selMoveRow+='</div>';
 		tidMoveSel.append(selMoveRow);
 	}
+	if(($(".task-detail-delete").offset()["top"]-$("#task-item-detail-move-"+taskId).offset()["top"])<100){
+		var liSelDivHeight = $("#task-item-detail-move-sel").css("height");
+		liSelDivHeight = liSelDivHeight.substring(0,liSelDivHeight.length-2);
+		var reqOfset = $("#task-item-detail-move-"+taskId).offset()["top"]-liSelDivHeight;
+		$("#task-item-detail-move-sel").offset({top:reqOfset});
+	}
 	 $("#task-item-detail-move-sel").slideDown(500);
-	
+	 $(".task-detail-main").css("overflow-y","hidden");
 }
 
 function moveTask(elem){
