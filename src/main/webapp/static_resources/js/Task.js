@@ -247,7 +247,7 @@ function addNewTask(){
 
 function cleanAddTaskField(){
 	$("#task-item-add-txt").val("");
-	$("#remindTime").val("");
+	$("#remindMeDate").val("");
 	$("#remindMe").val(false);
 	$("#task-remind-img").attr("src","../static_resources/images/Alarm.png");
 }
@@ -281,16 +281,18 @@ function showTaskDetails(elem){
 
 function getAndBuildTaskDetails(tkId){
 	disableDiv();
+	$("#task-detail-div").empty();
 	$.ajax({
 		url : "task/"+tkId+"/",
 		type : "GET",
 		contentType: "application/json; charset=utf-8"
     	
 	}).done(function(response){
+		//if(response.task)
 		buildTaskDetails(response);
 		enableDiv();
 	}).fail(function(response)  {
-    	alert("Sorry. Server unavailable. "+response);
+    	hadndleErrorResp(response);
 	});
 }
 
@@ -1042,7 +1044,7 @@ function buildMoveListSel(listObj){
 	if(($(".task-detail-delete").offset()["top"]-$("#task-item-detail-move-"+taskId).offset()["top"])<100){
 		var liSelDivHeight = $("#task-item-detail-move-sel").css("height");
 		liSelDivHeight = liSelDivHeight.substring(0,liSelDivHeight.length-2);
-		var reqOfset = $("#task-item-detail-move-"+taskId).offset()["top"]-liSelDivHeight;
+		var reqOfset = $("#task-item-detail-move-"+taskId).offset()["top"]-liSelDivHeight-5;
 		$("#task-item-detail-move-sel").offset({top:reqOfset});
 	}
 	 $("#task-item-detail-move-sel").slideDown(500);

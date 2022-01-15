@@ -32,7 +32,7 @@
 	    	dataType: "json",
 	    	data : JSON.stringify(reqPayload)
 		}).done(function (response){
-			if(response.status=="success"){
+			if(response.status=="MESSAGE_SENT"){
 				$("#reset-pwd-checkOTP-div").slideDown(1000);
 				$("#userName-reset").val(response.user.userName);
 				$("#reset-pwd-div").hide();

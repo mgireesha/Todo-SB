@@ -1,0 +1,660 @@
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Todo App</title>
+
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<link
+	href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.2/dist/css/bootstrap.min.css"
+	rel="stylesheet">
+<script
+	src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.2/dist/js/bootstrap.bundle.min.js"></script>
+<link
+	href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
+	rel="stylesheet">
+<link rel="stylesheet"
+	href="//code.jquery.com/ui/1.13.0/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/ui/1.13.0/jquery-ui.js"></script>
+<script type="text/javascript" src="../static_resources/js/Home.js"></script>
+<script type="text/javascript" src="../static_resources/js/Task.js"></script>
+<link href="../static_resources/css/Home.css" rel="stylesheet">
+</head>
+<body onload="triggerFirstList()">
+
+	<div class="container-fluid">
+		<div class="row" id="todo-header">
+			<h4 class="col-sm-10" style="margin-left: 0.4em; color: beige">
+				<i>ToDo</i>
+			</h4>
+			<a class="col-sm-1" href="/logout">Logout</a>
+		</div>
+		<div class="row">
+			<div class="col-sm-3 list-div" style="width: 307.35px;">
+			<div class="list-item-main-comb">
+				<div  class="list-item-main" id="list-item-main">
+
+					<div class="row list-item-row" style="margin-left: 0">
+						<div class="col-sm-10 list-item" id="list-item-1"
+							onclick="showTasks(1)">
+							<label>Tasks</label>
+
+						</div>
+						<div class="col-sm-1 list-item-delete-def" id="list-item-delete-1"
+							onclick="">
+							<label style="display: none">x</label> <label
+								class="list-task-count list-task-count-def"
+								style="display: inline">1</label>
+
+						</div>
+					</div>
+
+					<input type="hidden" id="hdn-inp-Tasks" value="1">
+
+
+					<div class="row list-item-row" style="margin-left: 0">
+						<div class="col-sm-10 list-item" id="list-item-147"
+							onclick="showTasks(147)">
+							<label>Important</label>
+
+						</div>
+						<div class="col-sm-1 list-item-delete-def"
+							id="list-item-delete-147" onclick="">
+							<label style="display: none">x</label> <label
+								class="list-task-count list-task-count-def"
+								style="display: inline">6</label>
+
+						</div>
+					</div>
+
+					<input type="hidden" id="hdn-inp-Important" value="147">
+
+
+					<div class="row list-item-row" style="margin-left: 0">
+						<div class="col-sm-10 list-item" id="list-item-5"
+							onclick="showTasks(5)">
+							<label>Hampe - Dec 2021</label> <label class="list-task-count"
+								style="display: inline">7</label>
+
+						</div>
+						<div class="col-sm-1 list-item-delete" id="list-item-delete-5"
+							onclick="initDelete(this)">
+							<label style="display: block">x</label>
+
+						</div>
+					</div>
+
+
+					<div class="row list-item-row" style="margin-left: 0">
+						<div class="col-sm-10 list-item" id="list-item-4"
+							onclick="showTasks(4)">
+							<label>YouTube Learning</label> <label class="list-task-count"
+								style="display: inline">4</label>
+
+						</div>
+						<div class="col-sm-1 list-item-delete" id="list-item-delete-4"
+							onclick="initDelete(this)">
+							<label style="display: block">x</label>
+
+						</div>
+					</div>
+
+
+					<div class="row list-item-row" style="margin-left: 0">
+						<div class="col-sm-10 list-item" id="list-item-3"
+							onclick="showTasks(3)">
+							<label>Interview preparations</label> <label
+								class="list-task-count" style="display: inline">3</label>
+
+						</div>
+						<div class="col-sm-1 list-item-delete" id="list-item-delete-3"
+							onclick="initDelete(this)">
+							<label style="display: block">x</label>
+
+						</div>
+					</div>
+
+
+					<div class="row list-item-row" style="margin-left: 0">
+						<div class="col-sm-10 list-item" id="list-item-116"
+							onclick="showTasks(116)">
+							<label>SW Learning</label> <label class="list-task-count"
+								style="display: inline">5</label>
+
+						</div>
+						<div class="col-sm-1 list-item-delete" id="list-item-delete-116"
+							onclick="initDelete(this)">
+							<label style="display: block">x</label>
+
+						</div>
+					</div>
+
+				</div>
+				<div class="list-item-archive">
+						<label>Archive</label>
+						<label style="float: right;margin-right: 5px;">+</label>
+					</div>
+</div>
+				<div class="list-item-add">
+					<div class="list-item-add-div" id="list-item-add-div"
+						onclick="togglAddListField()">
+						<label class="list-add-new-lbl">+ Add New List</label>
+					</div>
+					<div class="row list-item-add-field" id="list-item-add-field"
+						style="display: none;">
+						<div class="col-sm-10 list-add-txt-div">
+							<input type="text" class="form-control list-add-txt"
+								id="list-add-txt" name="" placeholder="List Name"
+								style="background-color: darkkhaki;">
+						</div>
+						<div class="col-sm-2 list-add-button-div">
+							<button class="list-add-button" onclick="addList()">Add</button>
+						</div>
+					</div>
+				</div>
+
+			</div>
+			<div class="task-div col-sm-6" id="task-div">
+				<div class="row task-list-name">
+					<h2 class="task-list-name-header" onclick=""
+						id="task-list-name-header-147">Important</h2>
+					<input type="text" id="task-list-name-text-147"
+						class="task-list-name-text form-control"
+						style="background-color: rgb(64, 58, 58); display: none;"
+						onblur="updateListName(this)">
+				</div>
+				<div id="task-item-main">
+					<div class="tasks-n-cmptd-div">
+						<div class="row" style="margin: 0">
+							<div class="col-sm-10 task-item" id="task-item-119"
+								onclick="showTaskDetails(this)">
+								<input type="checkbox" id="task-chkbx-119"
+									class="task-item-chkbx" "task-chkbx-119"=""
+									onclick="completeTask(this)"> <label
+									class="task-item-label" id="task-label-119">Add new
+									features to contacts-app-sb on heroku</label>
+								<div class="row">
+									<label class="col-sm-1" style="width: 1.5em"></label>
+									<div class="col-sm-11">
+										<div class="tc-row tc-tn-row">
+											<label style="font-size: 12px">&nbsp;SW Learning</label>
+										</div>
+										<div class="tc-row tc-dd-row" id="tc-dd-row-119">
+											<img alt="." src="../static_resources/images/dot-blue.png"
+												style="height: 0.2em; margin: 5px;"><img
+												alt="due date"
+												src="../static_resources/images/calender-blue.png"
+												style="height: 0.8em"><label style="font-size: 12px">&nbsp;Tue,
+												Jan 11 2022</label>
+										</div>
+										<div class="tc-row tc-rem-row" id="tc-rem-row-119">
+											<img alt="." src="../static_resources/images/dot-blue.png"
+												style="height: 0.2em; margin: 5px;"><img
+												alt="due date"
+												src="../static_resources/images/bell-blue.png"
+												style="height: 0.8em"><label style="font-size: 12px">&nbsp;Tue,
+												Jan 11 2022</label>
+										</div>
+										<div class="tc-row tc-note-row" id="tc-note-row-119">
+											<img alt="black dot"
+												src="../static_resources/images/dot-blue.png"
+												style="height: 0.2em; margin: 5px;"><img alt="note"
+												src="../static_resources/images/note-blue-s1.png"
+												style="height: 0.8em">
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="col-sm-1 task-item-delete" id="task-delete-label-119"
+								onclick="initDelete(this)" title="Delete Task">
+								<img alt="black dot"
+									src="../static_resources/images/delete-grey-20x26.png"
+									style="height: 1.8em;">
+							</div>
+						</div>
+						<div class="row" style="margin: 0">
+							<div class="col-sm-10 task-item" id="task-item-246"
+								onclick="showTaskDetails(this)">
+								<input type="checkbox" id="task-chkbx-246"
+									class="task-item-chkbx" "task-chkbx-246"=""
+									onclick="completeTask(this)"> <label
+									class="task-item-label" id="task-label-246">postman 2</label>
+								<div class="row">
+									<label class="col-sm-1" style="width: 1.5em"></label>
+									<div class="col-sm-11">
+										<div class="tc-row tc-tn-row">
+											<label style="font-size: 12px">&nbsp;SW Learning</label>
+										</div>
+										<div class="tc-row tc-dd-row" id="tc-dd-row-246">
+											<img alt="." src="../static_resources/images/dot-blue.png"
+												style="height: 0.2em; margin: 5px;"><img
+												alt="due date"
+												src="../static_resources/images/calender-blue.png"
+												style="height: 0.8em"><label style="font-size: 12px">&nbsp;Wed,
+												Jan 5 2022</label>
+										</div>
+										<div class="tc-row tc-rem-row" id="tc-rem-row-246">
+											<img alt="." src="../static_resources/images/dot-blue.png"
+												style="height: 0.2em; margin: 5px;"><img
+												alt="due date"
+												src="../static_resources/images/bell-blue.png"
+												style="height: 0.8em"><label style="font-size: 12px">&nbsp;Wed,
+												Jan 5 2022</label>
+										</div>
+										<div class="tc-row tc-note-row" id="tc-note-row-246">
+											<img alt="black dot"
+												src="../static_resources/images/dot-blue.png"
+												style="height: 0.2em; margin: 5px;"><img alt="note"
+												src="../static_resources/images/note-blue-s1.png"
+												style="height: 0.8em">
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="col-sm-1 task-item-delete" id="task-delete-label-246"
+								onclick="initDelete(this)" title="Delete Task">
+								<img alt="black dot"
+									src="../static_resources/images/delete-grey-20x26.png"
+									style="height: 1.8em;">
+							</div>
+						</div>
+					</div>
+					<div class="row"
+						style="margin: 0; color: beige; margin-left: 10px;">
+						<label
+							style="width: auto; border-radius: 4px; background-color: rgb(46, 39, 41); padding-bottom: 2px; cursor: pointer;"
+							onclick="hideShowCTasks()"><span style="display: none;"
+							class="com-tsk-right-arr">〉 </span><span class="com-tsk-down-arr">∨
+						</span><span style="font-style: italic;">Completed&nbsp;</span><span
+							class="tasks-cmptd-nbr">4</span></label>
+					</div>
+					<div class="tasks-cmptd-div">
+						<div class="row completed" style="margin: 0">
+							<div class="col-sm-10 task-item" id="task-item-295"
+								onclick="showTaskDetails(this)">
+								<input type="checkbox" id="task-chkbx-295"
+									class="task-item-chkbx" "task-chkbx-295"=""
+									onclick="completeTask(this)" checked="checked"> <label
+									class="task-item-label strike-line" id="task-label-295">postman
+									4</label>
+								<div class="row">
+									<label class="col-sm-1" style="width: 1.5em"></label>
+									<div class="col-sm-11">
+										<div class="tc-row tc-tn-row">
+											<label style="font-size: 12px">&nbsp;YouTube Learning</label>
+										</div>
+										<div class="tc-row tc-dd-row" id="tc-dd-row-295">
+											<img alt="." src="../static_resources/images/dot-blue.png"
+												style="height: 0.2em; margin: 5px;"><img
+												alt="due date"
+												src="../static_resources/images/calender-blue.png"
+												style="height: 0.8em"><label style="font-size: 12px">&nbsp;Tue,
+												Jan 11 2022</label>
+										</div>
+										<div class="tc-row tc-rem-row" id="tc-rem-row-295">
+											<img alt="." src="../static_resources/images/dot-blue.png"
+												style="height: 0.2em; margin: 5px;"><img
+												alt="due date"
+												src="../static_resources/images/bell-blue.png"
+												style="height: 0.8em"><label style="font-size: 12px">&nbsp;Tue,
+												Jan 4 2022</label>
+										</div>
+										<div class="tc-row tc-note-row" id="tc-note-row-295"></div>
+									</div>
+								</div>
+							</div>
+							<div class="col-sm-1 task-item-delete" id="task-delete-label-295"
+								onclick="initDelete(this)" title="Delete Task">
+								<img alt="black dot"
+									src="../static_resources/images/delete-grey-20x26.png"
+									style="height: 1.8em;">
+							</div>
+						</div>
+						<div class="row completed" style="margin: 0">
+							<div class="col-sm-10 task-item" id="task-item-294"
+								onclick="showTaskDetails(this)">
+								<input type="checkbox" id="task-chkbx-294"
+									class="task-item-chkbx" "task-chkbx-294"=""
+									onclick="completeTask(this)" checked="checked"> <label
+									class="task-item-label strike-line" id="task-label-294">postman
+									4</label>
+								<div class="row">
+									<label class="col-sm-1" style="width: 1.5em"></label>
+									<div class="col-sm-11">
+										<div class="tc-row tc-tn-row">
+											<label style="font-size: 12px">&nbsp;Interview
+												preparations</label>
+										</div>
+										<div class="tc-row tc-dd-row" id="tc-dd-row-294">
+											<img alt="." src="../static_resources/images/dot-blue.png"
+												style="height: 0.2em; margin: 5px;"><img
+												alt="due date"
+												src="../static_resources/images/calender-blue.png"
+												style="height: 0.8em"><label style="font-size: 12px">&nbsp;Mon,
+												Jan 10 2022</label>
+										</div>
+										<div class="tc-row tc-rem-row" id="tc-rem-row-294">
+											<img alt="." src="../static_resources/images/dot-blue.png"
+												style="height: 0.2em; margin: 5px;"><img
+												alt="due date"
+												src="../static_resources/images/bell-blue.png"
+												style="height: 0.8em"><label style="font-size: 12px">&nbsp;Tue,
+												Jan 4 2022</label>
+										</div>
+										<div class="tc-row tc-note-row" id="tc-note-row-294"></div>
+									</div>
+								</div>
+							</div>
+							<div class="col-sm-1 task-item-delete" id="task-delete-label-294"
+								onclick="initDelete(this)" title="Delete Task">
+								<img alt="black dot"
+									src="../static_resources/images/delete-grey-20x26.png"
+									style="height: 1.8em;">
+							</div>
+						</div>
+						<div class="row completed" style="margin: 0">
+							<div class="col-sm-10 task-item" id="task-item-242"
+								onclick="showTaskDetails(this)">
+								<input type="checkbox" id="task-chkbx-242"
+									class="task-item-chkbx" "task-chkbx-242"=""
+									onclick="completeTask(this)" checked="checked"> <label
+									class="task-item-label strike-line" id="task-label-242">postman
+									1</label>
+								<div class="row">
+									<label class="col-sm-1" style="width: 1.5em"></label>
+									<div class="col-sm-11">
+										<div class="tc-row tc-tn-row">
+											<label style="font-size: 12px">&nbsp;Tasks</label>
+										</div>
+										<div class="tc-row tc-dd-row" id="tc-dd-row-242">
+											<img alt="." src="../static_resources/images/dot-blue.png"
+												style="height: 0.2em; margin: 5px;"><img
+												alt="due date"
+												src="../static_resources/images/calender-blue.png"
+												style="height: 0.8em"><label style="font-size: 12px">&nbsp;Tue,
+												Jan 4 2022</label>
+										</div>
+										<div class="tc-row tc-rem-row" id="tc-rem-row-242">
+											<img alt="." src="../static_resources/images/dot-blue.png"
+												style="height: 0.2em; margin: 5px;"><img
+												alt="due date"
+												src="../static_resources/images/bell-blue.png"
+												style="height: 0.8em"><label style="font-size: 12px">&nbsp;Wed,
+												Jan 12 2022</label>
+										</div>
+										<div class="tc-row tc-note-row" id="tc-note-row-242">
+											<img alt="black dot"
+												src="../static_resources/images/dot-blue.png"
+												style="height: 0.2em; margin: 5px;"><img alt="note"
+												src="../static_resources/images/note-blue-s1.png"
+												style="height: 0.8em">
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="col-sm-1 task-item-delete" id="task-delete-label-242"
+								onclick="initDelete(this)" title="Delete Task">
+								<img alt="black dot"
+									src="../static_resources/images/delete-grey-20x26.png"
+									style="height: 1.8em;">
+							</div>
+						</div>
+						<div class="row completed" style="margin: 0">
+							<div class="col-sm-10 task-item selected-task" id="task-item-327"
+								onclick="showTaskDetails(this)">
+								<input type="checkbox" id="task-chkbx-327"
+									class="task-item-chkbx" "task-chkbx-327"=""
+									onclick="completeTask(this)" checked="checked"> <label
+									class="task-item-label strike-line" id="task-label-327">Move
+									test</label>
+								<div class="row">
+									<label class="col-sm-1" style="width: 1.5em"></label>
+									<div class="col-sm-11">
+										<div class="tc-row tc-tn-row">
+											<label style="font-size: 12px">&nbsp;Hampe - Dec 2021</label>
+										</div>
+										<div class="tc-row tc-dd-row" id="tc-dd-row-327">
+											<img alt="." src="../static_resources/images/dot-blue.png"
+												style="height: 0.2em; margin: 5px;"><img
+												alt="due date"
+												src="../static_resources/images/calender-blue.png"
+												style="height: 0.8em"><label style="font-size: 12px">&nbsp;Wed,
+												Jan 12 2022</label>
+										</div>
+										<div class="tc-row tc-rem-row" id="tc-rem-row-327">
+											<img alt="." src="../static_resources/images/dot-blue.png"
+												style="height: 0.2em; margin: 5px;"><img
+												alt="due date"
+												src="../static_resources/images/bell-blue.png"
+												style="height: 0.8em"><label style="font-size: 12px">&nbsp;Wed,
+												Jan 12 2022</label>
+										</div>
+										<div class="tc-row tc-note-row" id="tc-note-row-327">
+											<img alt="." src="../static_resources/images/dot-blue.png"
+												style="height: 0.2em; margin: 5px;"><img alt="note"
+												src="../static_resources/images/note-blue-s1.png"
+												style="height: 0.8em">
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="col-sm-1 task-item-delete selected-task-delete"
+								id="task-delete-label-327" onclick="initDelete(this)"
+								title="Delete Task">
+								<img alt="black dot"
+									src="../static_resources/images/delete-grey-20x26.png"
+									style="height: 1.8em;">
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="row  task-item-add-div" id="task-item-add-div"
+					style="margin-right: 3em;" onclick="toggleAddtaskField()">
+					<label class="col-sm-11">Add New Task </label><label
+						class="col-sm-1">+</label>
+				</div>
+				<div class="row task-item-add-div task-item-add-field"
+					id="task-item-add-field" style="display: none; margin-right: 3em;">
+					<div class="col-sm-8">
+						<input type="text" placeholder="Enter task name"
+							id="task-item-add-txt" class="form-control">
+					</div>
+					<div class="task-add-button-div col-sm-1">
+						<button class="task-add-button" id="task-add-button"
+							onclick="addNewTask()">Add</button>
+					</div>
+					<div class="task-add-due-date-div col-sm-2">
+						<input type="datetime-local" class="task-add-due-date"
+							id="remindMeDate" name="remindMeDate" title="Add remind date">
+					</div>
+					<div class="task-remind-button-div col-sm-1">
+						<button class="task-remind-button" onclick="remindMe()">
+							<img alt="Remind Me" id="task-remind-img" name="task-remind-img"
+								class="task-remind-img"
+								src="../static_resources/images/Alarm.png" title="Remind Me">
+						</button>
+						<input type="hidden" name="remindMe" id="remindMe">
+					</div>
+
+
+					<input type="hidden" name="listName" id="listName"
+						value="Important"> <input type="hidden" name="listId"
+						id="listId" value="147">
+				</div>
+
+			</div>
+			<div class="col-sm-3 task-detail-div" id="task-detail-div"
+				style="max-height: 566.391px;">
+				<div class="task-detail-main">
+					<div class="row task-item-detail-name" id="task-item-detail-name">
+						<input type="checkbox" id="task-detail-chkbx-327"
+							onclick="completeTask(this)"
+							class="task-item-chkbx-detail task-item-chkbx "
+							name="task-detail-chkbx-327" checked="checked"><label
+							id="task-detail-label-327" class="task-item-label strike-line"
+							onclick="switchTaskNameLabel(this)">Move test</label><input
+							type="text" id="task-detail-label-text-327"
+							class="task-detail-label-text form-control"
+							style="background-color: #403a3a; display: none;"
+							onchange="updateTaskName(this)"><input
+							id="task-detail-star-327" class="task-detail-star"
+							type="checkbox" title="Important" onclick="markTaskImp(this)"
+							checked="checked">
+					</div>
+					<div class="row task-item-detail-dueDate task-item-detail-elem"
+						id="task-item-detail-dueDate" onclick="showRemDSel('dueDate')">
+						<div class="col-sm-1 task-detail-dueDate-div">
+							<img alt="due date" class="task-detail-dueDate-img"
+								id="task-detail-remind-img"
+								src="../static_resources/images/calender-blue.png">
+						</div>
+						<div class="col-sm-10 task-detail-font-size"
+							style="padding: 10px;">
+							<label><span id="task-detail-dueDate-span">Due
+									Wed, Jan 12 2022</span></label>
+						</div>
+						<div
+							class="col-sm-1 task-detail-remind-div task-detail-dueDate-del"
+							id="task-detail-dueDate-del">
+							<label id="task-detail-dueDate-del-lbl-327"
+								onclick="removeRemindMe(this,'dueDate')">X</label>
+						</div>
+					</div>
+					<div class="row task-item-detail-elem task-detail-remind-sel"
+						id="selDue" style="z-index: 100; width: 297.5px; display: none;">
+						<div class="row sel-remind-row"
+							onclick="updateRemindMeDate(327,'lth','dueDate')">
+							<label>Later Today at 12 AM</label>
+						</div>
+						<div class="row sel-remind-row"
+							onclick="updateRemindMeDate(327,'tmr','dueDate')">
+							<label>Tomorrow,&nbsp;&nbsp;9 AM</label>
+						</div>
+						<div class="row sel-remind-row"
+							onclick="updateRemindMeDate(327,'nwd','dueDate')">
+							<label>Next Week Tue,&nbsp;&nbsp;9 AM</label>
+						</div>
+						<div class="row sel-remind-row">
+							<label class="col-sm-5">Pick A Date</label><input
+								class="col-sm-7 pick-td-rem-date" type="datetime-local"
+								id="pick-td-dd-date"
+								onblur="updateRemindMeDate(327,'pick','dueDate')">
+						</div>
+						<div class="task-detail-rd-sel-close"
+							onclick="showRemDSel('close')">
+							<label>Close</label>
+						</div>
+					</div>
+					<div class="row task-item-detail-remindMe task-item-detail-elem"
+						id="task-item-detail-remindMe" onclick="showRemDSel('remindMe')">
+						<div class="col-sm-1 task-detail-remind-div">
+							<img alt="remind"
+								class="task-detail-remind-img task-detail-remind-img-sld"
+								id="task-detail-remind-img"
+								src="../static_resources/images/Alarm-blue-bb-20x21.png"
+								onclick="">
+						</div>
+						<div class="col-sm-10 task-detail-font-size">
+							<label class="task-detail-remind-lbl-sld"
+								id="task-detail-remind-lbl">Remind Me 12:0 AM</label><br>
+							<label>Wed, Jan 12 2022</label>
+						</div>
+						<div
+							class="col-sm-1 task-detail-remind-div task-detail-remind-del">
+							<label id="task-detail-remind-del-lbl-327"
+								onclick="removeRemindMe(this,'remindMe')">X</label>
+						</div>
+					</div>
+					<div class="row task-item-detail-elem task-detail-remind-sel"
+						id="selRem" style="z-index: 100; width: 297.5px; display: none;">
+						<div class="row sel-remind-row"
+							onclick="updateRemindMeDate(327,'lth','remind')">
+							<label>Later Today at 12 AM</label>
+						</div>
+						<div class="row sel-remind-row"
+							onclick="updateRemindMeDate(327,'tmr','remind')">
+							<label>Tomorrow,&nbsp;&nbsp;9 AM</label>
+						</div>
+						<div class="row sel-remind-row"
+							onclick="updateRemindMeDate(327,'nwd','remind')">
+							<label>Next Week Tue,&nbsp;&nbsp;9 AM</label>
+						</div>
+						<div class="row sel-remind-row">
+							<label class="col-sm-5">Pick A Date</label><input
+								class="col-sm-7 pick-td-rem-date" type="datetime-local"
+								id="pick-td-rem-date"
+								onblur="updateRemindMeDate(327,'pick','remind')">
+						</div>
+						<div class="task-detail-rd-sel-close"
+							onclick="showRemDSel('close')">
+							<label>Close</label>
+						</div>
+					</div>
+					<div class="row task-item-detail-elem">
+						<label class="task-detail-font-size	task-detail-note-lbl">Note</label>
+						<textarea rows="3" cols="2" placeholder="Add Note"
+							class="task-detail-note-txt" id="task-detail-note-txt-327"
+							onblur="addNote(this)">zxczxczx</textarea>
+					</div>
+				</div>
+				<div class="row task-detail-delete">
+					<div class="col-sm-10"
+						style="text-align: center; margin-top: 0.7em;">
+						<label class="task-detail-crtd-lbl">Created on Tue, Jan 11
+							2022</label>
+					</div>
+					<div class="col-sm-2" style="margin-top: 0.7em;">
+						<img alt="delete" class="task-detail-delete-label"
+							id="task-delete-label-327"
+							src="../static_resources/images/delete-red-20x27.png"
+							onclick="initDelete(this)">
+					</div>
+				</div>
+			</div>
+			<input type="hidden" name="reducedListDivWidth"
+				id="reducedListDivWidth" value="341.5"> <input type="hidden"
+				name="selectedTaskId" id="selectedTaskId" value="327">
+		</div>
+	</div>
+	<div id="disable-div"
+		style="z-index: 999; width: 1366px; height: 566.391px; position: absolute; top: 36.7969px; left: 0px; background-color: rgb(107, 106, 106); opacity: 0.1; cursor: wait; display: none;">
+	</div>
+	<audio id="sound-completed"
+		src="../static_resources/sound/task-completed.mp3"
+		style="display: none;"></audio>
+
+
+
+
+	<script type="text/javascript">
+
+
+</script>
+
+
+	<div tabindex="-1" role="dialog"
+		class="ui-dialog ui-corner-all ui-widget ui-widget-content ui-front ui-dialog-buttons ui-draggable"
+		aria-describedby="importDiv" aria-labelledby="ui-id-1"
+		style="height: auto; width: 400px; top: 236.296px; left: 483px; z-index: 101; display: none;">
+		<div
+			class="ui-dialog-titlebar ui-corner-all ui-widget-header ui-helper-clearfix ui-draggable-handle">
+			<span id="ui-id-1" class="ui-dialog-title">Delete Task</span>
+			<button type="button" class="ui-dialog-titlebar-close"></button>
+		</div>
+		<div id="importDiv"
+			style="width: auto; min-height: 21.562px; max-height: none; height: auto;"
+			class="ui-dialog-content ui-widget-content">
+			<div class="todo-dg-content" style="margin-top: 0.0em">
+				<label>Are you sure to delete this task ?</label>
+			</div>
+		</div>
+		<div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+			<div class="ui-dialog-buttonset">
+				<button type="button" priority="secondary" class="dialog-red-btn">delete</button>
+				<button type="button" class="dialog-cancel-btn">Cancel</button>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

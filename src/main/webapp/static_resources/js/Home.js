@@ -272,19 +272,31 @@ function deleteUser(id){
 function hadndleErrorResp(response){
 	if(response!=undefined){
 		if(response.indexOf("signin-form")!=-1){
+			alert("Sessin expired. Please login again.");
 			location.replace("");
+		}else{
+			alert("Sorry. Server unavailable. "+response);
 		}
-	}
+	}else{
+			alert("Sorry. Server unavailable. "+response);
+		}
 }
 
 function convertDateT(date){
+	var cDate ="";
 	var d = new Date(date);
-	
 	var today = new Date();
-	var tomorrow = new Date(today.getDate()+1);
+	var tomorrow = new Date();
+	tomorrow.setDate(today.getDate()+1);
 	
-	return cDate = days[d.getDay()]+", "+months[d.getMonth()]+" "+d.getDate()+" "+d.getFullYear();
-	//return ;
+	if(d.getFullYear()==today.getFullYear() && d.getMonth()==today.getMonth() && d.getDate()==today.getDate()){
+		cDate = "Today";
+	}else if(d.getFullYear()==tomorrow.getFullYear() && d.getMonth()==tomorrow.getMonth() && d.getDate()==tomorrow.getDate()){
+		cDate = "Tomorow";
+	}else{
+		cDate = days[d.getDay()]+", "+months[d.getMonth()]+" "+d.getDate()+" "+d.getFullYear();
+	}
+	return cDate;
 }
 
 function getTimeFromDate(date){

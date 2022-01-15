@@ -27,6 +27,7 @@
 	</div>
 		<div class="row">
 			<div class="col-sm-3 list-div">
+			<div class="list-item-main-comb">
 				<div class="list-item-main" id="list-item-main">
 					<c:forEach items="${todoList}" var="tl">
 					<div class="row list-item-row" style="margin-left: 0">
@@ -48,7 +49,11 @@
 					</c:if>
 				</c:forEach>
 				</div>
-				
+				<div class="list-item-archive" title="Coming soon">
+						<label>Archive</label>
+						<label style="float: right;margin-right: 5px;">+</label>
+					</div>
+				</div>
 				<div class="list-item-add">
 					<div class="list-item-add-div" id="list-item-add-div" onclick="togglAddListField()">
 						<label class="list-add-new-lbl">+ Add New List</label>

@@ -26,9 +26,15 @@ body{
 }
 
 .list-item-main{
-	max-height: 32.4em;
+	/* max-height: 32.4em;
     overflow-y: auto;
     min-height: 31.4em;
+    overflow-x:hidden;  */
+}
+.list-item-main-comb{
+	max-height: 32.1em;
+    overflow-y: auto;
+    min-height: 32.1em;
     overflow-x:hidden; 
 }
 .list-item{
@@ -95,6 +101,19 @@ body{
 .list-item > label,.list-item,.task-item > label, .task-item:hover{
 	cursor: pointer !important;
 }
+
+
+
+.list-item-archive{
+	background-color: #1e1e1e;
+    margin: 6px;
+    padding: 5px;
+    border-radius: 2px;
+    font-weight: 500;
+    color: beige;
+}
+
+
 .list-item-add-div{
 	background-color: darkkhaki;
 	margin: 0px;
@@ -690,6 +709,9 @@ task-add-due-date, focus {
 	font-family: cursive !important;
 }
 
+.ui-widget-overlay{
+	background-color: rgb(42 42 42) !important;
+}
 .task-detail-move-img{
 	height: 1.2em;
 	margin-top: 5px;

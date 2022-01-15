@@ -24,6 +24,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -210,56 +211,15 @@ public class HomeController {
 	@RequestMapping(method = RequestMethod.POST, value = "/init-reset-pwd")
 	public TResponse initRPD(@RequestBody User user) {
 		TResponse resp = new TResponse();
+		JSONObject respObj = new JSONObject();
 		try {
-			Optional<User> userD = userService.getUserByUserName(user.getUserName());
-			//userD.orElseThrow(()-> new UsernameNotFoundException("UserName Not Found"));
-			user = userD.map(User::new).get();
-			String uuid = UUID.randomUUID().toString();
-	        String otp=uuid.substring(1,8);
-	        
-	        user.setOtp(otp);
-	        user = userService.save(user);
-			Properties props = new Properties();
-			props.put("mail.smtp.auth", "true");
-			props.put("mail.smtp.starttls.enable", "true");
-			props.put("mail.smtp.host", "smtp.gmail.com");
-			props.put("mail.smtp.port", "587");
-			final String username = "contactsapppwdreset@gmail.com";
-			final String password = "contactsapp@2021";
-			Session session = Session.getDefaultInstance(props, new Authenticator() {
-				protected PasswordAuthentication getPasswordAuthentication() {
-					return new PasswordAuthentication(username, password);
-				}
-			});
-			Message msg = new MimeMessage(session);
-			msg.setFrom(new InternetAddress("contactsapppwdreset@gmail.com"));
-			msg.setRecipients(Message.RecipientType.TO, InternetAddress.parse(user.getUserName(), false));
-			msg.setSubject("Todo App Password Reset");
-			
-			final String BODY = String.join(
-                    System.getProperty("line.separator"),
-                    "<h3>Hi <i style='color:#7f10a2'>"+user.getName()+"</i></h3>",
-                    "<h4>Your password reset request has been initiated</h4>",
-                    "<h4>Use OTP :"+otp+"</h4>",
-                    System.getProperty("line.separator"),
-                    "<h4>Regars,</h4>",
-                    "<h4>Team Todo App</h4>"
-                );
-			msg.setContent(BODY,"text/html");
-			msg.setSentDate(new Date());
-			Transport.send(msg);
-			System.out.println("Message sent.");
-			resp.setStatus("success");
-			user.setOtp(null);
+			respObj = userService.initiateRPD(user);
+			resp.setStatus((String)respObj.get("sendStatus"));
+			resp.setError((String)respObj.get("sendError"));
 			resp.setUser(user);
-		} catch (MessagingException e) {
-			resp.setStatus("failed");
-			resp.setError(e.getMessage());
-			e.printStackTrace();
-			 System.err.println("error sending email, cause: " + e);
-		} catch (NoSuchElementException e) {
-			resp.setStatus("failed");
-			resp.setError("User not found");
+		} catch (Exception e) {
+			resp.setStatus((String)respObj.get("sendStatus"));
+			resp.setError((String)respObj.get("sendError"));
 			e.printStackTrace();
 		}
 		return resp;
