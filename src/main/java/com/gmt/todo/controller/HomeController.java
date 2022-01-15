@@ -24,6 +24,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -215,11 +216,16 @@ public class HomeController {
 		try {
 			respObj = userService.initiateRPD(user);
 			resp.setStatus((String)respObj.get("sendStatus"));
-			resp.setError((String)respObj.get("sendError"));
 			resp.setUser(user);
 		} catch (Exception e) {
-			resp.setStatus((String)respObj.get("sendStatus"));
-			resp.setError((String)respObj.get("sendError"));
+			try {
+				resp.setStatus((String)respObj.get("sendStatus"));
+				resp.setError(respObj.get("sendError").toString());
+			} catch (JSONException e2) {
+				resp.setStatus(e2.getMessage());
+			}catch (Exception e2) {
+				resp.setStatus(e2.getMessage());
+			}
 			e.printStackTrace();
 		}
 		return resp;

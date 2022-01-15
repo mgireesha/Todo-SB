@@ -114,7 +114,7 @@ public class UserService {
 		UriComponents uriComponents = builder.build();
 		HttpEntity<String> request = new HttpEntity<String>(reqJson.toString(),headers);
 		ResponseEntity<String> response = restTemplate.exchange(uriComponents.toString(), HttpMethod.POST,request,String.class);
-		JSONObject responseObj = new JSONObject(response);
+		JSONObject responseObj = new JSONObject(response.getBody().toString());
 		System.out.println(responseObj.toString());
 		user.setOtp(null);
 		return responseObj;
