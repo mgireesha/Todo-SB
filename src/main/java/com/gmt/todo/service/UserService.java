@@ -82,41 +82,47 @@ public class UserService {
 	}
 	
 	public JSONObject initiateRPD(User user){
-		RestTemplate restTemplate = new RestTemplateBuilder()
-				.setConnectTimeout(Duration.ofMillis(60000))
-				.setReadTimeout(Duration.ofMillis(60000))
-				.build();
-		Optional<User> userD = getUserByUserName(user.getUserName());
-		user = userD.map(User::new).get();
-		String uuid = UUID.randomUUID().toString();
-        String otp=uuid.substring(1,8);
-        user.setOtp(otp);
-        user = save(user);
-		final String BODY = String.join(
-                System.getProperty("line.separator"),
-                "<h3>Hi <i style='color:#7f10a2'>"+user.getName()+"</i></h3>",
-                "<h4>Your password reset request has been initiated</h4>",
-                "<h4>Use OTP :"+otp+"</h4>",
-                System.getProperty("line.separator"),
-                "<h4>Regars,</h4>",
-                "<h4>Team Todo App</h4>"
-            );
-	
-		JSONObject reqJson = new JSONObject();
-		reqJson.put("toAddress", user.getUserName());
-		reqJson.put("messageBody", BODY);
-		reqJson.put("messageSubject", "Todo App Password Reset");
-		reqJson.put("requestingApplication", "TODO");
-		HttpHeaders headers = new HttpHeaders();
-		headers.setContentType(MediaType.APPLICATION_JSON);
-		headers.setBearerAuth("eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJBZG1pbiIsImV4cCI6MTY0MjYwNzM4OCwiaWF0IjoxNjQyMjYxNzg4fQ.z0a75aWP2J3X15IeHXhlZ9FKlYRyrATap09TvPb7skw");
-		UriComponentsBuilder builder = UriComponentsBuilder.fromUriString("https://send-email-sb.herokuapp.com/sendEmail");
-		UriComponents uriComponents = builder.build();
-		HttpEntity<String> request = new HttpEntity<String>(reqJson.toString(),headers);
-		ResponseEntity<String> response = restTemplate.exchange(uriComponents.toString(), HttpMethod.POST,request,String.class);
-		JSONObject responseObj = new JSONObject(response.getBody().toString());
-		System.out.println(responseObj.toString());
-		user.setOtp(null);
+		JSONObject responseObj = null;
+		try {
+			RestTemplate restTemplate = new RestTemplateBuilder()
+					.setConnectTimeout(Duration.ofMillis(60000))
+					.setReadTimeout(Duration.ofMillis(60000))
+					.build();
+			Optional<User> userD = getUserByUserName(user.getUserName());
+			user = userD.map(User::new).get();
+			String uuid = UUID.randomUUID().toString();
+	        String otp=uuid.substring(1,8);
+	        user.setOtp(otp);
+	        user = save(user);
+			final String BODY = String.join(
+	                System.getProperty("line.separator"),
+	                "<h3>Hi <i style='color:#7f10a2'>"+user.getName()+"</i></h3>",
+	                "<h4>Your password reset request has been initiated</h4>",
+	                "<h4>Use OTP :"+otp+"</h4>",
+	                System.getProperty("line.separator"),
+	                "<h4>Regars,</h4>",
+	                "<h4>Team Todo App</h4>"
+	            );
+		
+			JSONObject reqJson = new JSONObject();
+			reqJson.put("toAddress", user.getUserName());
+			reqJson.put("messageBody", BODY);
+			reqJson.put("messageSubject", "Todo App Password Reset");
+			reqJson.put("requestingApplication", "TODO");
+			HttpHeaders headers = new HttpHeaders();
+			headers.setContentType(MediaType.APPLICATION_JSON);
+			headers.setBearerAuth("eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJBZG1pbiIsImV4cCI6MTY0MzMzMjczNSwiaWF0IjoxNjQyNDQzNzAyfQ.VxXnTU5fLbCN1dI5jw42TN_v43_J8JVJI0kaOVCc78E");
+			UriComponentsBuilder builder = UriComponentsBuilder.fromUriString("https://send-email-sb.herokuapp.com/sendEmail");
+			UriComponents uriComponents = builder.build();
+			HttpEntity<String> request = new HttpEntity<String>(reqJson.toString(),headers);
+			ResponseEntity<String> response = restTemplate.exchange(uriComponents.toString(), HttpMethod.POST,request,String.class);
+			responseObj = new JSONObject(response.getBody().toString());
+			System.out.println(responseObj.toString());
+			user.setOtp(null);
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			e.printStackTrace();
+		}
 		return responseObj;
 	}
 	
