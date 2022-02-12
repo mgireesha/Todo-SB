@@ -14,7 +14,6 @@ import com.gmt.todo.model.TodoList;
 import com.gmt.todo.model.TodoTask;
 import com.gmt.todo.model.TodoUserDetails;
 import com.gmt.todo.repository.TodoTaskRepository;
-import com.gmt.todo.repository.TodolistRepository;
 
 @Service
 public class TaskService {
@@ -44,6 +43,7 @@ public class TaskService {
 		List<TodoList> todoList = new ArrayList<TodoList>();
 		Map <String, List> tasksMap = new HashMap<String, List>();
 		TodoList todoList2 =  listService.getListById(listId);
+		todoList2.setTaskCount(Long.valueOf(todoTaskRepository.getByListId(todoList2.getListId()).size()));
 		todoList.add(todoList2);
 		if(!todoList.isEmpty() && null!= todoList.get(0).getListName() 
 				&&  "Important".equals(todoList.get(0).getListName())) {
@@ -90,7 +90,6 @@ public class TaskService {
 	}
 	
 	public TodoTask updateTask(TodoTask task, Long taskId, String action) {
-		LocalDate completedDate = null;
 		TodoTask taskD = todoTaskRepository.getByTaskId(taskId);
 		if(null!=action && "complete".equals(action)) {
 			taskD.setCompleted(task.isCompleted());
@@ -100,6 +99,9 @@ public class TaskService {
 		}
 		if(null!=action && "note".equals(action)) {
 			taskD.setNote(task.getNote());
+		}
+		if(null!=action && "uri-ref".equals(action)) {
+			taskD.setUriRef(task.getUriRef());
 		}
 		if(null!=action && "important".equals(action)) {
 			taskD.setImportant(task.isImportant());

@@ -11,10 +11,15 @@ import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
 import com.gmt.todo.service.CustomAccessDeniedHandler;
 
 @EnableWebSecurity
+@CrossOrigin
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	
 	@Autowired
@@ -46,6 +51,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             .and()
             .logout().permitAll()
             .and()
+            .cors().and()
             .httpBasic().and()
             .csrf()
             .disable();
@@ -61,5 +67,5 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	public AccessDeniedHandler accessDeniedHandler(){
 	    return new CustomAccessDeniedHandler();
 	}
-
+	
 }

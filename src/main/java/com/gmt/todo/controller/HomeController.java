@@ -2,24 +2,10 @@ package com.gmt.todo.controller;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
-import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.NoSuchElementException;
 import java.util.Optional;
-import java.util.Properties;
-import java.util.UUID;
 
-import javax.mail.Authenticator;
-import javax.mail.Message;
-import javax.mail.MessagingException;
-import javax.mail.PasswordAuthentication;
-import javax.mail.Session;
-import javax.mail.Transport;
-import javax.mail.internet.AddressException;
-import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -27,9 +13,11 @@ import javax.servlet.http.HttpSession;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.WebAttributes;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -43,7 +31,6 @@ import org.springframework.web.servlet.ModelAndView;
 import com.gmt.todo.model.TResponse;
 import com.gmt.todo.model.TodoList;
 import com.gmt.todo.model.TodoTask;
-import com.gmt.todo.model.TodoUserDetails;
 import com.gmt.todo.model.User;
 import com.gmt.todo.repository.TodoTaskRepository;
 import com.gmt.todo.repository.TodolistRepository;
@@ -100,6 +87,24 @@ public class HomeController {
 		mv.addObject("todoList", defList);
 		mv.setViewName("Home");
 		return mv;
+	}
+	
+	@RequestMapping(method = RequestMethod.GET, value = "/Home1")
+	public Map<String, List> goToHome1() {
+		Map<String, List> tasks = null;
+		UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		List<TodoList> defList = (List<TodoList>) todolistRepository.getByUserIdAndGroupNameOrderByDateCreated(userDetails.getUsername(),"default");
+		List<TodoList> list = (List<TodoList>) todolistRepository.getByUserIdAndGroupNameNotOrderByDateCreated(userDetails.getUsername(),"default");
+		defList.addAll(list);
+		for (TodoList todoList : defList) {
+			if(!"Important".equals(todoList.getListName())) {
+				todoList.setTaskCount(Long.valueOf(todoTaskRepository.getByListId(todoList.getListId()).size()));
+			}else {
+				tasks = taskService.getTasksByListId(todoList.getListId());
+				todoList.setTaskCount(Long.valueOf(tasks.get("taskListC").size()+tasks.get("taskListT").size()));
+			}
+		}
+		return tasks;
 	}
 
 	@RequestMapping(method = RequestMethod.GET, value = "/login")
@@ -263,5 +268,5 @@ public class HomeController {
 		resp.setUser(user);
 		return resp;
 	}
-
+	
 }

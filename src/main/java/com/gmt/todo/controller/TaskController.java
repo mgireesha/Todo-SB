@@ -4,8 +4,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -16,7 +14,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.gmt.todo.model.TResponse;
 import com.gmt.todo.model.TodoList;
 import com.gmt.todo.model.TodoTask;
-import com.gmt.todo.model.TodoUserDetails;
 import com.gmt.todo.service.ListService;
 import com.gmt.todo.service.TaskService;
 
@@ -79,7 +76,7 @@ public class TaskController {
 	}
 	
 	@RequestMapping(method = RequestMethod.GET, value = "task/getTasksByListId/{listId}")
-	public Map getTodoTasksByListId(@PathVariable String listId) {
+	public Map<String, List> getTodoTasksByListId(@PathVariable String listId) {
 		return taskService.getTasksByListId(Long.parseLong(listId));
 	}
 	

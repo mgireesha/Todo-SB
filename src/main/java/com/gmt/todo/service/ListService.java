@@ -2,16 +2,17 @@ package com.gmt.todo.service;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import com.gmt.todo.model.TodoList;
 import com.gmt.todo.model.TodoTask;
 import com.gmt.todo.model.TodoUserDetails;
 import com.gmt.todo.model.User;
-import com.gmt.todo.repository.TodoTaskRepository;
 import com.gmt.todo.repository.TodolistRepository;
 
 @Service
@@ -40,7 +41,7 @@ public class ListService {
 		todoList.setDateCreated(LocalDate.now());
 		todoList.setUserId(userDetails.getUsername());
 		if(null == todoList.getGroupName() || "".equals(todoList.getGroupName())) {
-			todoList.setGroupId(generateGroupId());
+			todoList.setGroupId(2001);
 			todoList.setGroupName("common");
 		}
 		todoList = todolistRepository.save(todoList);
@@ -82,7 +83,42 @@ public class ListService {
 		return todolistRepository.getMaxId()+1;
 	}
 
-	public List<TodoList> getListByUserId(String userName) {
-		return todolistRepository.getByUserIdOrderByListId(userName);
+	public Map<String, List<TodoList>> getGroupedListByUserId(String userName) {
+		Map<String,List<TodoList>> listRet = new HashMap<String, List<TodoList>>();
+		List<String> groups = todolistRepository.getByUserIdGroupByGroupName(userName);
+		System.out.println("91 :"+groups);
+		for (String group : groups) {
+			listRet.put(group, todolistRepository.getByUserIdAndGroupNameOrderByDateCreated(userName, group));
+		}
+		for (Entry<String, List<TodoList>> entry : listRet.entrySet()) {
+			for(TodoList todoList : entry.getValue()){
+				if(!"Important".equals(todoList.getListName())) {
+					todoList.setTaskCount(Long.valueOf(taskService.getByListId(todoList.getListId()).size()));
+				}else {
+					Map<String, List> tasks = taskService.getTasksByListId(todoList.getListId());
+					todoList.setTaskCount(Long.valueOf(tasks.get("taskListC").size()+tasks.get("taskListT").size()));
+				}
+				
+			}
+		}
+	return listRet;
+	}
+
+	public List<TodoList> getListByUserId(String userId) {
+		return todolistRepository.getByUserIdOrderByListId(userId);
+	}
+	
+	public TodoList archiveList(Long listId) {
+		TodoList todoList = getListById(listId);
+		if(todoList.getGroupName().equals("archived")) {
+			todoList.setGroupName("common");
+			todoList.setGroupId(2001);
+		}else {
+			todoList.setGroupName("archived");
+			todoList.setGroupId(3001);
+		}
+		todoList.setTaskCount(Long.valueOf(taskService.getByListId(todoList.getListId()).size()));
+		todoList = save(todoList);
+		return todoList;
 	}
 }

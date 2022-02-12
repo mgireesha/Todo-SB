@@ -748,3 +748,12 @@ task-add-due-date, focus {
 .task-detail-mve-close:hover{
     background-color: #403a3a;
 }
+
+.task-item1{
+	padding: 10px;
+    background-color: beige;
+    border-radius: 5px;
+    display: flex;
+        margin: 10px;
+    width: 95%;
+}

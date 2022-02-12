@@ -31,7 +31,14 @@ public class TodoTask {
 	private String userId;
 	private long listId;
 	private String listName;
+	private String uriRef;
 	
+	public String getUriRef() {
+		return uriRef;
+	}
+	public void setUriRef(String uriRef) {
+		this.uriRef = uriRef;
+	}
 	public long getListId() {
 		return listId;
 	}
@@ -188,7 +195,7 @@ public class TodoTask {
 				+ ", remindMe=" + remindMe + ", remindTime=" + remindTime + ", note=" + note + ", isCompleted="
 				+ isCompleted + ", dateCreated=" + dateCreated + ", dateCompleted=" + dateCompleted + ", dueDate="
 				+ dueDate + ", isRepeat=" + isRepeat + ", isImportant=" + isImportant + ", userId=" + userId
-				+ ", listId=" + listId + ", listName=" + listName + "]";
+				+ ", listId=" + listId + ", listName=" + listName + ", uriRef=" + uriRef + "]";
 	}
 	
 	

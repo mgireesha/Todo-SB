@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 
 import com.gmt.todo.model.TodoUserDetails;
 import com.gmt.todo.model.User;
-import com.gmt.todo.repository.UserRepository;
 
 @Service
 public class TodoUserDetailsService implements UserDetailsService {

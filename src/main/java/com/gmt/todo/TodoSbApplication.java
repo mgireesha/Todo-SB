@@ -57,14 +57,12 @@ public class TodoSbApplication {
 				"API License", "https://example.com", Collections.emptyList());
 	}
 	
-	@Bean
-	public WebMvcConfigurer corsConfigurer() {
-		return new WebMvcConfigurer() {
-			@Override
-			public void addCorsMappings(CorsRegistry registry) {
-				registry.addMapping("/todo").allowedOrigins("http://localhost:8080");
-			}
-		};
-	}
+	/*
+	 * @Bean public WebMvcConfigurer corsConfigurer() { return new
+	 * WebMvcConfigurer() {
+	 * 
+	 * @Override public void addCorsMappings(CorsRegistry registry) {
+	 * registry.addMapping("/todo").allowedOrigins("http://localhost:8080"); } }; }
+	 */
 
 }

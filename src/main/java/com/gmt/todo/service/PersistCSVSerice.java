@@ -150,4 +150,23 @@ public class PersistCSVSerice {
 		return taskListRet;
 	}
 	
+	public List<TodoList> updateGroupId(){
+		List<User> userList = userService.getAllUsers();
+		List<TodoList> tList = new ArrayList<TodoList>();
+		List<TodoList> tListRet = new ArrayList<TodoList>();
+		for (User user : userList) {
+			tList = listService.getListByUserId(user.getUserName());
+			for (TodoList todoList : tList) {
+				if("common".equalsIgnoreCase(todoList.getGroupName())) {
+					todoList.setGroupId(2001);
+				}else if("default".equalsIgnoreCase(todoList.getGroupName())) {
+					todoList.setGroupId(1001);
+				}
+				tListRet.add(todoList);
+			}
+		}
+		listService.save(tListRet);
+		return tListRet;
+	}
+	
 }
